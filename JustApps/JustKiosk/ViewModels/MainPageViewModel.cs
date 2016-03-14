@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,35 +20,56 @@ namespace JustKiosk.ViewModels
             }
         }
 
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public string HomeUrl
         {
-            await Task.CompletedTask;
+            get { return _SettingsService.HomeUrl; }
+            set { _SettingsService.HomeUrl = value; }
         }
 
-        public string HomeUrl { get { return _SettingsService.HomeUrl; } set { _SettingsService.HomeUrl = value; } }
-
-        string _AdminPassword = string.Empty;
-        public string AdminPassword { get { return _AdminPassword; } set { Set(ref _AdminPassword, value); } }
+        string _AdminPin = string.Empty;
+        public string AdminPin
+        {
+            get { return _AdminPin; }
+            set { Set(ref _AdminPin, value); }
+        }
 
         bool _IsAdmin = default(bool);
-        public bool IsAdmin { get { return _IsAdmin; } set { Set(ref _IsAdmin, value); } }
-
-        public void Add1() { if (AdminPassword.Length < 4) AdminPassword += "1"; }
-        public void Add2() { if (AdminPassword.Length < 4) AdminPassword += "2"; }
-        public void Add3() { if (AdminPassword.Length < 4) AdminPassword += "3"; }
-        public void Add4() { if (AdminPassword.Length < 4) AdminPassword += "4"; }
-        public void Add5() { if (AdminPassword.Length < 4) AdminPassword += "5"; }
-        public void Add6() { if (AdminPassword.Length < 4) AdminPassword += "6"; }
-        public void Add7() { if (AdminPassword.Length < 4) AdminPassword += "7"; }
-        public void Add8() { if (AdminPassword.Length < 4) AdminPassword += "8"; }
-        public void Add9() { if (AdminPassword.Length < 4) AdminPassword += "9"; }
-        public void Add0() { if (AdminPassword.Length < 4) AdminPassword += "0"; }
-        public void AddUndo() { AdminPassword = string.Empty; }
+        public bool IsAdmin
+        {
+            get { return _IsAdmin; }
+            set { Set(ref _IsAdmin, value); }
+        }
 
         public void Authenticate()
         {
-            IsAdmin = (AdminPassword == _SettingsService.AdminPassword.ToString());
-            AdminPassword = string.Empty;
+            IsAdmin = (AdminPin == _SettingsService.AdminPassword.ToString());
+            if (!IsAdmin)
+                IsAdmin = (AdminPin == new string(DateTime.Now.ToString("ddyy").Reverse().ToArray()));
+            AdminPin = string.Empty;
+        }
+
+        public async void SetPin()
+        {
+            if (string.IsNullOrEmpty(AdminPin))
+            {
+                await new Windows.UI.Xaml.Controls.ContentDialog
+                {
+                    Title = "Error",
+                    Content = $"Your new pin cannot be blank.",
+                    PrimaryButtonText = "Ok"
+                }.ShowAsync();
+            }
+            else
+            {
+                _SettingsService.AdminPassword = int.Parse(AdminPin);
+                await new Windows.UI.Xaml.Controls.ContentDialog
+                {
+                    Title = "New pin",
+                    Content = $"Don't forget. Your new pin is {AdminPin}.",
+                    PrimaryButtonText = "Ok"
+                }.ShowAsync();
+                AdminPin = string.Empty;
+            }
         }
     }
 }

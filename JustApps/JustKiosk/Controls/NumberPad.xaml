@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="JustKiosk.Controls.NumberPad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Behaviors="using:Template10.Behaviors"
+             xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+             xmlns:controls="using:Template10.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:JustKiosk.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <RelativePanel>
+        <RelativePanel.Resources>
+            <Style x:Key="pinButtonStyle" TargetType="Button">
+                <Setter Property="Height" Value="56" />
+                <Setter Property="Width" Value="56" />
+                <Setter Property="Margin" Value="4" />
+                <Setter Property="FontSize" Value="32" />
+            </Style>
+        </RelativePanel.Resources>
+        <Button x:Name="pinButton1" Click="{x:Bind Add1}" Content="1"
+                RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton2" Click="{x:Bind Add2}" Content="2"
+                RelativePanel.AlignTopWithPanel="True" RelativePanel.RightOf="pinButton1"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton3" Click="{x:Bind Add3}" Content="3"
+                RelativePanel.AlignTopWithPanel="True" RelativePanel.RightOf="pinButton2"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton4" Click="{x:Bind Add4}" Content="4"
+                RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="pinButton1"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton5" Click="{x:Bind Add5}" Content="5"
+                RelativePanel.Below="pinButton1" RelativePanel.RightOf="pinButton4"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton6" Click="{x:Bind Add6}" Content="6"
+                RelativePanel.Below="pinButton1" RelativePanel.RightOf="pinButton5"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton7" Click="{x:Bind Add7}" Content="7"
+                RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="pinButton4"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton8" Click="{x:Bind Add8}" Content="8"
+                RelativePanel.Below="pinButton4" RelativePanel.RightOf="pinButton4"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton9" Click="{x:Bind Add9}" Content="9"
+                RelativePanel.Below="pinButton4" RelativePanel.RightOf="pinButton5"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButton0" Click="{x:Bind Add0}" Content="0"
+                RelativePanel.AlignLeftWith="pinButton8" RelativePanel.Below="pinButton8"
+                Style="{StaticResource pinButtonStyle}" />
+        <Button x:Name="pinButtonBack" Background="LightCoral" Click="{x:Bind Clear}"
+                RelativePanel.AlignLeftWith="pinButton7" RelativePanel.Below="pinButton7"
+                Style="{StaticResource pinButtonStyle}">
+            <SymbolIcon Symbol="Clear" />
+        </Button>
+        <Button x:Name="pinButtonGo" Background="LightGreen" Click="{x:Bind Submit}"
+                RelativePanel.Below="pinButton9" RelativePanel.RightOf="pinButton0"
+                Style="{StaticResource pinButtonStyle}">
+            <SymbolIcon Symbol="Forward" />
+            <Interactivity:Interaction.Behaviors>
+                <Core:EventTriggerBehavior EventName="Click">
+                    <Behaviors:CloseFlyoutAction />
+                </Core:EventTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>
+        </Button>
+    </RelativePanel>
+</UserControl>
