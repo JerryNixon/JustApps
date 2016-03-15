@@ -5,28 +5,15 @@
       xmlns:Controls="using:JustKiosk.Controls"
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
       xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustKiosk.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="using:JustKiosk.Triggers" xmlns:vm="using:JustKiosk.ViewModels"
-      mc:Ignorable="d">
-    <Page.Resources>
-        <!--<PathGeometry x:Key="Geometry1" FillRule="Nonzero">
-            <PathFigure IsFilled="True" IsClosed="True" StartPoint="195.871,117.708">
-                <LineSegment Point="816.057,85.9335"/>
-                <LineSegment Point="841.129,575.292"/>
-                <LineSegment Point="220.943,607.067"/>
-                <LineSegment Point="195.871,117.708"/>
-            </PathFigure>
-            <PathFigure IsFilled="True" IsClosed="True" StartPoint="279.937,175.483">
-                <LineSegment Point="297.539,519.032"/>
-                <LineSegment Point="758.933,495.393"/>
-                <LineSegment Point="741.332,151.843"/>
-                <LineSegment Point="279.937,175.483"/>
-            </PathFigure>
-        </PathGeometry>-->
-    </Page.Resources>
+      x:Name="ThisPage" mc:Ignorable="d">
+
+
 
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
@@ -42,16 +29,29 @@
                 </Core:DataTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Margin="24" HorizontalAlignment="Stretch" Header="Home Url"
-                         Text="{Binding HomeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <Button Grid.Column="1" Width="64" Height="64"
-                        Margin="4,0" Padding="12">
+            <RelativePanel Margin="4">
+
+                <RelativePanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="4" />
+                        <Setter Property="Height" Value="64" />
+                        <Setter Property="Width" Value="64" />
+                    </Style>
+                </RelativePanel.Resources>
+
+                <TextBox x:Name="UrlTextBox" Margin="24,0" HorizontalAlignment="Stretch"
+                         Header="Home Url" RelativePanel.AlignLeftWithPanel="True"
+                         RelativePanel.AlignTopWith="NavigateButton" RelativePanel.Below="SetPinButton"
+                         RelativePanel.LeftOf="NavigateButton"
+                         Text="{Binding HomeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                </TextBox>
+
+                <Button x:Name="NavigateButton" Click="Navigate_Click"
+                        RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="CloseAdminButton">
+                    <SymbolIcon Symbol="Forward" />
+                </Button>
+
+                <Button x:Name="SetPinButton" RelativePanel.LeftOf="ShowHelpButton">
                     <TextBlock>
                         <Run Text="Set" />
                         <LineBreak />
@@ -67,31 +67,58 @@
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-                <Button Grid.Column="2" Width="64" Height="64"
-                        Margin="4,0" Padding="12">
+
+                <Button x:Name="ShowHelpButton" Click="ShowHelp_Click"
+                        RelativePanel.LeftOf="ContactButton">
                     <SymbolIcon Symbol="Help" />
                 </Button>
-            </Grid>
+
+                <Button x:Name="ContactButton" RelativePanel.LeftOf="CloseAdminButton">
+                    <SymbolIcon Symbol="Mail" />
+                    <Button.Flyout>
+                        <Flyout Placement="Bottom">
+                            <Button Click="Contact_Click" Content="Send feedback" />
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+
+                <Button x:Name="CloseAdminButton" RelativePanel.AlignRightWithPanel="True"
+                        RelativePanel.AlignTopWithPanel="True">
+                    <Interactivity:Interaction.Behaviors>
+                        <Core:EventTriggerBehavior EventName="Click">
+                            <Core:ChangePropertyAction PropertyName="IsAdmin" TargetObject="{x:Bind ViewModel}" Value="False" />
+                        </Core:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                    <SymbolIcon Symbol="Clear" />
+                </Button>
+
+            </RelativePanel>
         </AppBar>
     </Page.TopAppBar>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <Interactivity:Interaction.Behaviors>
-            <Core:EventTriggerBehavior>
-                <Core:GoToStateAction StateName="NormalState" />
-            </Core:EventTriggerBehavior>
-        </Interactivity:Interaction.Behaviors>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="IntroState">
+                    <VisualState.Setters>
+                        <Setter Target="MyTopAppBar.IsOpen" Value="False" />
+                        <Setter Target="OverlayContainer.Visibility" Value="Visible" />
+                        <Setter Target="OverlayImage.Source" Value="ms-appx:///Assets/Help/Intro.png" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="HelpState">
+                    <VisualState.Setters>
+                        <Setter Target="OverlayContainer.Visibility" Value="Visible" />
+                        <Setter Target="OverlayImage.Source" Value="ms-appx:///Assets/Help/Help.png" />
+                    </VisualState.Setters>
+                </VisualState>
                 <VisualState x:Name="NormalState">
                     <VisualState.StateTriggers>
                         <t:BooleanTrigger When="False" Value="{x:Bind ViewModel.IsAdmin, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="LoginButton.Visibility" Value="Visible" />
-                        <Setter Target="LogoutButton.Visibility" Value="Collapsed" />
                         <Setter Target="MyTopAppBar.Visibility" Value="Collapsed" />
                         <Setter Target="MyTopAppBar.IsOpen" Value="False" />
                     </VisualState.Setters>
@@ -102,7 +129,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="LoginButton.Visibility" Value="Collapsed" />
-                        <Setter Target="LogoutButton.Visibility" Value="Visible" />
+                        <Setter Target="HomeButton.Visibility" Value="Collapsed" />
                         <Setter Target="MyTopAppBar.Visibility" Value="Visible" />
                         <Setter Target="MyTopAppBar.IsOpen" Value="True" />
                     </VisualState.Setters>
@@ -112,23 +139,13 @@
 
         <WebView x:Name="MyWebView" RelativePanel.AlignBottomWithPanel="True"
                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                 RelativePanel.AlignTopWithPanel="True" />
+                 RelativePanel.AlignTopWithPanel="True" RenderTransformOrigin="0.5,0.5">
+        </WebView>
 
-        <Button Width="64" Height="64" Margin="24"
-                Click="Home_Click" RelativePanel.AlignBottomWithPanel="True"
+        <Button x:Name="HomeButton" Width="64" Height="64"
+                Margin="24" Click="Home_Click" RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignLeftWithPanel="True">
             <SymbolIcon Symbol="Home" />
-        </Button>
-
-        <Button x:Name="LogoutButton" Height="64" Margin="24"
-                Content="Logout" Padding="16,4">
-            <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
-            <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
-            <Interactivity:Interaction.Behaviors>
-                <Core:EventTriggerBehavior EventName="Click">
-                    <Core:ChangePropertyAction PropertyName="IsAdmin" TargetObject="{x:Bind ViewModel}" Value="False" />
-                </Core:EventTriggerBehavior>
-            </Interactivity:Interaction.Behaviors>
         </Button>
 
         <Button x:Name="LoginButton" Width="64" Height="64"
@@ -145,6 +162,23 @@
                 </Flyout>
             </Button.Flyout>
         </Button>
+
+        <Grid x:Name="OverlayContainer" RelativePanel.AlignBottomWithPanel="True"
+              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+              RelativePanel.AlignTopWithPanel="True" Visibility="Collapsed">
+            <Grid.Background>
+                <SolidColorBrush Opacity=".5" Color="Black" />
+            </Grid.Background>
+            <Interactivity:Interaction.Behaviors>
+                <Core:EventTriggerBehavior EventName="PointerPressed">
+                    <Core:ChangePropertyAction PropertyName="Visibility" TargetObject="{Binding ElementName=OverlayContainer}"
+                                               Value="Collapsed" />
+                </Core:EventTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>
+            <Viewbox IsHitTestVisible="False">
+                <Image x:Name="OverlayImage" Margin="140" Stretch="Uniform" />
+            </Viewbox>
+        </Grid>
 
     </RelativePanel>
 
