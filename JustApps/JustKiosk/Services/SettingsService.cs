@@ -3,33 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Template10.Utils;
+using Windows.Foundation;
+using Windows.UI.Xaml.Media;
 
 namespace JustKiosk.Services
 {
     public class SettingsService
     {
-        Template10.Services.SettingsService.SettingsHelper _helper;
+        Template10.Services.SettingsService.SettingsHelper _SettingsHelper;
+        Services.FileHelper _FileHelper;
         public SettingsService()
         {
-            _helper = new Template10.Services.SettingsService.SettingsHelper();
+            _SettingsHelper = new Template10.Services.SettingsService.SettingsHelper();
+            _FileHelper = new FileHelper();
         }
 
         public bool IntroShown
         {
-            get { return _helper.Read(nameof(IntroShown), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set { _helper.Write(nameof(IntroShown), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            get { return _SettingsHelper.Read(nameof(IntroShown), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(IntroShown), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
         public string HomeUrl
         {
-            get { return _helper.Read(nameof(HomeUrl), "http://bing.com", Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set { _helper.Write(nameof(HomeUrl), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            get { return _SettingsHelper.Read(nameof(HomeUrl), "http://bing.com", Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(HomeUrl), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
         public int AdminPassword
         {
-            get { return _helper.Read(nameof(AdminPassword), 1234, Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set { _helper.Write(nameof(AdminPassword), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            get { return _SettingsHelper.Read(nameof(AdminPassword), 1234, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(AdminPassword), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+        }
+
+        public PathFigure PathData
+        {
+            get { return _FileHelper.ReadFileAsync<PathFigure>(nameof(PathData), StorageStrategies.Roaming).Result; }
+            set { _FileHelper.WriteFileAsync(nameof(PathData), value, StorageStrategies.Roaming); }
         }
 
         public string HockeyAppId = "8f97329ad3c74a26ba2801d7c9f578ec";

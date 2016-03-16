@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Xaml;
@@ -19,29 +20,68 @@ namespace JustKiosk.Views
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
-            ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.TranslateX | Windows.UI.Xaml.Input.ManipulationModes.TranslateY;
             Loaded += MainPage_Loaded;
+            //Loaded += (s, e) =>
+            //{
+            //    PathData = new PathGeometry { FillRule = FillRule.Nonzero };
+            //    var pathData = _SettingsService.PathData;
+            //    if (pathData != null)
+            //    {
+            //        PathData.Figures.Add(WindowBounds);
+            //        PathData.Figures.Add(pathData);
+            //    }
+            //};
         }
 
-        //PathGeometry _PathGeometry;
+        //PathFigure WindowBounds
+        //{
+        //    get
+        //    {
+        //        var bounds = Window.Current.Bounds;
+        //        var figure = new PathFigure { IsFilled = true, IsClosed = true, StartPoint = new Point(0, 0) };
+        //        figure.Segments.Add(new LineSegment { Point = new Point(bounds.Width, 0) });
+        //        figure.Segments.Add(new LineSegment { Point = new Point(bounds.Width, bounds.Height) });
+        //        figure.Segments.Add(new LineSegment { Point = new Point(0, bounds.Height) });
+        //        return figure;
+        //    }
+        //}
+
+        //public PathGeometry PathData { get { return (PathGeometry)GetValue(PathDataProperty); } set { SetValue(PathDataProperty, value); } }
+        //public static readonly DependencyProperty PathDataProperty =
+        //    DependencyProperty.Register(nameof(PathData), typeof(PathGeometry), typeof(MainPage), new PropertyMetadata(null));
 
         //private void MainPage_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         //{
-        //    _PathGeometry = new PathGeometry { FillRule = FillRule.Nonzero };
-        //    var figure = new PathFigure { IsFilled = true, IsClosed = true, StartPoint = new Point(0, 0) };
-        //    figure.Segments.Add(new LineSegment { Point = new Point() });
-        //    _PathGeometry.Figures.Add(figure);
+        //    if (IsDrawing)
+        //    {
+        //        PathData.Figures[1].IsFilled = true;
+        //        PathData.Figures[1].IsClosed = true;
+        //        PathData.Figures[1].Segments.Clear();
+        //        PathData.Figures[1].StartPoint = e.Position;
+        //    }
         //}
 
-        //private void MainPage_ManipulationDelta(object sender, Windows.UI.Xaml.Input.ManipulationDeltaRoutedEventArgs e)
+        //private void MainPage_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         //{
-        //    if (!IsDrawing) return;
+        //    if (IsDrawing)
+        //    {
+        //        PathData.Figures[1].Segments.Add(new LineSegment { Point = e.Position });
+        //    }
         //}
 
         //private void MainPage_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         //{
-        //    throw new NotImplementedException();
+        //    if (IsDrawing)
+        //    {
+        //        _SettingsService.PathData = PathData.Figures[1];
+        //    }
         //}
+
+        private void EditPath_Click(object sender, RoutedEventArgs e)
+        {
+            // IsDrawing = ViewModel.IsAdmin = true;
+            VisualStateManager.GoToState(this, BoundaryState.Name, true);
+        }
 
         //public bool IsDrawing { get { return (bool)GetValue(IsDrawingProperty); } set { SetValue(IsDrawingProperty, value); } }
         //public static readonly DependencyProperty IsDrawingProperty =
@@ -51,15 +91,23 @@ namespace JustKiosk.Views
         //    var page = d as MainPage;
         //    if ((bool)e.NewValue)
         //    {
-        //        page.ManipulationDelta += page.MainPage_ManipulationDelta;
-        //        page.ManipulationStarted += page.MainPage_ManipulationStarted;
-        //        page.ManipulationCompleted += page.MainPage_ManipulationCompleted;
+        //        page.BoundaryPath.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+        //        page.BoundaryPath.ManipulationDelta += page.MainPage_ManipulationDelta;
+        //        page.BoundaryPath.ManipulationStarted += page.MainPage_ManipulationStarted;
+        //        page.BoundaryPath.ManipulationCompleted += page.MainPage_ManipulationCompleted;
+
+        //        page.PathData.Figures.Clear();
+        //        page.PathData.Figures.Add(page.WindowBounds);
+        //        var figure = new PathFigure { IsFilled = true, IsClosed = true };
+        //        page.PathData.Figures.Add(figure);
+
         //    }
         //    else
         //    {
-        //        page.ManipulationDelta -= page.MainPage_ManipulationDelta;
-        //        page.ManipulationStarted -= page.MainPage_ManipulationStarted;
-        //        page.ManipulationCompleted -= page.MainPage_ManipulationCompleted;
+        //        page.BoundaryPath.ManipulationMode = ManipulationModes.None;
+        //        page.BoundaryPath.ManipulationDelta -= page.MainPage_ManipulationDelta;
+        //        page.BoundaryPath.ManipulationStarted -= page.MainPage_ManipulationStarted;
+        //        page.BoundaryPath.ManipulationCompleted -= page.MainPage_ManipulationCompleted;
         //    }
         //}
 
@@ -68,6 +116,10 @@ namespace JustKiosk.Views
             _AdService = new Services.AdService();
             _SettingsService = new Services.SettingsService();
             Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+
+            ViewModel.IsAdmin = true;
+            VisualStateManager.GoToState(this, AdminState.Name, true);
+            return;
 
             if (!_SettingsService.IntroShown)
             {
