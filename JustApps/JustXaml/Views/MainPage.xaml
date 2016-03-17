@@ -7,28 +7,79 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustXaml.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:JustXaml.ViewModels" mc:Ignorable="d">
+      xmlns:vm="using:JustXaml.ViewModels" x:Name="ThisPage" mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items"
+                              Source="{Binding Items}" />
+    </Page.Resources>
 
-        <controls:PageHeader x:Name="pageHeader" Content="Main Page">
-            <!--  place stretched, across top  -->
-            <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
-            <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
-            <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
-        </controls:PageHeader>
+    <SplitView x:Name="RootSplitView" DisplayMode="Inline" IsPaneOpen="True"
+               OpenPaneLength="150" PaneBackground="SteelBlue" PanePlacement="Left">
 
-        <TextBlock x:Name="mainTextBlock" Margin="16,12,0,0" Text="Hello World">
-            <!--  place below page header  -->
-            <RelativePanel.Below>pageHeader</RelativePanel.Below>
-            <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
-        </TextBlock>
+        <SplitView.Pane>
+            <ListView FontSize="16" Foreground="White"
+                      ItemsSource="{Binding Source={StaticResource CVS}}"
+                      SelectionChanged="Template_Selected" SelectionMode="Single">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding Title}" />
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
 
-    </RelativePanel>
+        </SplitView.Pane>
+
+        <SplitView.Content>
+
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="32" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <CommandBar Grid.Row="0">
+                    <AppBarButton x:Name="ClearButton" Click="{x:Bind Clear}" Icon="Clear"
+                                  Label="Clear" />
+                    <AppBarToggleButton x:Name="PauseButton" Icon="Pause" Label="Pause" />
+                </CommandBar>
+
+                <TextBox x:Name="RawXaml" Grid.Row="1" AcceptsReturn="True"
+                         InputScope="NativeScript" IsSpellCheckEnabled="False"
+                         IsTextPredictionEnabled="False"
+                         Text="{Binding RawXamlText, Mode=TwoWay, ElementName=ThisPage, UpdateSourceTrigger=PropertyChanged}" />
+                <Rectangle Grid.Row="2" Fill="DimGray" />
+                <TextBlock x:Name="Output" Grid.Row="2" Margin="12,0"
+                           VerticalAlignment="Center" Foreground="Pink" MaxLines="1"
+                           Text="{x:Bind ErrorText, Mode=OneWay}" />
+                <ContentControl x:Name="Host" Grid.Row="3" HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch" Background="Coral"
+                                Content="{x:Bind XamlContent, Mode=OneWay}" />
+
+            </Grid>
+
+        </SplitView.Content>
+
+    </SplitView>
+
+
 
 </Page>
 
