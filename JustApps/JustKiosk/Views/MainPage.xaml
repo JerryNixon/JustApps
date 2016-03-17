@@ -66,18 +66,8 @@
                     </Button.Flyout>
                 </Button>
 
-                <Button x:Name="EditPathButton" Click="EditPath_Click"
-                        RelativePanel.LeftOf="ContactButton">
-                    <SymbolIcon Symbol="ClearSelection" />
-                    <Interactivity:Interaction.Behaviors>
-                        <Core:EventTriggerBehavior EventName="Click">
-                            <Core:ChangePropertyAction PropertyName="IsOpen" TargetObject="{x:Bind MyTopAppBar}" Value="False" />
-                        </Core:EventTriggerBehavior>
-                    </Interactivity:Interaction.Behaviors>
-                </Button>
-
                 <Button x:Name="ShowHelpButton" Click="ShowHelp_Click"
-                        RelativePanel.LeftOf="EditPathButton">
+                        RelativePanel.LeftOf="ContactButton">
                     <SymbolIcon Symbol="Help" />
                 </Button>
 
@@ -108,12 +98,6 @@
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="BoundaryState">
-                    <VisualState.Setters>
-                        <Setter Target="BoundaryPath.Fill" Value="Green" />
-                        <Setter Target="BoundaryEditCloseButton.Visibility" Value="Visible" />
-                    </VisualState.Setters>
-                </VisualState>
                 <VisualState x:Name="IntroState">
                     <VisualState.Setters>
                         <Setter Target="MyTopAppBar.IsOpen" Value="False" />
@@ -193,22 +177,6 @@
                 <Image x:Name="OverlayImage" Margin="140" Stretch="Uniform" />
             </Viewbox>
         </Grid>
-
-        <Path Canvas.Left="31.3825" Canvas.Top="52.0001" Stretch="Fill" StrokeLineJoin="Round" Stroke="Red" Fill="Green" 
-                      Data="F1 M31.8825,52.5002 L514.486,137.588 L436.786,283.534 L100,359.5 L31.8825,52.5002 z M74,84.5001 L164.838,293.796 L417.887,268.711 L491.386,148.99 L74,84.5001 z" Margin="26.167,90.333,0,88" UseLayoutRounding="False"/>
-
-
-        <Button x:Name="BoundaryEditCloseButton" Content="Close" Padding="12"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                RelativePanel.AlignVerticalCenterWithPanel="True" Visibility="Collapsed">
-            <Interactivity:Interaction.Behaviors>
-                <Core:EventTriggerBehavior EventName="Click">
-                    <Core:ChangePropertyAction PropertyName="IsOpen" TargetObject="{x:Bind MyTopAppBar}" Value="True" />
-                    <Core:ChangePropertyAction PropertyName="IsAdmin" TargetObject="{x:Bind ViewModel}" Value="True" />
-                    <Core:GoToStateAction StateName="AdminState" />
-                </Core:EventTriggerBehavior>
-            </Interactivity:Interaction.Behaviors>
-        </Button>
 
     </RelativePanel>
 
