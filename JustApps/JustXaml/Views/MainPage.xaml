@@ -19,7 +19,7 @@
     </Page.Resources>
 
     <SplitView x:Name="RootSplitView" DisplayMode="Inline" IsPaneOpen="True"
-               OpenPaneLength="150" PaneBackground="SteelBlue" PanePlacement="Left">
+               OpenPaneLength="150" PaneBackground="#0096FF" PanePlacement="Left">
 
         <SplitView.Pane>
             <ListView FontSize="16" Foreground="White"
