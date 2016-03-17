@@ -90,10 +90,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="Assets\Design\Help.design" />
-    <None Include="Assets\Design\SplashScreen.design" />
-    <None Include="Assets\Design\Square.design" />
-    <None Include="Assets\Design\Wide.design" />
+    <None Include="Design\Help.design" />
+    <None Include="Design\SplashScreen.design" />
+    <None Include="Design\Square.design" />
+    <None Include="Design\Wide.design" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
