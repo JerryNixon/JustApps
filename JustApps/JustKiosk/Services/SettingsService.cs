@@ -27,7 +27,7 @@ namespace JustKiosk.Services
 
         public string HomeUrl
         {
-            get { return _SettingsHelper.Read(nameof(HomeUrl), "http://bing.com", Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            get { return _SettingsHelper.Read(nameof(HomeUrl), string.Empty, Template10.Services.SettingsService.SettingsStrategies.Roam); }
             set { _SettingsHelper.Write(nameof(HomeUrl), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 

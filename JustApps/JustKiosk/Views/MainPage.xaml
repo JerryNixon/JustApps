@@ -17,90 +17,12 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Page.TopAppBar>
-        <AppBar x:Name="MyTopAppBar" Background="SteelBlue" ClosedDisplayMode="Hidden"
-                IsOpen="True" IsSticky="True" RequestedTheme="Dark">
-
-            <Interactivity:Interaction.Behaviors>
-                <Core:DataTriggerBehavior Binding="{x:Bind MyTopAppBar.IsOpen, Mode=OneWay}" Value="False">
-                    <Core:ChangePropertyAction PropertyName="IsAdmin" TargetObject="{x:Bind ViewModel}" Value="False" />
-                </Core:DataTriggerBehavior>
-            </Interactivity:Interaction.Behaviors>
-
-            <RelativePanel Margin="4">
-
-                <RelativePanel.Resources>
-                    <Style TargetType="Button">
-                        <Setter Property="Margin" Value="4" />
-                        <Setter Property="Height" Value="64" />
-                        <Setter Property="Width" Value="64" />
-                    </Style>
-                </RelativePanel.Resources>
-
-                <TextBox x:Name="UrlTextBox" Margin="24,0" HorizontalAlignment="Stretch"
-                         Header="Home Url" RelativePanel.AlignLeftWithPanel="True"
-                         RelativePanel.AlignTopWith="NavigateButton" RelativePanel.Below="SetPinButton"
-                         RelativePanel.LeftOf="NavigateButton"
-                         Text="{Binding HomeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                </TextBox>
-
-                <Button x:Name="NavigateButton" Click="Navigate_Click"
-                        RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="CloseAdminButton">
-                    <SymbolIcon Symbol="Forward" />
-                </Button>
-
-                <Button x:Name="SetPinButton" RelativePanel.LeftOf="ShowHelpButton">
-                    <TextBlock>
-                        <Run Text="Set" />
-                        <LineBreak />
-                        <Run Text="Pin" />
-                    </TextBlock>
-                    <Button.Flyout>
-                        <Flyout Placement="Bottom">
-                            <StackPanel>
-                                <TextBox Margin="4,0,4,0" Background="LightSteelBlue" Header="Please enter pin"
-                                         IsHitTestVisible="False" Text="{Binding AdminPin}" />
-                                <Controls:NumberPad OnSubmit="{x:Bind ViewModel.SetPin}" Pin="{Binding AdminPin, Mode=TwoWay}" />
-                            </StackPanel>
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-
-                <Button x:Name="ShowHelpButton" Click="ShowHelp_Click"
-                        RelativePanel.LeftOf="ContactButton">
-                    <SymbolIcon Symbol="Help" />
-                </Button>
-
-                <Button x:Name="ContactButton" RelativePanel.LeftOf="CloseAdminButton">
-                    <SymbolIcon Symbol="Mail" />
-                    <Button.Flyout>
-                        <Flyout Placement="Bottom">
-                            <Button Click="Contact_Click" Content="Send feedback" />
-                        </Flyout>
-                    </Button.Flyout>
-                </Button>
-
-                <Button x:Name="CloseAdminButton" RelativePanel.AlignRightWithPanel="True"
-                        RelativePanel.AlignTopWithPanel="True">
-                    <Interactivity:Interaction.Behaviors>
-                        <Core:EventTriggerBehavior EventName="Click">
-                            <Core:ChangePropertyAction PropertyName="IsAdmin" TargetObject="{x:Bind ViewModel}" Value="False" />
-                        </Core:EventTriggerBehavior>
-                    </Interactivity:Interaction.Behaviors>
-                    <SymbolIcon Symbol="Clear" />
-                </Button>
-
-            </RelativePanel>
-        </AppBar>
-    </Page.TopAppBar>
-
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="IntroState">
                     <VisualState.Setters>
-                        <Setter Target="MyTopAppBar.IsOpen" Value="False" />
                         <Setter Target="OverlayContainer.Visibility" Value="Visible" />
                         <Setter Target="OverlayImage.Source" Value="ms-appx:///Assets/Help/Intro.png" />
                     </VisualState.Setters>
@@ -113,72 +35,93 @@
                 </VisualState>
                 <VisualState x:Name="NormalState">
                     <VisualState.StateTriggers>
-                        <t:BooleanTrigger When="False" Value="{x:Bind ViewModel.IsAdmin, Mode=OneWay}" />
+                        <t:BooleanTrigger When="False" Value="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LoginButton.Visibility" Value="Visible" />
-                        <Setter Target="MyTopAppBar.Visibility" Value="Collapsed" />
-                        <Setter Target="MyTopAppBar.IsOpen" Value="False" />
+                        <Setter Target="LoginButton.Visibility" Value="Collapsed" />
+                        <Setter Target="HomeButton.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="AdminState">
                     <VisualState.StateTriggers>
-                        <t:BooleanTrigger When="True" Value="{x:Bind ViewModel.IsAdmin, Mode=OneWay}" />
+                        <t:BooleanTrigger When="True" Value="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="LoginButton.Visibility" Value="Collapsed" />
                         <Setter Target="HomeButton.Visibility" Value="Collapsed" />
-                        <Setter Target="MyTopAppBar.Visibility" Value="Visible" />
-                        <Setter Target="MyTopAppBar.IsOpen" Value="True" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <WebView x:Name="MyWebView" RelativePanel.AlignBottomWithPanel="True"
-                 RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                 RelativePanel.AlignTopWithPanel="True" RenderTransformOrigin="0.5,0.5">
-        </WebView>
+        <SplitView x:Name="MySplitView" IsPaneOpen="{Binding AdminViewModel.IsAdmin, Mode=TwoWay}"
+                   PaneBackground="Gainsboro" PanePlacement="Right">
 
-        <Button x:Name="HomeButton" Width="64" Height="64"
-                Margin="24" Click="Home_Click" RelativePanel.AlignBottomWithPanel="True"
-                RelativePanel.AlignLeftWithPanel="True">
-            <SymbolIcon Symbol="Home" />
-        </Button>
+            <SplitView.Pane>
+                <Border BorderBrush="DimGray" BorderThickness="2,0,0,0">
+                    <Controls:Settings DataContext="{Binding AdminViewModel}" />
+                </Border>
+            </SplitView.Pane>
 
-        <Button x:Name="LoginButton" Width="64" Height="64"
-                Margin="24" Content="..." Padding="16,4">
-            <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
-            <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
-            <Button.Flyout>
-                <Flyout x:Name="AdminFlyout" Placement="Top">
-                    <StackPanel>
-                        <PasswordBox Margin="4,0,4,0" Background="LightSteelBlue" Header="Please enter pin"
-                                     IsHitTestVisible="False" Password="{Binding AdminPin}" />
-                        <Controls:NumberPad OnSubmit="{x:Bind ViewModel.Authenticate}" Pin="{Binding AdminPin, Mode=TwoWay}" />
-                    </StackPanel>
-                </Flyout>
-            </Button.Flyout>
-        </Button>
+            <SplitView.Content>
 
-        <Grid x:Name="OverlayContainer" RelativePanel.AlignBottomWithPanel="True"
-              RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-              RelativePanel.AlignTopWithPanel="True" Visibility="Collapsed">
+                <RelativePanel>
+
+                    <RelativePanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Margin" Value="24" />
+                            <Setter Property="Width" Value="64" />
+                            <Setter Property="Height" Value="64" />
+                        </Style>
+                    </RelativePanel.Resources>
+
+                    <WebView x:Name="MyWebView" RelativePanel.AlignBottomWithPanel="True"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True">
+                    </WebView>
+
+                    <Button Click="Home_Click" RelativePanel.AlignBottomWithPanel="True">
+                        <SymbolIcon Symbol="Home" />
+                    </Button>
+
+                    <Button Content="..." RelativePanel.AlignBottomWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True">
+                        <Button.Flyout>
+                            <Flyout x:Name="AdminFlyout" Placement="Top">
+                                <StackPanel>
+                                    <PasswordBox Margin="4,0,4,0" Background="LightSteelBlue" Header="Please enter pin"
+                                                 IsHitTestVisible="False" Password="{Binding AdminViewModel.TypedPin}" />
+                                    <Controls:NumberPad OnSubmit="{x:Bind ViewModel.AdminViewModel.Authenticate}" Pin="{Binding AdminViewModel.TypedPin, Mode=TwoWay}" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+
+                </RelativePanel>
+
+            </SplitView.Content>
+        </SplitView>
+
+        <Grid x:Name="OverlayContainer" Visibility="Collapsed">
+
             <Grid.Background>
                 <SolidColorBrush Opacity=".5" Color="Black" />
             </Grid.Background>
+
             <Interactivity:Interaction.Behaviors>
                 <Core:EventTriggerBehavior EventName="PointerPressed">
                     <Core:ChangePropertyAction PropertyName="Visibility" TargetObject="{Binding ElementName=OverlayContainer}"
                                                Value="Collapsed" />
                 </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
+
             <Viewbox IsHitTestVisible="False">
                 <Image x:Name="OverlayImage" Margin="140" Stretch="Uniform" />
             </Viewbox>
+
         </Grid>
 
-    </RelativePanel>
+    </Grid>
 
 </Page>
 

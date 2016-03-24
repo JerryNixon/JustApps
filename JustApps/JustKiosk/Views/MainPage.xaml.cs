@@ -21,13 +21,18 @@ namespace JustKiosk.Views
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             Loaded += MainPage_Loaded;
+
+            var lockHost = Windows.ApplicationModel.LockScreen.LockApplicationHost.GetForCurrentView();
+            if (lockHost != null)
+            {
+                lockHost.Unlocking += (s, e) => App.Current.Exit();
+            }
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs args)
         {
             _AdService = new Services.AdService();
             _SettingsService = new Services.SettingsService();
-            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
 
             if (!_SettingsService.IntroShown)
             {
@@ -38,9 +43,11 @@ namespace JustKiosk.Views
             {
                 VisualStateManager.GoToState(this, NormalState.Name, true);
             }
+            Controls.Settings.Navigate += async (s, e) => await NavigateAsync();
+            Controls.Settings.ShowHelp += (s, e) => VisualStateManager.GoToState(this, HelpState.Name, true);
 
             // ads are only in trial mode
-            bool IsTrial = false;
+            bool IsTrial = true;
             try { IsTrial = Windows.ApplicationModel.Store.CurrentApp.LicenseInformation.IsTrial; }
             catch { }
             if (!IsTrial)
@@ -52,12 +59,12 @@ namespace JustKiosk.Views
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e) => await NavigateAsync();
-        private async void Home_Click(object sender, RoutedEventArgs e) => await NavigateAsync();
-        private async void Navigate_Click(object sender, RoutedEventArgs e) => await NavigateAsync();
+
         private async System.Threading.Tasks.Task NavigateAsync()
         {
             Uri uri;
-            if (Uri.TryCreate(ViewModel.HomeUrl, UriKind.Absolute, out uri))
+            string homeUrl = ViewModel.AdminViewModel.HomeUrl;
+            if (Uri.TryCreate(homeUrl, UriKind.Absolute, out uri))
                 MyWebView.Navigate(uri);
             else
             {
@@ -68,8 +75,9 @@ namespace JustKiosk.Views
             }
         }
 
-        private void ShowHelp_Click(object sender, RoutedEventArgs e) => VisualStateManager.GoToState(this, HelpState.Name, true);
-        private async void Contact_Click(object sender, RoutedEventArgs e) =>
-            await Windows.System.Launcher.LaunchUriAsync(new Uri("mailto:support@liquid47.com?subject=Just for Kiosks&body=My feedback is..."));
+        private async void Home_Click(object sender, RoutedEventArgs e)
+        {
+            await NavigateAsync();
+        }
     }
 }
