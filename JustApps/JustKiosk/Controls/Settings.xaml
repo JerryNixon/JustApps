@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="8,8,16,8">
+            <StackPanel Margin="16,16,32,32">
 
                 <StackPanel.Resources>
                     <Style TargetType="Button">
@@ -68,7 +68,9 @@
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Margin="8,8,16,8" HorizontalAlignment="Right"
+        <Rectangle Fill="Gainsboro" Grid.Row="1" />
+
+        <StackPanel Grid.Row="1" Margin="16" HorizontalAlignment="Right"
                     Orientation="Horizontal">
 
             <Button Width="62" Height="62" Margin="8,0"

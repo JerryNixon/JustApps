@@ -23,7 +23,11 @@ namespace JustKiosk.Views
             Loaded += MainPage_Loaded;
 
             var lockHost = Windows.ApplicationModel.LockScreen.LockApplicationHost.GetForCurrentView();
-            if (lockHost != null)
+            if (lockHost == null)
+            {
+                ViewModel.AdminViewModel.IsAdmin = true;
+            }
+            else
             {
                 lockHost.Unlocking += (s, e) => App.Current.Exit();
             }

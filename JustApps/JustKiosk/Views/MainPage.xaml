@@ -21,6 +21,7 @@
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="NoneState" />
                 <VisualState x:Name="IntroState">
                     <VisualState.Setters>
                         <Setter Target="OverlayContainer.Visibility" Value="Visible" />
@@ -33,6 +34,8 @@
                         <Setter Target="OverlayImage.Source" Value="ms-appx:///Assets/Help/Help.png" />
                     </VisualState.Setters>
                 </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="VisualStateGroup2">
                 <VisualState x:Name="NormalState">
                     <VisualState.StateTriggers>
                         <t:BooleanTrigger When="False" Value="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=OneWay}" />
@@ -55,7 +58,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <SplitView x:Name="MySplitView" IsPaneOpen="{Binding AdminViewModel.IsAdmin, Mode=TwoWay}"
-                   PaneBackground="Gainsboro" PanePlacement="Right">
+                   PaneBackground="White" PanePlacement="Right">
 
             <SplitView.Pane>
                 <Border BorderBrush="DimGray" BorderThickness="2,0,0,0">
@@ -110,8 +113,7 @@
 
             <Interactivity:Interaction.Behaviors>
                 <Core:EventTriggerBehavior EventName="PointerPressed">
-                    <Core:ChangePropertyAction PropertyName="Visibility" TargetObject="{Binding ElementName=OverlayContainer}"
-                                               Value="Collapsed" />
+                    <Core:GoToStateAction StateName="NoneState" />
                 </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
 
