@@ -60,7 +60,7 @@
                         </Flyout>
                     </Button.Flyout>
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="Admin" Margin="0,0,8,0" />
+                        <SymbolIcon Margin="0,0,8,0" Symbol="Admin" />
                         <TextBlock Text="Set admin pin" />
                     </StackPanel>
                 </Button>
@@ -70,17 +70,20 @@
 
         <StackPanel Grid.Row="1" Margin="8,8,16,8" HorizontalAlignment="Right"
                     Orientation="Horizontal">
+
             <Button Width="62" Height="62" Margin="8,0"
                     Click="Contact_Click">
                 <StackPanel>
                     <SymbolIcon Symbol="Mail" />
                 </StackPanel>
             </Button>
+
             <Button Width="62" Height="62" Click="ShowHelp_Click">
                 <StackPanel>
                     <SymbolIcon Symbol="Help" />
                 </StackPanel>
             </Button>
+
         </StackPanel>
 
     </Grid>
