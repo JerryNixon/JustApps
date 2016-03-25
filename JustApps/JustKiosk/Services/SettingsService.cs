@@ -11,9 +11,12 @@ namespace JustKiosk.Services
 {
     public class SettingsService
     {
+        public static SettingsService Instance = new SettingsService();
+
         Template10.Services.SettingsService.SettingsHelper _SettingsHelper;
-        Services.FileHelper _FileHelper;
-        public SettingsService()
+        FileHelper _FileHelper;
+
+        private SettingsService()
         {
             _SettingsHelper = new Template10.Services.SettingsService.SettingsHelper();
             _FileHelper = new FileHelper();
@@ -31,21 +34,25 @@ namespace JustKiosk.Services
             set { _SettingsHelper.Write(nameof(HomeUrl), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
+        public int RefreshMinutes
+        {
+            get { return _SettingsHelper.Read(nameof(RefreshMinutes), 5, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(RefreshMinutes), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+        }
+
         public int AdminPassword
         {
             get { return _SettingsHelper.Read(nameof(AdminPassword), 1234, Template10.Services.SettingsService.SettingsStrategies.Roam); }
             set { _SettingsHelper.Write(nameof(AdminPassword), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
-        public PathFigure PathData
+        public bool ShowNavButtons
         {
-            get { return _FileHelper.ReadFileAsync<PathFigure>(nameof(PathData), StorageStrategies.Roaming).Result; }
-            set { _FileHelper.WriteFileAsync(nameof(PathData), value, StorageStrategies.Roaming); }
+            get { return _SettingsHelper.Read(nameof(ShowNavButtons), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(ShowNavButtons), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
         public string HockeyAppId = "8f97329ad3c74a26ba2801d7c9f578ec";
-        public string HockeyAppSecret = "62d21b5846cd1c3982828dd4ebbc6ee1";
-
         public TimeSpan VideoAdTimeSpan = TimeSpan.FromMinutes(30);
 #if DEBUG
         public string VideoAdAppId = "d25517cb-12d4-4699-8bdc-52040c712cab";

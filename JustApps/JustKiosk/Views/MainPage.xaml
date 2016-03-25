@@ -6,7 +6,7 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
-      xmlns:controls="using:Template10.Controls"
+      xmlns:c="using:Template10.Converters" xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustKiosk.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,6 +16,20 @@
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
+
+    <Page.Resources>
+        <c:ValueWhenConverter x:Key="VisibilityConverter">
+            <c:ValueWhenConverter.When>
+                <x:Boolean>True</x:Boolean>
+            </c:ValueWhenConverter.When>
+            <c:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </c:ValueWhenConverter.Value>
+            <c:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </c:ValueWhenConverter.Otherwise>
+        </c:ValueWhenConverter>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -40,24 +54,17 @@
                     <VisualState.StateTriggers>
                         <t:BooleanTrigger When="False" Value="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=OneWay}" />
                     </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="LoginButton.Visibility" Value="Collapsed" />
-                        <Setter Target="HomeButton.Visibility" Value="Visible" />
-                    </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="AdminState">
                     <VisualState.StateTriggers>
                         <t:BooleanTrigger When="True" Value="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=OneWay}" />
                     </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="LoginButton.Visibility" Value="Collapsed" />
-                        <Setter Target="HomeButton.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <SplitView x:Name="MySplitView" IsPaneOpen="{Binding AdminViewModel.IsAdmin, Mode=TwoWay}"
+        <SplitView x:Name="MySplitView"
+                   IsPaneOpen="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=TwoWay}"
                    PaneBackground="White" PanePlacement="Right">
 
             <SplitView.Pane>
@@ -83,8 +90,12 @@
                              RelativePanel.AlignTopWithPanel="True">
                     </WebView>
 
-                    <Button Click="Home_Click" RelativePanel.AlignBottomWithPanel="True">
+                    <Button x:Name="HomeButton" Click="Home_Click" RelativePanel.AlignBottomWithPanel="True">
                         <SymbolIcon Symbol="Home" />
+                    </Button>
+
+                    <Button Click="Back_Click" Visibility="{Binding AdminViewModel.ShowNavButtons, Converter={StaticResource VisibilityConverter}}">
+                        <SymbolIcon Symbol="Back" />
                     </Button>
 
                     <Button Content="..." RelativePanel.AlignBottomWithPanel="True"

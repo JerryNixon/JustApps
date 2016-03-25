@@ -1,3 +1,4 @@
+using Microsoft.HockeyApp;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
@@ -9,7 +10,17 @@ namespace JustKiosk
 
     sealed partial class App : Template10.Common.BootStrapper
     {
-        public App() { InitializeComponent(); }
+        public App()
+        {
+            InitializeComponent();
+
+            var settings = Services.SettingsService.Instance;
+            var appid = settings.HockeyAppId;
+            HockeyClient.Current.Configure(appid, new TelemetryConfiguration
+            {
+                EnableDiagnostics = true
+            });
+        }
 
         public override async Task OnInitializeAsync(IActivatedEventArgs args)
         {

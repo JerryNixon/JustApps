@@ -12,8 +12,6 @@ namespace JustKiosk.Views
 {
     public sealed partial class MainPage : Page
     {
-        Services.SettingsService _SettingsService;
-        Services.AdService _AdService;
         DispatcherTimer _timer;
 
         public MainPage()
@@ -21,34 +19,41 @@ namespace JustKiosk.Views
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             Loaded += MainPage_Loaded;
-
-            var lockHost = Windows.ApplicationModel.LockScreen.LockApplicationHost.GetForCurrentView();
-            if (lockHost == null)
-            {
-                ViewModel.AdminViewModel.IsAdmin = true;
-            }
-            else
-            {
-                lockHost.Unlocking += (s, e) => App.Current.Exit();
-            }
         }
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs args)
+        private async void MainPage_Loaded(object sender, RoutedEventArgs args)
         {
-            _AdService = new Services.AdService();
-            _SettingsService = new Services.SettingsService();
+            Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            ViewModel.AdminViewModel.Refresh += async (s, e) => await NavigateAsync();
 
-            if (!_SettingsService.IntroShown)
+            var host = Windows.ApplicationModel.LockScreen.LockApplicationHost.GetForCurrentView();
+            var helpUrl = "https://msdn.microsoft.com/en-us/library/windows/hardware/mt620040(v=vs.85).aspx";
+            if (host == null)
             {
-                _SettingsService.IntroShown = true;
-                VisualStateManager.GoToState(this, IntroState.Name, true);
+                await NavigateAsync(helpUrl);
             }
             else
             {
-                VisualStateManager.GoToState(this, NormalState.Name, true);
+                host.Unlocking += (s, e) => App.Current.Exit();
             }
+
+            var settingsService = Services.SettingsService.Instance;
+            if (settingsService.IntroShown)
+            {
+                VisualStateManager.GoToState(this, NoneState.Name, true);
+            }
+            else
+            {
+                settingsService.IntroShown = true;
+                VisualStateManager.GoToState(this, IntroState.Name, true);
+            }
+
             Controls.Settings.Navigate += async (s, e) => await NavigateAsync();
-            Controls.Settings.ShowHelp += (s, e) => VisualStateManager.GoToState(this, HelpState.Name, true);
+            Controls.Settings.ShowHelp += async (s, e) =>
+            {
+                VisualStateManager.GoToState(this, HelpState.Name, true);
+                await NavigateAsync(helpUrl);
+            };
 
             // ads are only in trial mode
             bool IsTrial = true;
@@ -56,19 +61,20 @@ namespace JustKiosk.Views
             catch { }
             if (!IsTrial)
             {
-                _timer = new DispatcherTimer { Interval = _SettingsService.VideoAdTimeSpan };
-                _timer.Tick += (s, e) => _AdService.ShowVideoAd();
+                var adService = Services.AdService.Instance;
+                _timer = new DispatcherTimer { Interval = settingsService.VideoAdTimeSpan };
+                _timer.Tick += (s, e) => adService.ShowVideoAd();
                 _timer.Start();
             }
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e) => await NavigateAsync();
 
-        private async System.Threading.Tasks.Task NavigateAsync()
+        private async System.Threading.Tasks.Task NavigateAsync(string url = null)
         {
             Uri uri;
-            string homeUrl = ViewModel.AdminViewModel.HomeUrl;
-            if (Uri.TryCreate(homeUrl, UriKind.Absolute, out uri))
+            url = url ?? ViewModel.AdminViewModel.HomeUrl;
+            if (Uri.TryCreate(url, UriKind.Absolute, out uri))
                 MyWebView.Navigate(uri);
             else
             {
@@ -82,6 +88,11 @@ namespace JustKiosk.Views
         private async void Home_Click(object sender, RoutedEventArgs e)
         {
             await NavigateAsync();
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (MyWebView.CanGoBack) MyWebView.GoBack();
         }
     }
 }

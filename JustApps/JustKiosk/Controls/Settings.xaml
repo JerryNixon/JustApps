@@ -9,7 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:JustKiosk.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JustKiosk.ViewModels" d:DesignHeight="300" d:DesignWidth="400"
+             xmlns:vm="using:JustKiosk.ViewModels" d:DesignHeight="600" d:DesignWidth="400"
              mc:Ignorable="d">
 
     <d:UserControl.DataContext>
@@ -22,7 +22,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="16,16,32,32">
+            <StackPanel Margin="16,32,32,32">
 
                 <StackPanel.Resources>
                     <Style TargetType="Button">
@@ -32,7 +32,7 @@
 
                 <TextBlock Style="{StaticResource HeaderTextBlockStyle}" Text="Kiosk Admin" />
 
-                <RelativePanel Margin="0,8,0,0">
+                <RelativePanel Margin="0,16,0,0">
 
                     <TextBox Margin="0,0,4,0" Header="Home Url" RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.LeftOf="GoButton"
@@ -44,9 +44,17 @@
 
                 </RelativePanel>
 
-                <TextBlock Margin="0,8,0,0">
-                    <Run Text="Your current pin is: " />
-                    <Run Text="{Binding ActualPin}" />
+                <Slider Margin="0,16,0,0" Maximum="60" Minimum="1"
+                        StepFrequency="1" Value="{Binding RefreshMinutes, Mode=TwoWay}">
+                    <Slider.Header>
+                        <TextBlock>
+                            <Run Text="Go home after " /><Run Text="{Binding RefreshMinutes}" /><Run Text=" (min)." />
+                        </TextBlock>
+                    </Slider.Header>
+                </Slider>
+
+                <TextBlock Margin="0,8,0,0" ToolTipService.ToolTip="{Binding ActualPin}">
+                    <Run Text="Your current pin is: ****" />
                 </TextBlock>
 
                 <Button>
@@ -55,7 +63,7 @@
                             <StackPanel>
                                 <TextBox Margin="4,0,4,0" Background="LightSteelBlue" Header="Please enter pin"
                                          IsHitTestVisible="False" Text="{Binding TypedPin}" />
-                                <local:NumberPad OnSubmit="{x:Bind SetPin}" Pin="{Binding TypedPin}" />
+                                <local:NumberPad OnSubmit="{x:Bind SetPin}" Pin="{Binding TypedPin, Mode=TwoWay}" />
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>
@@ -65,10 +73,21 @@
                     </StackPanel>
                 </Button>
 
+                <ToggleSwitch Margin="0,16,0,0" Header="Show back button"
+                              IsOn="{Binding ShowNavButtons, Mode=TwoWay}" OffContent="Not showing"
+                              OnContent="Showing" />
+
             </StackPanel>
         </ScrollViewer>
 
-        <Rectangle Fill="Gainsboro" Grid.Row="1" />
+        <Rectangle Grid.Row="1" Fill="Gainsboro" />
+
+        <StackPanel Grid.Row="1" MaxWidth="225" Margin="16"
+                    HorizontalAlignment="Left">
+            <TextBlock Margin="0,8,0,0" Opacity=".5" Text="Kiosk Id" />
+            <TextBlock FontSize="12" MaxLines="1" Opacity=".5"
+                       Text="{Binding KioskId}" />
+        </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="16" HorizontalAlignment="Right"
                     Orientation="Horizontal">

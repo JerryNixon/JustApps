@@ -10,10 +10,12 @@ namespace JustKiosk.Services
 {
     public class AdService
     {
+        public static AdService Instance = new AdService();
+
         SettingsService _SettingsService;
-        public AdService(SettingsService settingsService = null)
+        private AdService()
         {
-            _SettingsService = settingsService ?? new SettingsService();
+            _SettingsService = SettingsService.Instance;
         }
 
         private void OnLicenseInformationChanged()
