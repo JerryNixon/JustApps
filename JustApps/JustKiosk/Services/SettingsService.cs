@@ -22,6 +22,16 @@ namespace JustKiosk.Services
             _FileHelper = new FileHelper();
         }
 
+        public async Task<List<string>> GetWhiteListAsync() =>
+            await _FileHelper.ReadFileAsync<List<string>>("WhiteList", StorageStrategies.Roaming) ?? new List<string>();
+        public async Task SetWhiteListAsync(List<string> value) =>
+            await _FileHelper.WriteFileAsync("WhiteList", value, StorageStrategies.Roaming);
+
+        public async Task<List<string>> GetBlackListAsync() =>
+            await _FileHelper.ReadFileAsync<List<string>>("BlackList", StorageStrategies.Roaming) ?? new List<string>();
+        public async Task SetBlackListAsync(List<string> value) =>
+            await _FileHelper.WriteFileAsync("BlackList", value, StorageStrategies.Roaming);
+
         public bool IntroShown
         {
             get { return _SettingsHelper.Read(nameof(IntroShown), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }

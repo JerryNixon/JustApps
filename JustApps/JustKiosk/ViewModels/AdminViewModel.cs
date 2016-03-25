@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,21 @@ namespace JustKiosk.ViewModels
                 }
             }
         }
+
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        {
+            WhiteList = new ObservableCollection<string>(await _SettingsService.GetWhiteListAsync());
+            BlackList = new ObservableCollection<string>(await _SettingsService.GetBlackListAsync());
+        }
+
+        public override async Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
+        {
+            await _SettingsService.SetWhiteListAsync(WhiteList.ToList());
+            await _SettingsService.SetBlackListAsync(BlackList.ToList());
+        }
+
+        public ObservableCollection<string> WhiteList { get; set; }
+        public ObservableCollection<string> BlackList { get; set; }
 
         public string KioskId => Math.Abs(HardwareId().GetHashCode()).ToString();
 
