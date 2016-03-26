@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -46,6 +47,16 @@ namespace JustKiosk.Controls
         public void SetPin()
         {
             (DataContext as ViewModels.AdminViewModel).SetPin();
+        }
+
+        private async void MyCaptureElement_Loaded(object sender, RoutedEventArgs args)
+        {
+            var settings = Services.SettingsService.Instance;
+            var service = new Services.CameraService(sender as CaptureElement, settings.CameraSubFolder);
+            await service.InitializeAsync();
+            await service.StartPreviewAsync();
+            MyCaptureGrid.Children.Add(service.FacesCanvas);
+            service.FaceDetected += (s, e) => { };
         }
     }
 }

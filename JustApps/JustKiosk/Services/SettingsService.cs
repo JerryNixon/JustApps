@@ -62,8 +62,10 @@ namespace JustKiosk.Services
             set { _SettingsHelper.Write(nameof(ShowNavButtons), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
+        public string CameraSubFolder = "Just4Kiosks";
         public string HockeyAppId = "8f97329ad3c74a26ba2801d7c9f578ec";
         public TimeSpan VideoAdTimeSpan = TimeSpan.FromMinutes(30);
+
 #if DEBUG
         public string VideoAdAppId = "d25517cb-12d4-4699-8bdc-52040c712cab";
         public string VideoAdUnitId = "11389925";

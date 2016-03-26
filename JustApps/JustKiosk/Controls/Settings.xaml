@@ -9,7 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:JustKiosk.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JustKiosk.ViewModels" d:DesignHeight="600" d:DesignWidth="400"
+             xmlns:vm="using:JustKiosk.ViewModels" d:DesignHeight="1200" d:DesignWidth="400"
              mc:Ignorable="d">
 
     <d:UserControl.DataContext>
@@ -76,6 +76,15 @@
                 <ToggleSwitch Margin="0,16,0,0" Header="Show back button"
                               IsOn="{Binding ShowNavButtons, Mode=TwoWay}" OffContent="Not showing"
                               OnContent="Showing" />
+
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Step-up activation" />
+                <TextBlock Text="This allows the kiosk app to respond when a face is detected in the kiosk camera." TextWrapping="Wrap" />
+                <TextBlock Foreground="DarkOrange" Text="Camera not detected." />
+
+                <Grid x:Name="MyCaptureGrid" Background="Silver" BorderBrush="Black"
+                      BorderThickness="1">
+                    <CaptureElement x:Name="MyCaptureElement" Height="200" Loaded="MyCaptureElement_Loaded" />
+                </Grid>
 
             </StackPanel>
         </ScrollViewer>
