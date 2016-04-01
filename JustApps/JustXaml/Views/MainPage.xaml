@@ -16,7 +16,179 @@
     <Page.Resources>
         <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items"
                               Source="{Binding Items}" />
+
     </Page.Resources>
+
+    <RelativePanel>
+
+        <RelativePanel x:Name="MenuBar" Background="#FFF0F0F0" RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+            <RelativePanel.Resources>
+                <Style BasedOn="{StaticResource TextBlockButtonStyle}" TargetType="Button">
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="FontFamily" Value="Lucida Sans" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Margin" Value="4,2" />
+                </Style>
+                <Style x:Name="MenuFlyoutItemStyle" TargetType="MenuFlyoutItem">
+                    <Setter Property="FontFamily" Value="Lucida Sans" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Padding" Value="4,8,16,4" />
+                </Style>
+            </RelativePanel.Resources>
+            <Button x:Name="FileMenuButton" Content="File">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            <Button x:Name="EditMenuButton" Content="Edit" RelativePanel.RightOf="FileMenuButton">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            <Button x:Name="ViewMenuButton" Content="View" RelativePanel.RightOf="EditMenuButton">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            <Button x:Name="GotoMenuButton" Content="Goto" RelativePanel.RightOf="ViewMenuButton">
+                <Button.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
+        </RelativePanel>
+
+        <RelativePanel x:Name="StatusBar" Background="#FF68217A"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <RelativePanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="FontFamily" Value="Lucida Sans" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Margin" Value="8" />
+                </Style>
+            </RelativePanel.Resources>
+            <TextBlock x:Name="LineColTextBlock" RelativePanel.AlignRightWithPanel="True">
+                <Run Text="Ln" />
+                <Run Text="1" /><Run Text="," />
+                <Run Text="Col" />
+                <Run Text="3" />
+            </TextBlock>
+        </RelativePanel>
+
+        <SplitView Background="Black" DisplayMode="CompactInline" OpenPaneLength="48"
+                   PaneBackground="#FF333333" RelativePanel.Above="StatusBar"
+                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                   RelativePanel.Below="MenuBar">
+
+            <SplitView.Pane>
+
+                <StackPanel RequestedTheme="Dark">
+                    <StackPanel.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Height" Value="48" />
+                            <Setter Property="Width" Value="48" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <ToggleButton Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
+                                                      Background="Transparent" Content="{TemplateBinding Content}"
+                                                      IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <RadioButton GroupName="LeftMenu">
+                        <SymbolIcon Symbol="OpenFile" />
+                    </RadioButton>
+                    <RadioButton GroupName="LeftMenu">
+                        <SymbolIcon Symbol="Find" />
+                    </RadioButton>
+                    <RadioButton GroupName="{x:Null}" IsChecked="True">
+                        <SymbolIcon Symbol="Play" />
+                    </RadioButton>
+                </StackPanel>
+
+            </SplitView.Pane>
+
+            <SplitView.Content>
+
+
+                <RelativePanel RequestedTheme="Dark">
+
+                    <RelativePanel x:Name="FilePane" Width="200" Background="#FF252526"
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                        <TextBlock Margin="12" Text="File Pane" />
+                    </RelativePanel>
+
+                    <RelativePanel x:Name="SearchPane" Width="200" Background="#FF191919"
+                                   RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.RightOf="FilePane">
+                        <TextBlock Margin="12" Text="Search Pane" />
+                    </RelativePanel>
+
+                    <RelativePanel x:Name="SettingsPane" Width="200" Background="#FF252526"
+                                   RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.RightOf="SearchPane">
+                        <TextBlock Margin="12" Text="Settings Pane" />
+                    </RelativePanel>
+
+                    <RelativePanel x:Name="EditorPane" MinWidth="200" RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True" RelativePanel.LeftOf="RenderPane"
+                                   RelativePanel.RightOf="SettingsPane">
+                        <TextBlock x:Name="TitleTextBlock" Margin="12" Text="Document Title" />
+                        <Button x:Name="CloseEditorPaneButton" Margin="0,12,12,12" Foreground="White"
+                                RelativePanel.AlignRightWithPanel="True"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
+                        <Button Margin="0,12,12,12" Foreground="White"
+                                RelativePanel.LeftOf="CloseEditorPaneButton"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                            <FontIcon Glyph="&#xEA61;" />
+                        </Button>
+                    </RelativePanel>
+
+                    <RelativePanel x:Name="RenderPane" MinWidth="200" Background="#FF003157"
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                        <TextBlock Margin="12" Text="Render Pane" />
+                        <Button Margin="12" Foreground="White" RelativePanel.AlignRightWithPanel="True"
+                                Style="{StaticResource TextBlockButtonStyle}">
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
+                    </RelativePanel>
+
+
+                </RelativePanel>
+
+            </SplitView.Content>
+
+        </SplitView>
+
+    </RelativePanel>
+
+    <!--
 
     <SplitView x:Name="RootSplitView" DisplayMode="Inline" IsPaneOpen="True"
                OpenPaneLength="150" PaneBackground="#0096FF" PanePlacement="Left">
@@ -78,8 +250,7 @@
         </SplitView.Content>
 
     </SplitView>
-
-
+    -->
 
 </Page>
 
