@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="JustKiosk.Controls.ListEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Behaviors="using:Template10.Behaviors"
+             xmlns:Controls="using:JustKiosk.Controls"
+             xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:JustKiosk.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="ThisPage" d:DesignHeight="300" d:DesignWidth="400"
+             mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <RelativePanel>
+            <TextBlock x:Name="TitleTextBlock" Margin="0,0,0,8" Text="{x:Bind Title}" />
+            <TextBox x:Name="InputTextBox" PlaceholderText="http://google.com"
+                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="TitleTextBlock"
+                     RelativePanel.LeftOf="AddButton"
+                     Text="{Binding Path=AddThis, ElementName=ThisPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <Interactivity:Interaction.Behaviors>
+                    <Behaviors:KeyBehavior Key="Enter">
+                        <Core:CallMethodAction MethodName="Add" />
+                    </Behaviors:KeyBehavior>
+                </Interactivity:Interaction.Behaviors>
+            </TextBox>
+            <Button x:Name="AddButton" Margin="4,0,0,0" Click="{x:Bind Add}"
+                    RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="TitleTextBlock">
+                <SymbolIcon Symbol="Add" />
+            </Button>
+            <ItemsControl Margin="0,8,0,0" ItemsSource="{x:Bind ItemsSource}"
+                          RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                          RelativePanel.Below="AddButton">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,4" Orientation="Horizontal">
+                            <Button>
+                                <Button.Flyout>
+                                    <Flyout Placement="Bottom">
+                                        <Button Click="Delete_Click">Delete</Button>
+                                    </Flyout>
+                                </Button.Flyout>
+                                <SymbolIcon Symbol="Delete" />
+                            </Button>
+                            <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" MaxLines="1"
+                                       Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <x:String>http://sample.one</x:String>
+                <x:String>http://sample.two</x:String>
+                <x:String>http://sample.three</x:String>
+                <x:String>http://sample.four</x:String>
+            </ItemsControl>
+        </RelativePanel>
+    </ScrollViewer>
+</UserControl>

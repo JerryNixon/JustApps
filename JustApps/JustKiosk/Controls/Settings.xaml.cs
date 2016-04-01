@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media;
@@ -18,9 +21,24 @@ namespace JustKiosk.Controls
 {
     public sealed partial class Settings : UserControl
     {
+        Services.SettingsService _SettingsService;
+
         public Settings()
         {
             this.InitializeComponent();
+            _SettingsService = Services.SettingsService.Instance;
+            Loaded += Settings_Loaded;
+        }
+
+        private async void Settings_Loaded(object sender, RoutedEventArgs e)
+        {
+            var list = await _SettingsService.GetBlackListAsync();
+            var observable = new ObservableCollection<string>(list);
+            BlackListEditor.ItemsSource = observable;
+            BlackListEditor.ListChanged += async (s, args) => 
+            {
+                await _SettingsService.SetBlackListAsync(BlackListEditor.ItemsSource.ToList());
+            };
         }
 
         public static event EventHandler Navigate;
@@ -49,14 +67,6 @@ namespace JustKiosk.Controls
             (DataContext as ViewModels.AdminViewModel).SetPin();
         }
 
-        private async void MyCaptureElement_Loaded(object sender, RoutedEventArgs args)
-        {
-            var settings = Services.SettingsService.Instance;
-            var service = new Services.CameraService(sender as CaptureElement, settings.CameraSubFolder);
-            await service.InitializeAsync();
-            await service.StartPreviewAsync();
-            MyCaptureGrid.Children.Add(service.FacesCanvas);
-            service.FaceDetected += (s, e) => { };
-        }
+
     }
 }

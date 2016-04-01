@@ -9,8 +9,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:JustKiosk.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JustKiosk.ViewModels" d:DesignHeight="1200" d:DesignWidth="400"
-             mc:Ignorable="d">
+             xmlns:vm="using:JustKiosk.ViewModels" x:Name="ThisPage" d:DesignHeight="1200"
+             d:DesignWidth="400" mc:Ignorable="d">
 
     <d:UserControl.DataContext>
         <vm:AdminViewModel />
@@ -32,28 +32,7 @@
 
                 <TextBlock Style="{StaticResource HeaderTextBlockStyle}" Text="Kiosk Admin" />
 
-                <RelativePanel Margin="0,16,0,0">
-
-                    <TextBox Margin="0,0,4,0" Header="Home Url" RelativePanel.AlignLeftWithPanel="True"
-                             RelativePanel.LeftOf="GoButton"
-                             Text="{Binding HomeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                    <Button x:Name="GoButton" Height="32" Margin="0"
-                            Click="Navigate_Click" Content="Go" RelativePanel.AlignBottomWithPanel="True"
-                            RelativePanel.AlignRightWithPanel="True" />
-
-                </RelativePanel>
-
-                <Slider Margin="0,16,0,0" Maximum="60" Minimum="1"
-                        StepFrequency="1" Value="{Binding RefreshMinutes, Mode=TwoWay}">
-                    <Slider.Header>
-                        <TextBlock>
-                            <Run Text="Go home after " /><Run Text="{Binding RefreshMinutes}" /><Run Text=" (min)." />
-                        </TextBlock>
-                    </Slider.Header>
-                </Slider>
-
-                <TextBlock Margin="0,8,0,0" ToolTipService.ToolTip="{Binding ActualPin}">
+                <TextBlock Margin="0,16,0,0" ToolTipService.ToolTip="{Binding ActualPin}">
                     <Run Text="Your current pin is: ****" />
                 </TextBlock>
 
@@ -73,18 +52,38 @@
                     </StackPanel>
                 </Button>
 
+                <RelativePanel Margin="0,16,0,0">
+
+                    <TextBox Margin="0,0,4,0" Header="Home Url" PlaceholderText="http://mycompany.com/kiosk"
+                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="GoButton"
+                             Text="{Binding HomeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Button x:Name="GoButton" Height="32" Margin="0"
+                            Click="Navigate_Click" Content="Go" RelativePanel.AlignBottomWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True" />
+
+                </RelativePanel>
+
                 <ToggleSwitch Margin="0,16,0,0" Header="Show back button"
                               IsOn="{Binding ShowNavButtons, Mode=TwoWay}" OffContent="Not showing"
                               OnContent="Showing" />
 
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Step-up activation" />
-                <TextBlock Text="This allows the kiosk app to respond when a face is detected in the kiosk camera." TextWrapping="Wrap" />
-                <TextBlock Foreground="DarkOrange" Text="Camera not detected." />
+                <Slider Margin="0,16,0,0" Maximum="60" Minimum="1"
+                        StepFrequency="1" Value="{Binding RefreshMinutes, Mode=TwoWay}">
+                    <Slider.Header>
+                        <TextBlock>
+                            <Run Text="Go home after " /><Run Text="{Binding RefreshMinutes}" /><Run Text=" (min)." />
+                        </TextBlock>
+                    </Slider.Header>
+                </Slider>
 
-                <Grid x:Name="MyCaptureGrid" Background="Silver" BorderBrush="Black"
-                      BorderThickness="1">
-                    <CaptureElement x:Name="MyCaptureElement" Height="200" Loaded="MyCaptureElement_Loaded" />
-                </Grid>
+                <ToggleSwitch Margin="0,0,0,0" Header="When face is detected"
+                              IsOn="{Binding PreventWhenFace, Mode=TwoWay}" OffContent="Allow auto-refresh"
+                              OnContent="Prevent auto-refresh" />
+
+                <local:CameraPreview />
+
+                <local:ListEdit x:Name="BlackListEditor" Title="Black List" Margin="0,16,0,0" />
 
             </StackPanel>
         </ScrollViewer>

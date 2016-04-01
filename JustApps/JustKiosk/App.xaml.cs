@@ -17,7 +17,7 @@ namespace JustKiosk
             var settings = Services.SettingsService.Instance;
             var appid = settings.HockeyAppId;
             HockeyClient.Current.Configure(appid, new TelemetryConfiguration
-            {
+            { 
                 EnableDiagnostics = true
             });
         }

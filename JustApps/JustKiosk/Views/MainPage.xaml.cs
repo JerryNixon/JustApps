@@ -13,18 +13,49 @@ namespace JustKiosk.Views
     public sealed partial class MainPage : Page
     {
         DispatcherTimer _timer;
+        Services.SettingsService _SettingsService;
 
         public MainPage()
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
+            _SettingsService = Services.SettingsService.Instance;
             Loaded += MainPage_Loaded;
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs args)
         {
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            ViewModel.AdminViewModel.Refresh += async (s, e) => await NavigateAsync();
+
+            // auto refresh to home
+            ViewModel.AdminViewModel.Refresh += async (s, e) =>
+            {
+                if (_SettingsService.PreventWhenFace)
+                {
+                    var count = Services.CameraService.CameraService.FacesCount ?? 0;
+                    if (count > 0)
+                        return;
+                }
+                await NavigateAsync();
+            };
+
+            MyWebView.NavigationStarting += async (s, e) =>
+            {
+                var uri = e.Uri?.ToString();
+                if (uri == null)
+                    return;
+                var list = await _SettingsService.GetBlackListAsync();
+                foreach (var item in list)
+                {
+                    if (uri?.ToLower().Contains(item.ToLower()) ?? false)
+                    {
+                        var home = _SettingsService.HomeUrl;
+                        if (new Uri(home) != MyWebView.Source)
+                            await NavigateAsync();
+                        return;
+                    }
+                }
+            };
 
             var host = Windows.ApplicationModel.LockScreen.LockApplicationHost.GetForCurrentView();
             var helpUrl = "https://msdn.microsoft.com/en-us/library/windows/hardware/mt620040(v=vs.85).aspx";
@@ -75,7 +106,9 @@ namespace JustKiosk.Views
             Uri uri;
             url = url ?? ViewModel.AdminViewModel.HomeUrl;
             if (Uri.TryCreate(url, UriKind.Absolute, out uri))
+            {
                 MyWebView.Navigate(uri);
+            }
             else
             {
                 uri = new Uri("ms-appx:///Assets/WebView/default.html");

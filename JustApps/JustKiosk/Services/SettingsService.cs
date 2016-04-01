@@ -22,15 +22,21 @@ namespace JustKiosk.Services
             _FileHelper = new FileHelper();
         }
 
-        public async Task<List<string>> GetWhiteListAsync() =>
-            await _FileHelper.ReadFileAsync<List<string>>("WhiteList", StorageStrategies.Roaming) ?? new List<string>();
-        public async Task SetWhiteListAsync(List<string> value) =>
-            await _FileHelper.WriteFileAsync("WhiteList", value, StorageStrategies.Roaming);
-
-        public async Task<List<string>> GetBlackListAsync() =>
-            await _FileHelper.ReadFileAsync<List<string>>("BlackList", StorageStrategies.Roaming) ?? new List<string>();
-        public async Task SetBlackListAsync(List<string> value) =>
-            await _FileHelper.WriteFileAsync("BlackList", value, StorageStrategies.Roaming);
+        public async Task<List<string>> GetBlackListAsync()
+        {
+            var list = await _FileHelper.ReadFileAsync<List<string>>("BlackList", StorageStrategies.Roaming) ?? new List<string>();
+            if (!list.Any())
+            {
+                list.Add("google.com");
+                list.Add("bing.com");
+                list.Add("yahoo.com");
+                list.Add("aol.com");
+                list.Add("outlook.com");
+                list.Add("gmail.com");
+            }
+            return list;
+        }
+        public async Task SetBlackListAsync(List<string> value) => await _FileHelper.WriteFileAsync("BlackList", value, StorageStrategies.Roaming);
 
         public bool IntroShown
         {
@@ -60,6 +66,12 @@ namespace JustKiosk.Services
         {
             get { return _SettingsHelper.Read(nameof(ShowNavButtons), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
             set { _SettingsHelper.Write(nameof(ShowNavButtons), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+        }
+
+        public bool PreventWhenFace
+        {
+            get { return _SettingsHelper.Read(nameof(PreventWhenFace), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(PreventWhenFace), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
         public string CameraSubFolder = "Just4Kiosks";

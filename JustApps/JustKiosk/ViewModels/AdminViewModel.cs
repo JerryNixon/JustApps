@@ -32,13 +32,11 @@ namespace JustKiosk.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            WhiteList = new ObservableCollection<string>(await _SettingsService.GetWhiteListAsync());
             BlackList = new ObservableCollection<string>(await _SettingsService.GetBlackListAsync());
         }
 
         public override async Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
         {
-            await _SettingsService.SetWhiteListAsync(WhiteList.ToList());
             await _SettingsService.SetBlackListAsync(BlackList.ToList());
         }
 
@@ -90,6 +88,12 @@ namespace JustKiosk.ViewModels
         {
             get { return _SettingsService.ShowNavButtons; }
             set { _SettingsService.ShowNavButtons = value; RaisePropertyChanged(nameof(ShowNavButtons)); }
+        }
+
+        public bool PreventWhenFace
+        {
+            get { return _SettingsService.PreventWhenFace; }
+            set { _SettingsService.PreventWhenFace = value; RaisePropertyChanged(nameof(PreventWhenFace)); }
         }
 
         string _TypedPin = string.Empty;
