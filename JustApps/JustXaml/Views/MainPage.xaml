@@ -7,68 +7,134 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustXaml.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:JustXaml.ViewModels" x:Name="ThisPage" mc:Ignorable="d">
+      xmlns:models="using:JustXaml.Models" xmlns:vm="using:JustXaml.ViewModels"
+      x:Name="ThisPage" mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <Page.Resources>
+        <x:Double x:Key="LeftPaneWidth">250</x:Double>
+        <SolidColorBrush x:Key="LeftPaneBackground" Color="#FF191919" />
         <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items"
-                              Source="{Binding Items}" />
-
+                              Source="{Binding SamplePane.AllSamples}" />
+        <Style x:Name="TopRightButton" BasedOn="{StaticResource TextBlockButtonStyle}"
+               TargetType="Button">
+            <Setter Property="Margin" Value="0,12,12,12" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="RenderTransformOrigin" Value=".5,.5" />
+            <Setter Property="RelativePanel.AlignRightWithPanel" Value="True" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <CompositeTransform ScaleX=".75" ScaleY=".75" />
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <RelativePanel>
+
+        <Interactivity:Interaction.Behaviors>
+            <Core:EventTriggerBehavior>
+                <Core:GoToStateAction StateName="NoPaneVisualState" />
+                <Core:GoToStateAction StateName="NoEditorVisualState" />
+            </Core:EventTriggerBehavior>
+        </Interactivity:Interaction.Behaviors>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LeftPaneVisualStateGroup">
+                <VisualState x:Name="NoPaneVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="FilePane.Visibility" Value="Collapsed" />
+                        <Setter Target="SettingsPane.Visibility" Value="Collapsed" />
+                        <Setter Target="SamplesPane.Visibility" Value="Collapsed" />
+                        <Setter Target="LearningPane.Visibility" Value="Collapsed" />
+                        <Setter Target="LeftSideFilePaneButton.IsChecked" Value="False" />
+                        <Setter Target="LeftSideSamplesPaneButton.IsChecked" Value="False" />
+                        <Setter Target="LeftSideLearningPaneButton.IsChecked" Value="False" />
+                        <Setter Target="LeftSideSettingsPaneButton.IsChecked" Value="False" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="FilePaneVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="FilePane.Visibility" Value="Visible" />
+                        <Setter Target="SettingsPane.Visibility" Value="Collapsed" />
+                        <Setter Target="SamplesPane.Visibility" Value="Collapsed" />
+                        <Setter Target="LearningPane.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SettingsPaneVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="FilePane.Visibility" Value="Collapsed" />
+                        <Setter Target="SettingsPane.Visibility" Value="Visible" />
+                        <Setter Target="SamplesPane.Visibility" Value="Collapsed" />
+                        <Setter Target="LearningPane.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SamplesPaneVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="FilePane.Visibility" Value="Collapsed" />
+                        <Setter Target="SettingsPane.Visibility" Value="Collapsed" />
+                        <Setter Target="SamplesPane.Visibility" Value="Visible" />
+                        <Setter Target="LearningPane.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LearningPaneVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="FilePane.Visibility" Value="Collapsed" />
+                        <Setter Target="SettingsPane.Visibility" Value="Collapsed" />
+                        <Setter Target="SamplesPane.Visibility" Value="Collapsed" />
+                        <Setter Target="LearningPane.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="EditorVisualStateGroup">
+                <VisualState x:Name="NoEditorVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="EditColumn.Width" Value="Auto" />
+                        <Setter Target="RenderColumn.Width" Value="Auto" />
+                        <Setter Target="RenderPane.Visibility" Value="Collapsed" />
+                        <Setter Target="EditPane.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="EditorOnlyVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="EditColumn.Width" Value="*" />
+                        <Setter Target="RenderColumn.Width" Value="Auto" />
+                        <Setter Target="RenderPane.Visibility" Value="Collapsed" />
+                        <Setter Target="EditPane.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="EditorAndRenderVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="EditColumn.Width" Value="*" />
+                        <Setter Target="RenderColumn.Width" Value="*" />
+                        <Setter Target="RenderPane.Visibility" Value="Visible" />
+                        <Setter Target="EditPane.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
         <RelativePanel x:Name="MenuBar" Background="#FFF0F0F0" RelativePanel.AlignLeftWithPanel="True"
                        RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
             <RelativePanel.Resources>
                 <Style BasedOn="{StaticResource TextBlockButtonStyle}" TargetType="Button">
                     <Setter Property="Foreground" Value="Black" />
-                    <Setter Property="FontFamily" Value="Lucida Sans" />
                     <Setter Property="FontSize" Value="12" />
                     <Setter Property="Margin" Value="4,2" />
                 </Style>
                 <Style x:Name="MenuFlyoutItemStyle" TargetType="MenuFlyoutItem">
-                    <Setter Property="FontFamily" Value="Lucida Sans" />
                     <Setter Property="FontSize" Value="12" />
                     <Setter Property="Padding" Value="4,8,16,4" />
                 </Style>
             </RelativePanel.Resources>
-            <Button x:Name="FileMenuButton" Content="File">
+            <Button x:Name="MenuBarFileButton" Content="File">
                 <Button.Flyout>
                     <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-            <Button x:Name="EditMenuButton" Content="Edit" RelativePanel.RightOf="FileMenuButton">
-                <Button.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-            <Button x:Name="ViewMenuButton" Content="View" RelativePanel.RightOf="EditMenuButton">
-                <Button.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-            <Button x:Name="GotoMenuButton" Content="Goto" RelativePanel.RightOf="ViewMenuButton">
-                <Button.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
-                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Sample" />
+                        <MenuFlyoutItem Style="{StaticResource MenuFlyoutItemStyle}" Text="Exit application" />
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>
@@ -81,12 +147,16 @@
             <RelativePanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="White" />
-                    <Setter Property="FontFamily" Value="Lucida Sans" />
                     <Setter Property="FontSize" Value="12" />
                     <Setter Property="Margin" Value="8" />
                 </Style>
             </RelativePanel.Resources>
-            <TextBlock x:Name="LineColTextBlock" RelativePanel.AlignRightWithPanel="True">
+            <ToggleButton x:Name="StatusBarAutoRenderButton" Background="Transparent"
+                          Content="Auto-render" RelativePanel.AlignRightWithPanel="True"
+                          RequestedTheme="Dark" />
+            <TextBlock x:Name="StatusBarLineColTextBlock"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       RelativePanel.LeftOf="StatusBarAutoRenderButton">
                 <Run Text="Ln" />
                 <Run Text="1" /><Run Text="," />
                 <Run Text="Col" />
@@ -101,8 +171,8 @@
 
             <SplitView.Pane>
 
-                <StackPanel RequestedTheme="Dark">
-                    <StackPanel.Resources>
+                <RelativePanel RequestedTheme="Dark">
+                    <RelativePanel.Resources>
                         <Style TargetType="RadioButton">
                             <Setter Property="Height" Value="48" />
                             <Setter Property="Width" Value="48" />
@@ -116,17 +186,38 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </StackPanel.Resources>
-                    <RadioButton GroupName="LeftMenu">
+                    </RelativePanel.Resources>
+                    <RadioButton x:Name="LeftSideFilePaneButton" Checked="GoToState_Click" GroupName="LeftMenu"
+                                 IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
+                                 Tag="{Binding Name, ElementName=FilePaneVisualState}">
                         <SymbolIcon Symbol="OpenFile" />
                     </RadioButton>
-                    <RadioButton GroupName="LeftMenu">
-                        <SymbolIcon Symbol="Find" />
+                    <RadioButton x:Name="LeftSideSamplesPaneButton" Checked="GoToState_Click"
+                                 GroupName="LeftMenu"
+                                 IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
+                                 RelativePanel.Below="LeftSideFilePaneButton"
+                                 Tag="{Binding Name, ElementName=SamplesPaneVisualState}">
+                        <Viewbox Width="24" Height="24" Stretch="Uniform">
+                            <PathIcon Data="M2.0020766,10.313703L2.0020766,22.739014 12.952951,29.108055 12.952951,16.582943z M26.029068,10.240884L14.954998,16.575445 14.954998,29.109612 26.029068,22.735962z M7.9547414,5.766717L3.0402941,8.6020098 13.947012,14.847024 18.915749,12.004758z M13.948007,2.309021L9.9642581,4.6073656 20.933895,10.850318 24.872543,8.5972929z M13.946053,0L28.032,8.1069946 28.032,23.891968 13.9441,32 0,23.888977 0,8.0460205z" />
+                        </Viewbox>
                     </RadioButton>
-                    <RadioButton GroupName="{x:Null}" IsChecked="True">
-                        <SymbolIcon Symbol="Play" />
+                    <RadioButton x:Name="LeftSideLearningPaneButton" Checked="GoToState_Click"
+                                 GroupName="LeftMenu"
+                                 IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
+                                 RelativePanel.Below="LeftSideSamplesPaneButton"
+                                 Tag="{Binding Name, ElementName=LearningPaneVisualState}">
+                        <Viewbox Width="24" Height="24" Stretch="Uniform">
+                            <PathIcon Data="M27.099976,22.399994C26.5,22.399994 26,22.600006 25.599976,23 25.200012,23.399994 25,23.899994 25,24.399994 25,24.899994 25.200012,25.399994 25.599976,25.799988 26,26.200012 26.5,26.399994 27.099976,26.399994 27.700012,26.399994 28.099976,26.200012 28.5,25.799988 28.899963,25.399994 29.099976,25 29.099976,24.399994 29.099976,23.899994 28.899963,23.399994 28.5,23 28.200012,22.600006 27.700012,22.399994 27.099976,22.399994z M27.200012,16.700012C26.599976,16.700012 26.099976,16.899994 25.700012,17.200012 25.299988,17.600006 25.099976,18.100006 25.099976,18.600006 25.099976,19.100006 25.299988,19.600006 25.700012,20 26.099976,20.399994 26.599976,20.600006 27.099976,20.600006L27.200012,20.600006C27.700012,20.600006 28.200012,20.399994 28.599976,20 29,19.600006 29.200012,19.200012 29.200012,18.600006 29.200012,18.100006 29,17.600006 28.599976,17.200012 28.200012,16.899994 27.799988,16.700012 27.200012,16.700012z M5.8999634,10.5C3.7000122,10.5,2.5999756,11.5,2.5999756,13.600006L2.5999756,26.600006C2.5999756,28.700012,3.7000122,29.700012,5.8999634,29.700012L19.700012,29.700012C21.700012,29.700012,22.799988,28.899994,23,27.200012L23,20.600006 23,13.600006C23,11.5,21.899963,10.5,19.700012,10.5z M19.599976,0C19.799988,0 20,0.1000061 20.200012,0.20001221 20.399963,0.3999939 20.5,0.6000061 20.5,0.8999939 20.5,1.1000061 20.5,1.3999939 20.299988,1.6000061L14.299988,8.3999939 28.700012,8.3999939 28.799988,8.3999939 32,8.3999939 32,11.5 32,22 32,26.600006 32,28.899994 32,32 28.700012,32 3.2999878,32 0,32 0,8.2999878 3.2000122,8.2999878 3.2999878,8.2999878 11.599976,8.2999878 4.8999634,2.1000061C4.7000122,1.8999939 4.5999756,1.7000122 4.5999756,1.3999939 4.5999756,1.1000061 4.7000122,0.8999939 4.8999634,0.70001221 5.0999756,0.5 5.2999878,0.3999939 5.5999756,0.3999939 5.8999634,0.3999939 6.0999756,0.5 6.2999878,0.70001221L12.899963,7 18.799988,0.3999939C19,0.1000061,19.200012,0,19.599976,0z" />
+                        </Viewbox>
                     </RadioButton>
-                </StackPanel>
+                    <RadioButton x:Name="LeftSideSettingsPaneButton" Checked="GoToState_Click"
+                                 GroupName="LeftMenu"
+                                 IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
+                                 RelativePanel.AlignBottomWithPanel="True"
+                                 Tag="{Binding Name, ElementName=SettingsPaneVisualState}">
+                        <SymbolIcon Symbol="Setting" />
+                    </RadioButton>
+                </RelativePanel>
 
             </SplitView.Pane>
 
@@ -135,50 +226,359 @@
 
                 <RelativePanel RequestedTheme="Dark">
 
-                    <RelativePanel x:Name="FilePane" Width="200" Background="#FF252526"
+                    <RelativePanel x:Name="FilePane" Width="{StaticResource LeftPaneWidth}"
+                                   Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                        <TextBlock Margin="12" Text="File Pane" />
+                        <TextBlock x:Name="FilePaneTitleTextBlock" Margin="12" Text="Files" />
+                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="Close files pane">
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
+                        <RelativePanel x:Name="RecentFilesTextBlock" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.Below="FilePaneTitleTextBlock">
+                            <RelativePanel.Background>
+                                <SolidColorBrush Opacity=".05" Color="White" />
+                            </RelativePanel.Background>
+                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                                       RelativePanel.LeftOf="ClearRecentFilesButton" Text="Recent Files" />
+                            <Button x:Name="ClearRecentFilesButton" Style="{StaticResource TopRightButton}"
+                                    ToolTipService.ToolTip="Clear list">
+                                <SymbolIcon Symbol="Delete" />
+                            </Button>
+                        </RelativePanel>
+                        <ListView x:Name="RecentFilesListView" RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="RecentFilesTextBlock">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="ToolTipService.ToolTip" Value="Open file" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <RelativePanel Height="Auto">
+                                        <Button x:Name="RecentFileRemoveButton" Width="48" Margin="0"
+                                                Foreground="DimGray" Padding="0,8" RelativePanel.AlignLeftWithPanel="True"
+                                                RelativePanel.AlignRightWithPanel="False"
+                                                RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                Style="{StaticResource TextBlockButtonStyle}"
+                                                ToolTipService.ToolTip="Remove from list">
+                                            <SymbolIcon Symbol="Delete" />
+                                        </Button>
+                                        <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                   RelativePanel.RightOf="RecentFileRemoveButton" Text="{Binding}" />
+                                    </RelativePanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <x:String>File1.xaml</x:String>
+                            <x:String>File2.xaml</x:String>
+                            <x:String>File3.xaml</x:String>
+                        </ListView>
+                        <RelativePanel x:Name="FolderFilesTextBlock" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.Below="RecentFilesListView">
+                            <RelativePanel.Background>
+                                <SolidColorBrush Opacity=".05" Color="White" />
+                            </RelativePanel.Background>
+                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                                       RelativePanel.LeftOf="FolderFilesOpenButton" Text="Folder Name" />
+                            <Button x:Name="FolderFilesOpenButton" RelativePanel.AlignRightWithPanel="False"
+                                    RelativePanel.LeftOf="FolderFilesRefreshButton"
+                                    Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                    ToolTipService.ToolTip="Open folder">
+                                <SymbolIcon Symbol="OpenLocal" />
+                            </Button>
+                            <Button x:Name="FolderFilesRefreshButton" Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                    ToolTipService.ToolTip="Refresh files">
+                                <SymbolIcon Symbol="Refresh" />
+                            </Button>
+                        </RelativePanel>
+                        <ListView x:Name="FolderFilesListView" RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="FolderFilesTextBlock">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="ToolTipService.ToolTip" Value="Open file" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <RelativePanel Height="Auto">
+                                        <TextBlock Padding="48,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                   Text="{Binding}" />
+                                    </RelativePanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <x:String>File1.xaml</x:String>
+                            <x:String>File2.xaml</x:String>
+                            <x:String>File3.xaml</x:String>
+                        </ListView>
                     </RelativePanel>
 
-                    <RelativePanel x:Name="SearchPane" Width="200" Background="#FF191919"
+                    <RelativePanel x:Name="SamplesPane" Width="{StaticResource LeftPaneWidth}"
+                                   Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.RightOf="FilePane">
-                        <TextBlock Margin="12" Text="Search Pane" />
+                        <RelativePanel.Resources>
+                            <CollectionViewSource x:Name="AllSamplesCollectionViewSource" IsSourceGrouped="True" ItemsPath="Files"
+                                                  Source="{Binding SamplePane.AllSamples}" />
+                        </RelativePanel.Resources>
+                        <TextBlock x:Name="SamplesPaneTitleTextBlock" Margin="12" Text="Samples" />
+                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="Close samples pane">
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
+                        <RelativePanel x:Name="RecentSamplesTextBlock" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.Below="SamplesPaneTitleTextBlock">
+                            <RelativePanel.Background>
+                                <SolidColorBrush Opacity=".05" Color="White" />
+                            </RelativePanel.Background>
+                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                                       RelativePanel.LeftOf="ClearRecentSamplesButton" Text="Recent Samples" />
+                            <Button x:Name="ClearRecentSamplesButton" Style="{StaticResource TopRightButton}"
+                                    ToolTipService.ToolTip="Clear list">
+                                <SymbolIcon Symbol="Delete" />
+                            </Button>
+                        </RelativePanel>
+                        <ListView x:Name="RecentSamplesListView" IsItemClickEnabled="True"
+                                  ItemClick="{x:Bind ViewModel.SamplePane.RecentItemClicked}"
+                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="RecentSamplesTextBlock">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="ToolTipService.ToolTip" Value="Open file" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <RelativePanel Height="Auto">
+                                        <Button x:Name="RecentFileRemoveButton" Width="48" Margin="0"
+                                                Foreground="DimGray" Padding="0,8" RelativePanel.AlignLeftWithPanel="True"
+                                                RelativePanel.AlignRightWithPanel="False"
+                                                RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                Style="{StaticResource TextBlockButtonStyle}"
+                                                ToolTipService.ToolTip="Remove from list">
+                                            <SymbolIcon Symbol="Delete" />
+                                        </Button>
+                                        <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                   RelativePanel.RightOf="RecentFileRemoveButton" Text="{Binding}" />
+                                    </RelativePanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <x:String>File1.xaml</x:String>
+                            <x:String>File2.xaml</x:String>
+                            <x:String>File3.xaml</x:String>
+                        </ListView>
+                        <RelativePanel x:Name="AllSamplesTextBlock" Height="42" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.Below="RecentSamplesListView">
+                            <RelativePanel.Background>
+                                <SolidColorBrush Opacity=".05" Color="White" />
+                            </RelativePanel.Background>
+                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.AlignVerticalCenterWithPanel="True" Text="All Samples" />
+                            <Button x:Name="AllSampleSemanticZoomButton" Click="AllSampleSemanticZoomButton_Click"
+                                    RelativePanel.AlignRightWithPanel="True" Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                    ToolTipService.ToolTip="View levels"
+                                    Visibility="{Binding Text.Length, Converter={StaticResource VisibleWhenZeroConverter}, ElementName=SearchTextBox}">
+                                <SymbolIcon Symbol="ViewAll" />
+                            </Button>
+                        </RelativePanel>
+                        <TextBox x:Name="SearchTextBox" Margin="8,4" PlaceholderText="Filter"
+                                 RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                 RelativePanel.Below="AllSamplesTextBlock"
+                                 TextChanged="{x:Bind ViewModel.SamplePane.FilterTextChanged}" />
+                        <ListView x:Name="FilteredSamplesListView" IsItemClickEnabled="True"
+                                  ItemClick="{x:Bind ViewModel.SamplePane.FilteredItemClicked}"
+                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="SearchTextBox"
+                                  Visibility="{Binding Text.Length, Converter={StaticResource CollapsedWhenZeroConverter}, ElementName=SearchTextBox}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="ToolTipService.ToolTip" Value="Open sample" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <RelativePanel Height="Auto">
+                                        <TextBlock Padding="16,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                   Text="{Binding}" />
+                                    </RelativePanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <x:String>Filtered File1.xaml</x:String>
+                            <x:String>Filtered File2.xaml</x:String>
+                            <x:String>Filtered File3.xaml</x:String>
+                        </ListView>
+
+                        <SemanticZoom x:Name="AllSamplesSemanticZoom" RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.AlignRightWithPanel="True"
+                                      RelativePanel.Below="FilteredSamplesListView">
+                            <SemanticZoom.ZoomedOutView>
+                                <ListView x:Name="AllSamplesZoomedOutListView">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <models:Folder Title="Group 1" />
+                                    <models:Folder Title="Group 2" />
+                                    <models:Folder Title="Group 3" />
+                                </ListView>
+                            </SemanticZoom.ZoomedOutView>
+                            <SemanticZoom.ZoomedInView>
+                                <ListView x:Name="AllSamplesZoomedInListView" ItemsSource="{Binding Source={StaticResource AllSamplesCollectionViewSource}}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                    <ListView.GroupStyle>
+                                        <GroupStyle>
+                                            <GroupStyle.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Title}" />
+                                                </DataTemplate>
+                                            </GroupStyle.HeaderTemplate>
+                                        </GroupStyle>
+                                    </ListView.GroupStyle>
+                                    <models:Folder Title="Group 1" />
+                                    <models:Folder Title="Group 2" />
+                                    <models:Folder Title="Group 3" />
+                                </ListView>
+
+                            </SemanticZoom.ZoomedInView>
+                        </SemanticZoom>
+
+                        <ScrollViewer RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                      RelativePanel.Below="FilteredSamplesListView" VerticalScrollBarVisibility="Auto"
+                                      Visibility="Collapsed">
+                            <ItemsControl x:Name="AllSamplesListView" VerticalAlignment="Top"
+                                          Visibility="{Binding Text.Length, Converter={StaticResource VisibleWhenZeroConverter}, ElementName=SearchTextBox}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Padding="12,0,0,0" Text="{Binding}" />
+                                            <!--  does not have Page context for x:Bind  -->
+                                            <!--  ItemClick="{x:Bind ViewModel.SamplePane.FilteredItemClicked}"  -->
+                                            <ListView IsItemClickEnabled="True" RelativePanel.Below="TemplateTitleTextBlock">
+                                                <ListView.ItemContainerStyle>
+                                                    <Style TargetType="ListViewItem">
+                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                                        <Setter Property="ToolTipService.ToolTip" Value="Open sample" />
+                                                    </Style>
+                                                </ListView.ItemContainerStyle>
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <RelativePanel Height="Auto">
+                                                            <TextBlock Padding="16,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True"
+                                                                       Text="{Binding}" />
+                                                        </RelativePanel>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                                <x:String>File1.xaml</x:String>
+                                                <x:String>File2.xaml</x:String>
+                                                <x:String>File3.xaml</x:String>
+                                            </ListView>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <x:String>Folder Group1</x:String>
+                                <x:String>Folder Group2</x:String>
+                                <x:String>Folder Group3</x:String>
+                                <x:String>Folder Group4</x:String>
+                                <x:String>Folder Group5</x:String>
+                            </ItemsControl>
+                        </ScrollViewer>
                     </RelativePanel>
 
-                    <RelativePanel x:Name="SettingsPane" Width="200" Background="#FF252526"
+                    <RelativePanel x:Name="LearningPane" Width="{StaticResource LeftPaneWidth}"
+                                   Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="SearchPane">
-                        <TextBlock Margin="12" Text="Settings Pane" />
-                    </RelativePanel>
-
-                    <RelativePanel x:Name="EditorPane" MinWidth="200" RelativePanel.AlignBottomWithPanel="True"
-                                   RelativePanel.AlignTopWithPanel="True" RelativePanel.LeftOf="RenderPane"
-                                   RelativePanel.RightOf="SettingsPane">
-                        <TextBlock x:Name="TitleTextBlock" Margin="12" Text="Document Title" />
-                        <Button x:Name="CloseEditorPaneButton" Margin="0,12,12,12" Foreground="White"
-                                RelativePanel.AlignRightWithPanel="True"
-                                Style="{StaticResource TextBlockButtonStyle}">
-                            <SymbolIcon Symbol="Clear" />
-                        </Button>
-                        <Button Margin="0,12,12,12" Foreground="White"
-                                RelativePanel.LeftOf="CloseEditorPaneButton"
-                                Style="{StaticResource TextBlockButtonStyle}">
-                            <FontIcon Glyph="&#xEA61;" />
-                        </Button>
-                    </RelativePanel>
-
-                    <RelativePanel x:Name="RenderPane" MinWidth="200" Background="#FF003157"
-                                   RelativePanel.AlignBottomWithPanel="True"
-                                   RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                        <TextBlock Margin="12" Text="Render Pane" />
-                        <Button Margin="12" Foreground="White" RelativePanel.AlignRightWithPanel="True"
-                                Style="{StaticResource TextBlockButtonStyle}">
+                                   RelativePanel.RightOf="SamplesPane">
+                        <TextBlock x:Name="LearningPaneTitleTextBlock" Margin="12" Text="Learning" />
+                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="Close learning pane">
                             <SymbolIcon Symbol="Clear" />
                         </Button>
                     </RelativePanel>
 
+                    <RelativePanel x:Name="SettingsPane" Width="{StaticResource LeftPaneWidth}"
+                                   Background="{StaticResource LeftPaneBackground}"
+                                   RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.RightOf="LearningPane">
+                        <TextBlock x:Name="SettingsTitleTextBlock" Margin="12" Text="Settings" />
+                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}">
+                            <SymbolIcon Symbol="Clear" />
+                        </Button>
+                        <ToggleSwitch Margin="12,0" Header="Reload last file on launch"
+                                      RelativePanel.Below="SettingsTitleTextBlock" />
+                    </RelativePanel>
+
+                    <Grid RelativePanel.AlignBottomWithPanel="True"
+                          RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                          RelativePanel.RightOf="SettingsPane">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="EditColumn" Width="*" />
+                            <ColumnDefinition x:Name="RenderColumn" Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <RelativePanel x:Name="EditPane" MinWidth="200">
+                            <TextBlock x:Name="EditTitleTextBlock" Margin="12" Text="Document Title" />
+                            <Button x:Name="CloseEditPaneButton" Click="GoToState_Click"
+                                    Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=NoEditorVisualState}">
+                                <SymbolIcon Symbol="Clear" />
+                            </Button>
+                            <Button x:Name="OpenRenderPaneButton" Click="GoToState_Click"
+                                    RelativePanel.AlignRightWithPanel="False"
+                                    RelativePanel.LeftOf="CloseEditPaneButton"
+                                    Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=EditorAndRenderVisualState}">
+                                <FontIcon Glyph="&#xEA61;" />
+                            </Button>
+                            <TextBox x:Name="EditTextBox" AcceptsReturn="True" InputScope="NativeScript"
+                                     IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
+                                     RelativePanel.AlignBottomWithPanel="True"
+                                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                     RelativePanel.Below="EditTitleTextBlock" />
+                        </RelativePanel>
+
+                        <RelativePanel x:Name="RenderPane" Grid.Column="1" MinWidth="200"
+                                       Background="#FF003157">
+                            <TextBlock x:Name="RenderTitleTextBlock" Margin="12" Text="Render Pane" />
+                            <Button x:Name="RenderPaneCloseButton" Click="GoToState_Click"
+                                    Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=EditorOnlyVisualState}">
+                                <SymbolIcon Symbol="Clear" />
+                            </Button>
+                            <ContentControl x:Name="Host" Grid.Row="3" HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch" Background="Coral"
+                                            RelativePanel.AlignBottomWithPanel="True"
+                                            RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                            RelativePanel.Below="RenderTitleTextBlock" />
+                        </RelativePanel>
+
+                    </Grid>
 
                 </RelativePanel>
 
