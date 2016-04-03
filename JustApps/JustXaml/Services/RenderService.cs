@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using JustXaml.Models;
 using Template10.Mvvm;
 using Windows.Storage;
 using Windows.UI.Xaml;
@@ -36,15 +37,20 @@ namespace JustXaml.Services
         public string TemplatePath { get { return _TemplatePath; } set { Set(ref _TemplatePath, value); TemplatePathChanged(value); } }
         async void TemplatePathChanged(string value)
         {
-            await ReadFile(value);
+            await ReadFileAsync(value);
         }
 
         public async void Clear()
         {
-            await ReadFile("ms-appx:///Templates/Default.txt");
+            await ReadFileAsync("ms-appx:///Templates/Default.txt");
         }
 
-        private async Task ReadFile(string value)
+        internal async Task ReadFileAsync(Models.File value)
+        {
+            await ReadFileAsync(value.FileInformation.Path);
+        }
+
+        private async Task ReadFileAsync(string value)
         {
             Uri uri;
             if (!Uri.TryCreate(value, UriKind.Absolute, out uri))

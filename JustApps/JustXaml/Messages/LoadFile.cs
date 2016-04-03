@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JustXaml.Messages
 {
-    public class RemoveRecentFile: Microsoft.Practices.Prism.PubSubEvents.PubSubEvent<Models.File>
+    public class LoadFile: Microsoft.Practices.Prism.PubSubEvents.PubSubEvent<Models.File>
     {
     }
 }

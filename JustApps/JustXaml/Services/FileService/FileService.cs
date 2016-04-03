@@ -4,21 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.BulkAccess;
+using Windows.Storage.Search;
 
 namespace JustXaml.Services.FileService
 {
-    public class FileService : IFileService
+    public class FileService
     {
-        FileHelper _helper = new FileHelper();
-
-        public Task<bool> FileExistsAsync(string key, StorageStrategies location = StorageStrategies.Local) => _helper.FileExistsAsync(key, location);
-
-        public Task<bool> FileExistsAsync(string key, StorageFolder folder) => _helper.FileExistsAsync(key, folder);
-
-        public Task<bool> DeleteFileAsync(string key, StorageStrategies location = StorageStrategies.Local) => _helper.DeleteFileAsync(key, location);
-
-        public Task<T> ReadFileAsync<T>(string key, StorageStrategies location = StorageStrategies.Local) => _helper.ReadFileAsync<T>(key, location);
-
-        public Task<bool> WriteFileAsync<T>(string key, T value, StorageStrategies location = StorageStrategies.Local) => _helper.WriteFileAsync<T>(key, value, location);
+        public async Task<IEnumerable<Models.File>> ReadFilesAsync(Models.Folder folder)
+        {
+            if (folder == null)
+                return new Models.File[] { };
+            var options = new QueryOptions(CommonFileQuery.DefaultQuery, new[] { ".xaml" });
+            var query = folder.StorageFolder.CreateFileQueryWithOptions(options);
+            var factory = new FileInformationFactory(query, Windows.Storage.FileProperties.ThumbnailMode.ListView);
+            var files = await factory.GetFilesAsync();
+            return files.Select(x => new Models.File(x));
+        }
     }
 }

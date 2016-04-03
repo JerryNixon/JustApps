@@ -15,10 +15,14 @@
     </Page.DataContext>
 
     <Page.Resources>
+
         <x:Double x:Key="LeftPaneWidth">250</x:Double>
         <SolidColorBrush x:Key="LeftPaneBackground" Color="#FF191919" />
-        <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items"
-                              Source="{Binding SamplePane.AllSamples}" />
+        <SolidColorBrush x:Key="TitleAreaBackground" Opacity=".1" Color="White" />
+        <SolidColorBrush x:Key="SubTitleAreaBackground" Opacity=".05" Color="White" />
+
+        <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items" />
+
         <Style x:Name="TopRightButton" BasedOn="{StaticResource TextBlockButtonStyle}"
                TargetType="Button">
             <Setter Property="Margin" Value="0,12,12,12" />
@@ -28,7 +32,7 @@
             <Setter Property="RelativePanel.AlignRightWithPanel" Value="True" />
             <Setter Property="RenderTransform">
                 <Setter.Value>
-                    <CompositeTransform ScaleX=".75" ScaleY=".75" />
+                    <CompositeTransform ScaleX=".65" ScaleY=".65" />
                 </Setter.Value>
             </Setter>
         </Style>
@@ -144,6 +148,7 @@
         <RelativePanel x:Name="StatusBar" Background="#FF68217A"
                        RelativePanel.AlignBottomWithPanel="True"
                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+
             <RelativePanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="White" />
@@ -151,9 +156,16 @@
                     <Setter Property="Margin" Value="8" />
                 </Style>
             </RelativePanel.Resources>
+
+            <TextBlock Foreground="Yellow" RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       Text="{Binding Render.ErrorShortMessage}"
+                       ToolTipService.ToolTip="{Binding Render.ErrorLongMessage}" />
+
             <ToggleButton x:Name="StatusBarAutoRenderButton" Background="Transparent"
                           Content="Auto-render" RelativePanel.AlignRightWithPanel="True"
                           RequestedTheme="Dark" />
+
             <TextBlock x:Name="StatusBarLineColTextBlock"
                        RelativePanel.AlignVerticalCenterWithPanel="True"
                        RelativePanel.LeftOf="StatusBarAutoRenderButton">
@@ -162,6 +174,7 @@
                 <Run Text="Col" />
                 <Run Text="3" />
             </TextBlock>
+
         </RelativePanel>
 
         <SplitView Background="Black" DisplayMode="CompactInline" OpenPaneLength="48"
@@ -230,225 +243,194 @@
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True">
-                        <TextBlock x:Name="FilePaneTitleTextBlock" Margin="12" Text="Files" />
-                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+
+                        <!--  #region Files Title  -->
+
+                        <Rectangle x:Name="FilesTitleArea" Height="48" Fill="{StaticResource TitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="FilesTitleArea"
+                                   RelativePanel.LeftOf="FilePaneCloseButton" Text="FILES" />
+
+                        <Button x:Name="FilePaneCloseButton" Click="GoToState_Click"
+                                RelativePanel.AlignVerticalCenterWith="FilesTitleArea"
+                                Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
                                 ToolTipService.ToolTip="Close files pane">
                             <SymbolIcon Symbol="Clear" />
                         </Button>
-                        <RelativePanel x:Name="RecentFilesTextBlock" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignRightWithPanel="True"
-                                       RelativePanel.Below="FilePaneTitleTextBlock">
-                            <RelativePanel.Background>
-                                <SolidColorBrush Opacity=".05" Color="White" />
-                            </RelativePanel.Background>
-                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignVerticalCenterWithPanel="True"
-                                       RelativePanel.LeftOf="ClearRecentFilesButton" Text="Recent Files" />
-                            <Button x:Name="ClearRecentFilesButton" Style="{StaticResource TopRightButton}"
-                                    ToolTipService.ToolTip="Clear list">
-                                <SymbolIcon Symbol="Delete" />
-                            </Button>
-                        </RelativePanel>
-                        <ListView x:Name="RecentFilesListView" RelativePanel.AlignLeftWithPanel="True"
-                                  RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="RecentFilesTextBlock">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="ToolTipService.ToolTip" Value="Open file" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <RelativePanel Height="Auto">
-                                        <Button x:Name="RecentFileRemoveButton" Width="48" Margin="0"
-                                                Foreground="DimGray" Padding="0,8" RelativePanel.AlignLeftWithPanel="True"
-                                                RelativePanel.AlignRightWithPanel="False"
-                                                RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                Style="{StaticResource TextBlockButtonStyle}"
-                                                ToolTipService.ToolTip="Remove from list">
-                                            <SymbolIcon Symbol="Delete" />
-                                        </Button>
-                                        <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                   RelativePanel.RightOf="RecentFileRemoveButton" Text="{Binding}" />
-                                    </RelativePanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                            <x:String>File1.xaml</x:String>
-                            <x:String>File2.xaml</x:String>
-                            <x:String>File3.xaml</x:String>
-                        </ListView>
-                        <RelativePanel x:Name="FolderFilesTextBlock" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignRightWithPanel="True"
-                                       RelativePanel.Below="RecentFilesListView">
-                            <RelativePanel.Background>
-                                <SolidColorBrush Opacity=".05" Color="White" />
-                            </RelativePanel.Background>
-                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignVerticalCenterWithPanel="True"
-                                       RelativePanel.LeftOf="FolderFilesOpenButton" Text="Folder Name" />
-                            <Button x:Name="FolderFilesOpenButton" RelativePanel.AlignRightWithPanel="False"
-                                    RelativePanel.LeftOf="FolderFilesRefreshButton"
-                                    Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=NoPaneVisualState}"
-                                    ToolTipService.ToolTip="Open folder">
-                                <SymbolIcon Symbol="OpenLocal" />
-                            </Button>
-                            <Button x:Name="FolderFilesRefreshButton" Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=NoPaneVisualState}"
-                                    ToolTipService.ToolTip="Refresh files">
-                                <SymbolIcon Symbol="Refresh" />
-                            </Button>
-                        </RelativePanel>
-                        <ListView x:Name="FolderFilesListView" RelativePanel.AlignLeftWithPanel="True"
-                                  RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="FolderFilesTextBlock">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="ToolTipService.ToolTip" Value="Open file" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <RelativePanel Height="Auto">
-                                        <TextBlock Padding="48,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                   Text="{Binding}" />
-                                    </RelativePanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                            <x:String>File1.xaml</x:String>
-                            <x:String>File2.xaml</x:String>
-                            <x:String>File3.xaml</x:String>
-                        </ListView>
+
+                        <!--  #endregion  -->
+
+                        <!--  #region RecentFiles Sub Title  -->
+
+                        <Rectangle x:Name="RecentFilesSubTitleArea" Height="48"
+                                   Fill="{StaticResource SubTitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.Below="FilesTitleArea" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="RecentFilesSubTitleArea"
+                                   RelativePanel.LeftOf="ClearRecentFilesButton" Text="Recent files" />
+
+                        <Button x:Name="ClearRecentFilesButton" Click="{x:Bind ViewModel.FilePane.ClearRecent}"
+                                RelativePanel.AlignVerticalCenterWith="RecentFilesSubTitleArea"
+                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list">
+                            <SymbolIcon Symbol="Delete" />
+                        </Button>
+
+                        <!--  #endregion  -->
+
+                        <ListView x:Name="RecentFilesListView" DisplayMemberPath="Title"
+                                  ItemsSource="{Binding FilePane.RecentFiles}"
+                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="RecentFilesSubTitleArea" />
+
+                        <!--  #region Folder Sub Title  -->
+
+                        <Rectangle x:Name="FolderSubTitleArea" Height="48"
+                                   Fill="{StaticResource SubTitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.Below="RecentFilesListView" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
+                                   RelativePanel.LeftOf="FolderFilesOpenButton" Text="Folder files" />
+
+                        <Button x:Name="FolderFilesOpenButton" Click="{x:Bind ViewModel.FilePane.OpenFolder}"
+                                RelativePanel.AlignRightWithPanel="False"
+                                RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
+                                RelativePanel.LeftOf="FolderFilesRefreshButton"
+                                Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="Open folder">
+                            <SymbolIcon Symbol="OpenLocal" />
+                        </Button>
+
+                        <Button x:Name="FolderFilesRefreshButton"
+                                Click="{x:Bind ViewModel.FilePane.RefreshFiles}"
+                                RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
+                                Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="Refresh files">
+                            <SymbolIcon Symbol="Refresh" />
+                        </Button>
+
+                        <!--  #endregion  -->
+
+                        <ListView x:Name="FolderFilesListView" DisplayMemberPath="Title"
+                                  ItemsSource="{Binding FilePane.FolderFiles}"
+                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="FolderSubTitleArea" />
+
                     </RelativePanel>
 
                     <RelativePanel x:Name="SamplesPane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.RightOf="FilePane">
+
                         <RelativePanel.Resources>
                             <CollectionViewSource x:Name="AllSamplesCollectionViewSource" IsSourceGrouped="True" ItemsPath="Files"
                                                   Source="{Binding SamplePane.AllSamples}" />
                         </RelativePanel.Resources>
-                        <TextBlock x:Name="SamplesPaneTitleTextBlock" Margin="12" Text="Samples" />
-                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+
+                        <!--  #region Samples Title  -->
+
+                        <Rectangle x:Name="SamplesTitleArea" Height="48"
+                                   Fill="{StaticResource TitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="SamplesTitleArea"
+                                   RelativePanel.LeftOf="SamplePaneCloseButton" Text="SAMPLES" />
+
+                        <Button x:Name="SamplePaneCloseButton" Click="GoToState_Click"
+                                RelativePanel.AlignVerticalCenterWith="SamplesTitleArea"
+                                Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
                                 ToolTipService.ToolTip="Close samples pane">
                             <SymbolIcon Symbol="Clear" />
                         </Button>
-                        <RelativePanel x:Name="RecentSamplesTextBlock" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignRightWithPanel="True"
-                                       RelativePanel.Below="SamplesPaneTitleTextBlock">
-                            <RelativePanel.Background>
-                                <SolidColorBrush Opacity=".05" Color="White" />
-                            </RelativePanel.Background>
-                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignVerticalCenterWithPanel="True"
-                                       RelativePanel.LeftOf="ClearRecentSamplesButton" Text="Recent Samples" />
-                            <Button x:Name="ClearRecentSamplesButton" Style="{StaticResource TopRightButton}"
-                                    ToolTipService.ToolTip="Clear list">
-                                <SymbolIcon Symbol="Delete" />
-                            </Button>
-                        </RelativePanel>
-                        <ListView x:Name="RecentSamplesListView" IsItemClickEnabled="True"
+
+                        <!--  #endregion  -->
+
+                        <!--  #region Recent Samples Sub Title  -->
+
+                        <Rectangle x:Name="RecentSamplesSubTitleArea" Height="48"
+                                   Fill="{StaticResource SubTitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.Below="SamplesTitleArea" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="RecentSamplesSubTitleArea"
+                                   RelativePanel.LeftOf="ClearRecentSamplesButton" Text="Recent samples" />
+
+                        <Button x:Name="ClearRecentSamplesButton"
+                                RelativePanel.AlignVerticalCenterWith="RecentSamplesSubTitleArea"
+                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list">
+                            <SymbolIcon Symbol="Delete" />
+                        </Button>
+
+                        <!--  #endregion  -->
+
+                        <ListView x:Name="RecentSamplesListView" DisplayMemberPath="Title"
+                                  IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.SamplePane.RecentItemClicked}"
+                                  ItemsSource="{Binding SamplePane.RecentSamples}"
                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="RecentSamplesTextBlock">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="ToolTipService.ToolTip" Value="Open file" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <RelativePanel Height="Auto">
-                                        <Button x:Name="RecentFileRemoveButton" Width="48" Margin="0"
-                                                Foreground="DimGray" Padding="0,8" RelativePanel.AlignLeftWithPanel="True"
-                                                RelativePanel.AlignRightWithPanel="False"
-                                                RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                Style="{StaticResource TextBlockButtonStyle}"
-                                                ToolTipService.ToolTip="Remove from list">
-                                            <SymbolIcon Symbol="Delete" />
-                                        </Button>
-                                        <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                   RelativePanel.RightOf="RecentFileRemoveButton" Text="{Binding}" />
-                                    </RelativePanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                            <x:String>File1.xaml</x:String>
-                            <x:String>File2.xaml</x:String>
-                            <x:String>File3.xaml</x:String>
-                        </ListView>
-                        <RelativePanel x:Name="AllSamplesTextBlock" Height="42" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignRightWithPanel="True"
-                                       RelativePanel.Below="RecentSamplesListView">
-                            <RelativePanel.Background>
-                                <SolidColorBrush Opacity=".05" Color="White" />
-                            </RelativePanel.Background>
-                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignRightWithPanel="True"
-                                       RelativePanel.AlignVerticalCenterWithPanel="True" Text="All Samples" />
-                            <Button x:Name="AllSampleSemanticZoomButton" Click="AllSampleSemanticZoomButton_Click"
-                                    RelativePanel.AlignRightWithPanel="True" Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=NoPaneVisualState}"
-                                    ToolTipService.ToolTip="View levels"
-                                    Visibility="{Binding Text.Length, Converter={StaticResource VisibleWhenZeroConverter}, ElementName=SearchTextBox}">
-                                <SymbolIcon Symbol="ViewAll" />
-                            </Button>
-                        </RelativePanel>
+                                  RelativePanel.Below="RecentSamplesSubTitleArea" />
+
+                        <!--  #region All Samples Sub Title  -->
+
+                        <Rectangle x:Name="AllSamplesSubTitleArea" Height="48"
+                                   Fill="{StaticResource SubTitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.Below="RecentSamplesListView" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="AllSamplesSubTitleArea"
+                                   RelativePanel.LeftOf="AllSampleSemanticZoomButton" Text="All samples" />
+
+                        <Button x:Name="AllSampleSemanticZoomButton" Click="AllSampleSemanticZoomButton_Click"
+                                RelativePanel.AlignRightWithPanel="True"
+                                RelativePanel.AlignVerticalCenterWith="AllSamplesSubTitleArea"
+                                Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="View levels"
+                                Visibility="{Binding SamplePane.UnfilteredListVisibility}">
+                            <SymbolIcon Symbol="ViewAll" />
+                        </Button>
+
+                        <!--  #endregion  -->
+
                         <TextBox x:Name="SearchTextBox" Margin="8,4" PlaceholderText="Filter"
                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                 RelativePanel.Below="AllSamplesTextBlock"
-                                 TextChanged="{x:Bind ViewModel.SamplePane.FilterTextChanged}" />
-                        <ListView x:Name="FilteredSamplesListView" IsItemClickEnabled="True"
+                                 RelativePanel.Below="AllSamplesSubTitleArea"
+                                 Text="{Binding SamplePane.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <ListView x:Name="FilteredSamplesListView" DisplayMemberPath="Title"
+                                  IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.SamplePane.FilteredItemClicked}"
+                                  ItemsPanel="{Binding SamplePane.FilteredSamples}"
                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                   RelativePanel.Below="SearchTextBox"
-                                  Visibility="{Binding Text.Length, Converter={StaticResource CollapsedWhenZeroConverter}, ElementName=SearchTextBox}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="ToolTipService.ToolTip" Value="Open sample" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <RelativePanel Height="Auto">
-                                        <TextBlock Padding="16,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                   Text="{Binding}" />
-                                    </RelativePanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                            <x:String>Filtered File1.xaml</x:String>
-                            <x:String>Filtered File2.xaml</x:String>
-                            <x:String>Filtered File3.xaml</x:String>
-                        </ListView>
+                                  Visibility="{Binding SamplePane.FilteredListVisibility}" />
 
                         <SemanticZoom x:Name="AllSamplesSemanticZoom" RelativePanel.AlignLeftWithPanel="True"
                                       RelativePanel.AlignRightWithPanel="True"
-                                      RelativePanel.Below="FilteredSamplesListView">
+                                      RelativePanel.Below="FilteredSamplesListView"
+                                      Visibility="{Binding SamplePane.UnfilteredListVisibility}">
                             <SemanticZoom.ZoomedOutView>
-                                <ListView x:Name="AllSamplesZoomedOutListView">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Title}" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                    <models:Folder Title="Group 1" />
-                                    <models:Folder Title="Group 2" />
-                                    <models:Folder Title="Group 3" />
-                                </ListView>
+                                <ListView x:Name="AllSamplesZoomedOutListView" DisplayMemberPath="Group.Title" />
                             </SemanticZoom.ZoomedOutView>
                             <SemanticZoom.ZoomedInView>
-                                <ListView x:Name="AllSamplesZoomedInListView" ItemsSource="{Binding Source={StaticResource AllSamplesCollectionViewSource}}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Title}" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
+                                <ListView x:Name="AllSamplesZoomedInListView" DisplayMemberPath="Title"
+                                          IsItemClickEnabled="True"
+                                          ItemClick="{x:Bind ViewModel.SamplePane.UnfilteredItemClicked}"
+                                          ItemsSource="{Binding Source={StaticResource AllSamplesCollectionViewSource}}">
                                     <ListView.GroupStyle>
                                         <GroupStyle>
                                             <GroupStyle.HeaderTemplate>
@@ -458,79 +440,66 @@
                                             </GroupStyle.HeaderTemplate>
                                         </GroupStyle>
                                     </ListView.GroupStyle>
-                                    <models:Folder Title="Group 1" />
-                                    <models:Folder Title="Group 2" />
-                                    <models:Folder Title="Group 3" />
                                 </ListView>
-
                             </SemanticZoom.ZoomedInView>
                         </SemanticZoom>
-
-                        <ScrollViewer RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                      RelativePanel.Below="FilteredSamplesListView" VerticalScrollBarVisibility="Auto"
-                                      Visibility="Collapsed">
-                            <ItemsControl x:Name="AllSamplesListView" VerticalAlignment="Top"
-                                          Visibility="{Binding Text.Length, Converter={StaticResource VisibleWhenZeroConverter}, ElementName=SearchTextBox}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Padding="12,0,0,0" Text="{Binding}" />
-                                            <!--  does not have Page context for x:Bind  -->
-                                            <!--  ItemClick="{x:Bind ViewModel.SamplePane.FilteredItemClicked}"  -->
-                                            <ListView IsItemClickEnabled="True" RelativePanel.Below="TemplateTitleTextBlock">
-                                                <ListView.ItemContainerStyle>
-                                                    <Style TargetType="ListViewItem">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                                        <Setter Property="ToolTipService.ToolTip" Value="Open sample" />
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
-                                                <ListView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <RelativePanel Height="Auto">
-                                                            <TextBlock Padding="16,0,0,0" RelativePanel.AlignVerticalCenterWithPanel="True"
-                                                                       Text="{Binding}" />
-                                                        </RelativePanel>
-                                                    </DataTemplate>
-                                                </ListView.ItemTemplate>
-                                                <x:String>File1.xaml</x:String>
-                                                <x:String>File2.xaml</x:String>
-                                                <x:String>File3.xaml</x:String>
-                                            </ListView>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                                <x:String>Folder Group1</x:String>
-                                <x:String>Folder Group2</x:String>
-                                <x:String>Folder Group3</x:String>
-                                <x:String>Folder Group4</x:String>
-                                <x:String>Folder Group5</x:String>
-                            </ItemsControl>
-                        </ScrollViewer>
                     </RelativePanel>
 
                     <RelativePanel x:Name="LearningPane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.RightOf="SamplesPane">
-                        <TextBlock x:Name="LearningPaneTitleTextBlock" Margin="12" Text="Learning" />
-                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
+
+                        <!--  #region Learning Title  -->
+
+                        <Rectangle x:Name="LearningTitleArea" Height="48"
+                                   Fill="{StaticResource TitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="LearningTitleArea"
+                                   RelativePanel.LeftOf="LearningPaneCloseButton" Text="RESOURCES" />
+
+                        <Button x:Name="LearningPaneCloseButton" Click="GoToState_Click"
+                                RelativePanel.AlignVerticalCenterWith="LearningTitleArea"
+                                Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
-                                ToolTipService.ToolTip="Close learning pane">
+                                ToolTipService.ToolTip="Close Learning pane">
                             <SymbolIcon Symbol="Clear" />
                         </Button>
+
+                        <!--  #endregion  -->
+
                     </RelativePanel>
 
                     <RelativePanel x:Name="SettingsPane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.RightOf="LearningPane">
-                        <TextBlock x:Name="SettingsTitleTextBlock" Margin="12" Text="Settings" />
-                        <Button Click="GoToState_Click" Style="{StaticResource TopRightButton}"
-                                Tag="{Binding Name, ElementName=NoPaneVisualState}">
+
+                        <!--  #region Setting Title  -->
+
+                        <Rectangle x:Name="SettingTitleArea" Height="48"
+                                   Fill="{StaticResource TitleAreaBackground}"
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignVerticalCenterWith="SettingTitleArea"
+                                   RelativePanel.LeftOf="SettingPaneCloseButton" Text="SETTINGS" />
+
+                        <Button x:Name="SettingPaneCloseButton" Click="GoToState_Click"
+                                RelativePanel.AlignVerticalCenterWith="SettingTitleArea"
+                                Style="{StaticResource TopRightButton}"
+                                Tag="{Binding Name, ElementName=NoPaneVisualState}"
+                                ToolTipService.ToolTip="Close Setting pane">
                             <SymbolIcon Symbol="Clear" />
                         </Button>
-                        <ToggleSwitch Margin="12,0" Header="Reload last file on launch"
-                                      RelativePanel.Below="SettingsTitleTextBlock" />
+
+                        <!--  #endregion  -->
+
+                        <ToggleSwitch Margin="12,8" Header="Reload last file on launch"
+                                      RelativePanel.Below="SettingTitleArea" />
+
                     </RelativePanel>
 
                     <Grid RelativePanel.AlignBottomWithPanel="True"
@@ -542,40 +511,72 @@
                         </Grid.ColumnDefinitions>
 
                         <RelativePanel x:Name="EditPane" MinWidth="200">
-                            <TextBlock x:Name="EditTitleTextBlock" Margin="12" Text="Document Title" />
+
+                            <!--  #region Edit Title  -->
+
+                            <Rectangle x:Name="EditTitleArea" Height="48" Fill="{StaticResource TitleAreaBackground}"
+                                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignVerticalCenterWith="EditTitleArea"
+                                       RelativePanel.LeftOf="OpenRenderPaneButton" Text="EDIT" />
+
                             <Button x:Name="CloseEditPaneButton" Click="GoToState_Click"
+                                    RelativePanel.AlignVerticalCenterWith="EditTitleArea"
                                     Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=NoEditorVisualState}">
+                                    Tag="{Binding Name, ElementName=NoEditorVisualState}" Visibility="Collapsed">
                                 <SymbolIcon Symbol="Clear" />
                             </Button>
+
                             <Button x:Name="OpenRenderPaneButton" Click="GoToState_Click"
                                     RelativePanel.AlignRightWithPanel="False"
+                                    RelativePanel.AlignVerticalCenterWith="EditTitleArea"
                                     RelativePanel.LeftOf="CloseEditPaneButton"
                                     Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=EditorAndRenderVisualState}">
+                                    Tag="{Binding Name, ElementName=EditorAndRenderVisualState}"
+                                    Visibility="Collapsed">
                                 <FontIcon Glyph="&#xEA61;" />
                             </Button>
+
+                            <!--  #endregion  -->
+
                             <TextBox x:Name="EditTextBox" AcceptsReturn="True" InputScope="NativeScript"
                                      IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
                                      RelativePanel.AlignBottomWithPanel="True"
                                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                     RelativePanel.Below="EditTitleTextBlock" />
+                                     RelativePanel.Below="EditTitleArea"
+                                     Text="{Binding Render.XamlString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                         </RelativePanel>
 
                         <RelativePanel x:Name="RenderPane" Grid.Column="1" MinWidth="200"
                                        Background="#FF003157">
-                            <TextBlock x:Name="RenderTitleTextBlock" Margin="12" Text="Render Pane" />
+
+                            <!--  #region Render Title  -->
+
+                            <Rectangle x:Name="RenderTitleArea" Height="48" Fill="{StaticResource TitleAreaBackground}"
+                                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+
+                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignVerticalCenterWith="RenderTitleArea"
+                                       RelativePanel.LeftOf="RenderPaneCloseButton" Text="PREVIEW" />
+
                             <Button x:Name="RenderPaneCloseButton" Click="GoToState_Click"
+                                    RelativePanel.AlignVerticalCenterWith="RenderTitleArea"
                                     Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=EditorOnlyVisualState}">
+                                    Tag="{Binding Name, ElementName=EditorOnlyVisualState}" Visibility="Collapsed">
                                 <SymbolIcon Symbol="Clear" />
                             </Button>
+
+                            <!--  #endregion  -->
+
                             <ContentControl x:Name="Host" Grid.Row="3" HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                             VerticalContentAlignment="Stretch" Background="Coral"
-                                            RelativePanel.AlignBottomWithPanel="True"
+                                            Content="{Binding Render.XamlResult}" RelativePanel.AlignBottomWithPanel="True"
                                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                            RelativePanel.Below="RenderTitleTextBlock" />
+                                            RelativePanel.Below="RenderTitleArea" />
+
                         </RelativePanel>
 
                     </Grid>
@@ -606,7 +607,7 @@
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding Title}" />
+                                <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding Sub Title}" />
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>

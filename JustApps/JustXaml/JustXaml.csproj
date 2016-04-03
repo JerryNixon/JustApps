@@ -104,8 +104,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messages\LoadMainPage.cs" />
+    <Compile Include="Messages\LoadFile.cs" />
     <Compile Include="Messages\Messenger.cs" />
-    <Compile Include="Messages\RemoveRecentFile.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\Group.cs" />
@@ -113,7 +114,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FileService\FileHelper.cs" />
     <Compile Include="Services\FileService\FileService.cs" />
-    <Compile Include="Services\FileService\IFileService.cs" />
     <Compile Include="Services\FileService\StorageStrategies.cs" />
     <Compile Include="Services\RenderService.cs" />
     <Compile Include="Services\SettingsService.cs" />

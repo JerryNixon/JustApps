@@ -23,12 +23,13 @@ namespace JustXaml.Views
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            AllSamplesCollectionViewSource.Source = ViewModel.SamplePane.UnfilteredSamples;
             AllSamplesZoomedOutListView.ItemsSource = AllSamplesCollectionViewSource.View.CollectionGroups;
         }
 
         private void AllSampleSemanticZoomButton_Click(object sender, RoutedEventArgs e)
         {
-            AllSamplesSemanticZoom.IsZoomedInViewActive = !AllSamplesSemanticZoom.IsZoomedInViewActive;
+            AllSamplesSemanticZoom.ToggleActiveView();
         }
 
         private void GoToState_Click(object sender, RoutedEventArgs e)

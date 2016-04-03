@@ -19,6 +19,21 @@ namespace JustXaml.ViewModels
             await FilePane.OnNavigatedToAsync(parameter, state);
             await LearningPane.OnNavigatedToAsync(parameter, state);
             await SamplePane.OnNavigatedToAsync(parameter, state);
+            Messages.Messenger.Instance.GetEvent<Messages.LoadFile>().Subscribe(f => { CurrentFile = f; });
+        }
+
+        Models.File _CurrentFile = default(Models.File);
+        public Models.File CurrentFile { get { return _CurrentFile; } set { Set(ref _CurrentFile, value); CurrentFileChanged(value); } }
+        private async void CurrentFileChanged(Models.File value)
+        {
+            if (value == null)
+            {
+                Render.Clear();
+            }
+            else
+            {
+                await Render.ReadFileAsync(value);
+            }
         }
 
         public Services.RenderService Render { get; } = new Services.RenderService();
