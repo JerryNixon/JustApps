@@ -23,18 +23,6 @@
                         </c:ValueWhenConverter.Otherwise>
                     </c:ValueWhenConverter>
 
-                    <c:ValueWhenConverter x:Key="VisibleWhenZeroConverter">
-                        <c:ValueWhenConverter.When>
-                            <x:Int32>0</x:Int32>
-                        </c:ValueWhenConverter.When>
-                        <c:ValueWhenConverter.Value>
-                            <Visibility>Visible</Visibility>
-                        </c:ValueWhenConverter.Value>
-                        <c:ValueWhenConverter.Otherwise>
-                            <Visibility>Collapsed</Visibility>
-                        </c:ValueWhenConverter.Otherwise>
-                    </c:ValueWhenConverter>
-
                     <c:ValueWhenConverter x:Key="CollapsedWhenZeroConverter">
                         <c:ValueWhenConverter.When>
                             <x:Int32>0</x:Int32>
@@ -46,6 +34,18 @@
                             <Visibility>Visible</Visibility>
                         </c:ValueWhenConverter.Otherwise>
                     </c:ValueWhenConverter>
+
+                    <!--<c:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+                        <c:ValueWhenConverter.When>
+                            <x:Boolean>True</x:Boolean>
+                        </c:ValueWhenConverter.When>
+                        <c:ValueWhenConverter.Value>
+                            <Visibility>Visible</Visibility>
+                        </c:ValueWhenConverter.Value>
+                        <c:ValueWhenConverter.Otherwise>
+                            <Visibility>Collapsed</Visibility>
+                        </c:ValueWhenConverter.Otherwise>
+                    </c:ValueWhenConverter>-->
 
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

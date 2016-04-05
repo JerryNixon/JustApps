@@ -1,0 +1,52 @@
+﻿<Page x:Class="JustXaml.Views.Splash"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:JustXaml.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Grid Background="#0096FF">
+
+        <Canvas x:Name="rootCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+            <Viewbox x:Name="splashImage"
+                     Width="{Binding ActualWidth, ElementName=MyCanvas, Mode=OneWay}"
+                     Height="{Binding ActualHeight, ElementName=MyCanvas, Mode=OneWay}">
+                <Canvas Width="895.775" Height="464.109">
+                    <Path Canvas.Left="194.039" Canvas.Top="227.631" Width="234.768"
+                          Height="0.984436" Data="F1 M 428.807,227.631L 194.039,228.615" Stretch="Fill" />
+                    <Path Canvas.Left="191.21" Canvas.Top="18.2205" Width="272.405"
+                          Height="438.506"
+                          Data="F1 M 191.21,224.185L 319.661,18.2205L 463.615,241.903L 332.949,456.726L 191.21,224.185 Z "
+                          Fill="#34FFFFFF" Stretch="Fill" />
+                    <Path Canvas.Left="-4.57764e-005" Canvas.Top="0" Width="183.18"
+                          Height="464.109"
+                          Data="F1 M -4.57764e-005,231.568L 144.052,0L 183.18,61.2757L 77.6088,231.076L 180.227,408.997L 141.739,464.109L -4.57764e-005,231.568 Z "
+                          Fill="#80000000" Stretch="Fill" />
+                    <Path Canvas.Left="712.595" Canvas.Top="0.000244141" Width="183.18"
+                          Height="464.109"
+                          Data="F1 M 895.775,231.568L 751.723,0.000244141L 712.595,61.2759L 818.167,231.076L 715.548,408.997L 754.036,464.109L 895.775,231.568 Z "
+                          Fill="#80000000" Stretch="Fill" />
+                    <Path Canvas.Left="192.686" Canvas.Top="224.554" Width="377.621"
+                          Height="232.172"
+                          Data="F1 M 192.686,224.554L 429.791,227.015L 570.307,455.261L 334.426,456.726L 192.686,224.554 Z "
+                          Fill="#34006432" Stretch="Fill" />
+                    <Path Canvas.Left="335.786" Canvas.Top="239.443" Width="365.686"
+                          Height="215.573"
+                          Data="F1 M 465.228,240.274L 701.472,239.443L 570.553,454.031L 335.786,455.016L 465.228,240.274 Z "
+                          Fill="#67FFFFFF" Stretch="Fill" />
+                    <Path Canvas.Left="320.744" Canvas.Top="13.7808" Width="378.975"
+                          Height="226.4"
+                          Data="F1 M 320.744,18.7024L 557.972,13.7808L 699.719,240.181L 463.475,240.181L 320.744,18.7024 Z "
+                          Fill="#34FF7D00" Stretch="Fill" />
+                    <Path Canvas.Left="430.499" Canvas.Top="14.0267" Width="268.727"
+                          Height="441.481"
+                          Data="F1 M 430.499,227.385L 558.218,14.0267L 699.226,240.673L 570.769,455.508L 430.499,227.385 Z "
+                          Fill="#34FFFFFF" Stretch="Fill" />
+                </Canvas>
+            </Viewbox>
+        </Canvas>
+
+    </Grid>
+</Page>

@@ -15,6 +15,7 @@ namespace JustXaml.Models
     {
         public File()
         {
+            // empty for design-time
         }
 
         public File(IStorageFile file) : this()
@@ -25,5 +26,25 @@ namespace JustXaml.Models
 
         public string Title { get; set; }
         public IStorageFile StorageFile { get; set; }
+
+        public async Task<string> ReadTextAsync()
+        {
+            var service = Services.FileService.Instance;
+            return await service.ReadTextAsync(this);
+        }
+
+        public static async Task<File> GetAsync(Uri uri)
+        {
+            if (uri.ToString().StartsWith("ms-"))
+            {
+                var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
+                return new File(file);
+            }
+            else
+            {
+                var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(uri.ToString());
+                return new File(file);
+            }
+        }
     }
 }

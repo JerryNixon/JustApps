@@ -29,5 +29,17 @@ namespace JustXaml.Models
         public IEnumerable<Models.File> Files { get; set; }
         public StorageFolder StorageFolder { get; set; }
         public IEnumerable<Folder> Folders { get; set; }
+
+        public async Task<IEnumerable<Models.Folder>> GetFoldersAsync()
+        {
+            var service = Services.FolderService.Instance;
+            return await service.GetFoldersAsync(this);
+        }
+
+        public async Task<IEnumerable<Models.File>> GetFilesAsync()
+        {
+            var service = Services.FolderService.Instance;
+            return await service.GetFilesAsync(this);
+        }
     }
 }

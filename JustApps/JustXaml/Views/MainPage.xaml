@@ -4,6 +4,7 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
+      xmlns:converters="using:Template10.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustXaml.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -34,11 +35,6 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="RenderTransformOrigin" Value=".5,.5" />
             <Setter Property="RelativePanel.AlignRightWithPanel" Value="True" />
-            <Setter Property="RenderTransform">
-                <Setter.Value>
-                    <CompositeTransform ScaleX=".65" ScaleY=".65" />
-                </Setter.Value>
-            </Setter>
         </Style>
     </Page.Resources>
 
@@ -113,6 +109,7 @@
                         <Setter Target="RenderColumn.Width" Value="Auto" />
                         <Setter Target="RenderPane.Visibility" Value="Collapsed" />
                         <Setter Target="EditPane.Visibility" Value="Visible" />
+                        <Setter Target="EditPaneShowRenderButton.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="EditorAndRenderVisualState">
@@ -121,6 +118,7 @@
                         <Setter Target="RenderColumn.Width" Value="*" />
                         <Setter Target="RenderPane.Visibility" Value="Visible" />
                         <Setter Target="EditPane.Visibility" Value="Visible" />
+                        <Setter Target="EditPaneShowRenderButton.Visibility" Value="Collapsed" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -245,7 +243,8 @@
                     <RelativePanel x:Name="FilePane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                                   x:DeferLoadStrategy="Lazy">
 
                         <!--  #region Files Title  -->
 
@@ -274,24 +273,28 @@
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                   RelativePanel.Below="FilesTitleArea" />
+                                   RelativePanel.Below="FilesTitleArea"
+                                   Visibility="{Binding FilePane.RecentFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
                         <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="RecentFilesSubTitleArea"
-                                   RelativePanel.LeftOf="ClearRecentFilesButton" Text="Recent files" />
+                                   RelativePanel.LeftOf="ClearRecentFilesButton" Text="Recent files"
+                                   Visibility="{Binding FilePane.RecentFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
                         <Button x:Name="ClearRecentFilesButton" Click="{x:Bind ViewModel.FilePane.ClearRecent}"
                                 RelativePanel.AlignVerticalCenterWith="RecentFilesSubTitleArea"
-                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list">
+                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list"
+                                Visibility="{Binding FilePane.RecentFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}">
                             <SymbolIcon Symbol="Delete" />
                         </Button>
 
                         <!--  #endregion  -->
 
-                        <ListView x:Name="RecentFilesListView" DisplayMemberPath="Title"
+                        <ListView x:Name="RecentFilesListView" DisplayMemberPath="Title" IsItemClickEnabled="True"
+                                  ItemClick="{x:Bind ViewModel.FilePane.RecentFilesItemClicked}"
                                   ItemsSource="{Binding FilePane.RecentFiles}"
                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="RecentFilesSubTitleArea" />
+                                  RelativePanel.Below="RecentFilesSubTitleArea" SelectionMode="None" />
 
                         <!--  #region Folder Sub Title  -->
 
@@ -315,31 +318,33 @@
                         </Button>
 
                         <Button x:Name="FolderFilesRefreshButton"
-                                Click="{x:Bind ViewModel.FilePane.RefreshFiles}"
+                                Click="{x:Bind ViewModel.FilePane.RefreshFolderFiles}"
                                 RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
                                 Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
-                                ToolTipService.ToolTip="Refresh files">
+                                ToolTipService.ToolTip="Refresh files"
+                                Visibility="{Binding FilePane.FolderFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}">
                             <SymbolIcon Symbol="Refresh" />
                         </Button>
 
                         <!--  #endregion  -->
 
-                        <ListView x:Name="FolderFilesListView" DisplayMemberPath="Title"
+                        <ListView x:Name="FolderFilesListView" DisplayMemberPath="Title" IsItemClickEnabled="True"
+                                  ItemClick="{x:Bind ViewModel.FilePane.FolderFilesItemClicked}"
                                   ItemsSource="{Binding FilePane.FolderFiles}"
                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="FolderSubTitleArea" />
+                                  RelativePanel.Below="FolderSubTitleArea" SelectionMode="None" />
 
                     </RelativePanel>
 
                     <RelativePanel x:Name="SamplesPane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="FilePane">
+                                   RelativePanel.RightOf="FilePane" x:DeferLoadStrategy="Lazy">
 
                         <RelativePanel.Resources>
                             <CollectionViewSource x:Name="AllSamplesCollectionViewSource" IsSourceGrouped="True" ItemsPath="Files"
-                                                  Source="{Binding SamplePane.AllSamples}" />
+                                                  Source="{Binding SamplePane.UnfilteredSamples}" />
                         </RelativePanel.Resources>
 
                         <!--  #region Samples Title  -->
@@ -368,15 +373,19 @@
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                   RelativePanel.Below="SamplesTitleArea" />
+                                   RelativePanel.Below="SamplesTitleArea"
+                                   Visibility="{Binding SamplePane.RecentSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
                         <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="RecentSamplesSubTitleArea"
-                                   RelativePanel.LeftOf="ClearRecentSamplesButton" Text="Recent samples" />
+                                   RelativePanel.LeftOf="ClearRecentSamplesButton" Text="Recent samples"
+                                   Visibility="{Binding SamplePane.RecentSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
                         <Button x:Name="ClearRecentSamplesButton"
+                                Click="{x:Bind ViewModel.SamplePane.ClearRecent}"
                                 RelativePanel.AlignVerticalCenterWith="RecentSamplesSubTitleArea"
-                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list">
+                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list"
+                                Visibility="{Binding SamplePane.RecentSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}">
                             <SymbolIcon Symbol="Delete" />
                         </Button>
 
@@ -387,7 +396,7 @@
                                   ItemClick="{x:Bind ViewModel.SamplePane.RecentItemClicked}"
                                   ItemsSource="{Binding SamplePane.RecentSamples}"
                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="RecentSamplesSubTitleArea" />
+                                  RelativePanel.Below="RecentSamplesSubTitleArea" SelectionMode="None" />
 
                         <!--  #region All Samples Sub Title  -->
 
@@ -421,9 +430,9 @@
                         <ListView x:Name="FilteredSamplesListView" DisplayMemberPath="Title"
                                   IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.SamplePane.FilteredItemClicked}"
-                                  ItemsPanel="{Binding SamplePane.FilteredSamples}"
+                                  ItemsSource="{Binding SamplePane.FilteredSamples}"
                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="SearchTextBox"
+                                  RelativePanel.Below="SearchTextBox" SelectionMode="None"
                                   Visibility="{Binding SamplePane.FilteredListVisibility}" />
 
                         <SemanticZoom x:Name="AllSamplesSemanticZoom" RelativePanel.AlignLeftWithPanel="True"
@@ -431,13 +440,15 @@
                                       RelativePanel.Below="FilteredSamplesListView"
                                       Visibility="{Binding SamplePane.UnfilteredListVisibility}">
                             <SemanticZoom.ZoomedOutView>
-                                <ListView x:Name="AllSamplesZoomedOutListView" DisplayMemberPath="Group.Title" />
+                                <ListView x:Name="AllSamplesZoomedOutListView" DisplayMemberPath="Group.Title"
+                                          SelectionMode="None" />
                             </SemanticZoom.ZoomedOutView>
                             <SemanticZoom.ZoomedInView>
                                 <ListView x:Name="AllSamplesZoomedInListView" DisplayMemberPath="Title"
                                           IsItemClickEnabled="True"
                                           ItemClick="{x:Bind ViewModel.SamplePane.UnfilteredItemClicked}"
-                                          ItemsSource="{Binding Source={StaticResource AllSamplesCollectionViewSource}}">
+                                          ItemsSource="{Binding Source={StaticResource AllSamplesCollectionViewSource}}"
+                                          SelectionMode="None">
                                     <ListView.GroupStyle>
                                         <GroupStyle>
                                             <GroupStyle.HeaderTemplate>
@@ -455,7 +466,7 @@
                     <RelativePanel x:Name="LearningPane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="SamplesPane">
+                                   RelativePanel.RightOf="SamplesPane" x:DeferLoadStrategy="Lazy">
 
                         <!--  #region Learning Title  -->
 
@@ -521,20 +532,44 @@
 
                             <!--  #region Edit Title  -->
 
-                            <Rectangle x:Name="EditTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                            <Rectangle x:Name="EditPaneTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
                                        Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                             <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
-                                       RelativePanel.AlignVerticalCenterWith="EditTitleArea"
-                                       RelativePanel.LeftOf="ClearEditPaneButton" Text="EDIT" />
+                                       RelativePanel.AlignVerticalCenterWith="EditPaneTitleArea"
+                                       RelativePanel.LeftOf="EditPaneShowRenderButton"
+                                       Text="{Binding Title, FallbackValue=EDIT}" />
 
-                            <Button x:Name="ClearEditPaneButton" Click="{x:Bind ViewModel.RenderPane.Clear}"
-                                    RelativePanel.AlignVerticalCenterWith="EditTitleArea"
+                            <Button x:Name="EditPaneEmailButton" Click="{x:Bind ViewModel.RenderPane.Email}"
+                                    RelativePanel.AlignRightWithPanel="False"
+                                    RelativePanel.AlignVerticalCenterWith="EditPaneTitleArea"
+                                    RelativePanel.LeftOf="EditPaneClearButton"
+                                    Style="{StaticResource TopRightButton}"
+                                    Tag="{Binding Name, ElementName=NoEditorVisualState}"
+                                    ToolTipService.ToolTip="Send an email">
+                                <SymbolIcon Symbol="Mail" />
+                            </Button>
+
+                            <Button x:Name="EditPaneClearButton" Click="{x:Bind ViewModel.RenderPane.Clear}"
+                                    RelativePanel.AlignVerticalCenterWith="EditPaneTitleArea"
                                     Style="{StaticResource TopRightButton}"
                                     Tag="{Binding Name, ElementName=NoEditorVisualState}"
                                     ToolTipService.ToolTip="Reset base XAML">
                                 <SymbolIcon Symbol="Home" />
+                            </Button>
+
+                            <Button x:Name="EditPaneShowRenderButton"
+                                    Width="{StaticResource LeftPaneTitleAreaHeight}"
+                                    Height="{StaticResource LeftPaneTitleAreaHeight}" Margin="0,0,16,0"
+                                    Background="Transparent" Click="GoToState_Click"
+                                    RelativePanel.AlignBottomWith="EditPaneTitleArea"
+                                    RelativePanel.AlignRightWithPanel="False"
+                                    RelativePanel.AlignTopWith="EditPaneTitleArea"
+                                    RelativePanel.LeftOf="EditPaneEmailButton"
+                                    Tag="{Binding Name, ElementName=EditorAndRenderVisualState}"
+                                    ToolTipService.ToolTip="Open render pane">
+                                <SymbolIcon Symbol="OpenPane" />
                             </Button>
 
                             <!--  #endregion  -->
@@ -543,7 +578,7 @@
                                      IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
                                      RelativePanel.AlignBottomWithPanel="True"
                                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                     RelativePanel.Below="EditTitleArea"
+                                     RelativePanel.Below="EditPaneTitleArea"
                                      Text="{Binding RenderPane.XamlString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         </RelativePanel>
@@ -564,7 +599,7 @@
                             <Button x:Name="RenderPaneCloseButton" Click="GoToState_Click"
                                     RelativePanel.AlignVerticalCenterWith="RenderTitleArea"
                                     Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=EditorOnlyVisualState}" Visibility="Collapsed">
+                                    Tag="{Binding Name, ElementName=EditorOnlyVisualState}">
                                 <SymbolIcon Symbol="Clear" />
                             </Button>
 

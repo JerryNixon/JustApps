@@ -35,30 +35,55 @@ namespace JustXaml.ViewModels
         public string XamlString { get { return _XamlString; } set { Set(ref _XamlString, value); XamlStringChanged(value); } }
         private void XamlStringChanged(string value)
         {
-            RenderXaml(value);
+            if (!Enabled)
+                return;
+            Render(value);
         }
+
+        #region User Actions
 
         public async void Clear()
         {
-            var path = "ms-appx:///Templates/Default.txt";
-            await RenderFileAsync(path);
+            await ClearAsync();
         }
 
-        async Task RenderFileAsync(string value)
+        #endregion
+
+        public async void Email()
         {
-            Uri uri;
-            if (!Uri.TryCreate(value, UriKind.Absolute, out uri))
-            {
-                throw new InvalidCastException(value);
-            }
-            var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
-            XamlString = await FileIO.ReadTextAsync(file);
+            var message = new Windows.ApplicationModel.Email.EmailMessage();
+            message.Body = $"Hi,{Environment.NewLine}Question...{Environment.NewLine}{Environment.NewLine}{XamlString}";
+            message.Subject = "Just Code XAML Question";
+
+            var file = await ApplicationData.Current.TemporaryFolder.CreateFileAsync("Syntax.txt", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(file, XamlString);
+            var stream = Windows.Storage.Streams.RandomAccessStreamReference.CreateFromFile(file);
+            var attachment = new Windows.ApplicationModel.Email.EmailAttachment(file.Name, stream);
+            message.Attachments.Add(attachment);
+
+
+            var recipient = new Windows.ApplicationModel.Email.EmailRecipient("jnixon@microsoft.com");
+            message.To.Add(recipient);
+
+            await Windows.ApplicationModel.Email.EmailManager.ShowComposeNewEmailAsync(message);
         }
 
-        void RenderXaml(string xaml)
+        public async Task ClearAsync()
+        {
+            var uri = new Uri("ms-appx:///Templates/Default.txt");
+            var file = await Models.File.GetAsync(uri);
+            XamlString = await file.ReadTextAsync();
+        }
+
+        public async Task RenderAsync(Models.File file)
         {
             if (!Enabled)
                 return;
+            XamlString = await file.ReadTextAsync();
+        }
+
+        void Render(string xaml)
+        {
             ErrorLongMessage = string.Empty;
             if (string.IsNullOrWhiteSpace(xaml))
             {
