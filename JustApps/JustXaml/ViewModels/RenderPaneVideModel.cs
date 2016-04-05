@@ -10,15 +10,13 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Markup;
 
-namespace JustXaml.Services
+namespace JustXaml.ViewModels
 {
-    public class RenderService : BindableBase
+    public class RenderPaneViewModel : BindableBase
     {
-        string _XamlString = default(string);
-        public string XamlString { get { return _XamlString; } set { Set(ref _XamlString, value); XamlStringChanged(value); } }
-        private void XamlStringChanged(string value)
+        public async Task OnNavigatedToAsync(object parameter, IDictionary<string, object> state)
         {
-            Render(value);
+            await Task.CompletedTask;
         }
 
         UIElement _XamlResult = default(UIElement);
@@ -33,24 +31,20 @@ namespace JustXaml.Services
         bool _Enabled = true;
         public bool Enabled { get { return _Enabled; } set { Set(ref _Enabled, value); } }
 
-        string _TemplatePath = default(string);
-        public string TemplatePath { get { return _TemplatePath; } set { Set(ref _TemplatePath, value); TemplatePathChanged(value); } }
-        async void TemplatePathChanged(string value)
+        string _XamlString = default(string);
+        public string XamlString { get { return _XamlString; } set { Set(ref _XamlString, value); XamlStringChanged(value); } }
+        private void XamlStringChanged(string value)
         {
-            await ReadFileAsync(value);
+            RenderXaml(value);
         }
 
         public async void Clear()
         {
-            await ReadFileAsync("ms-appx:///Templates/Default.txt");
+            var path = "ms-appx:///Templates/Default.txt";
+            await RenderFileAsync(path);
         }
 
-        internal async Task ReadFileAsync(Models.File value)
-        {
-            await ReadFileAsync(value.FileInformation.Path);
-        }
-
-        private async Task ReadFileAsync(string value)
+        async Task RenderFileAsync(string value)
         {
             Uri uri;
             if (!Uri.TryCreate(value, UriKind.Absolute, out uri))
@@ -61,7 +55,7 @@ namespace JustXaml.Services
             XamlString = await FileIO.ReadTextAsync(file);
         }
 
-        void Render(string xaml)
+        void RenderXaml(string xaml)
         {
             if (!Enabled)
                 return;

@@ -1,4 +1,4 @@
-﻿using JustXaml.Services.FileService;
+﻿using JustXaml.Services.FileHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +15,12 @@ namespace JustXaml.Services
         public static SettingsService Instance = new SettingsService();
 
         Template10.Services.SettingsService.SettingsHelper _SettingsHelper;
-        FileHelper _FileHelper;
+        Services.FileHelper.FileHelper _FileHelper;
 
         private SettingsService()
         {
             _SettingsHelper = new Template10.Services.SettingsService.SettingsHelper();
-            _FileHelper = new FileHelper();
+            _FileHelper = new Services.FileHelper.FileHelper();
         }
 
         public async Task<List<string>> GetBlackListAsync()

@@ -8,7 +8,7 @@
       xmlns:local="using:JustXaml.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:JustXaml.Models" xmlns:vm="using:JustXaml.ViewModels"
-      x:Name="ThisPage" mc:Ignorable="d">
+      x:Name="ThisPage" RequestedTheme="Dark" mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
@@ -17,9 +17,13 @@
     <Page.Resources>
 
         <x:Double x:Key="LeftPaneWidth">250</x:Double>
-        <SolidColorBrush x:Key="LeftPaneBackground" Color="#FF191919" />
-        <SolidColorBrush x:Key="TitleAreaBackground" Opacity=".1" Color="White" />
-        <SolidColorBrush x:Key="SubTitleAreaBackground" Opacity=".05" Color="White" />
+        <SolidColorBrush x:Key="LeftPaneBackground" Color="#FF252526" />
+
+        <x:Double x:Key="LeftPaneTitleAreaHeight">48</x:Double>
+        <SolidColorBrush x:Key="LeftPaneTitleAreaBackground" Color="#FF303030" />
+
+        <x:Double x:Key="LeftPaneSubtitleAreaHeight">32</x:Double>
+        <SolidColorBrush x:Key="LeftPaneSubtitleAreaBackground" Color="#FF424242" />
 
         <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items" />
 
@@ -43,7 +47,7 @@
         <Interactivity:Interaction.Behaviors>
             <Core:EventTriggerBehavior>
                 <Core:GoToStateAction StateName="NoPaneVisualState" />
-                <Core:GoToStateAction StateName="NoEditorVisualState" />
+                <Core:GoToStateAction StateName="EditorAndRenderVisualState" />
             </Core:EventTriggerBehavior>
         </Interactivity:Interaction.Behaviors>
 
@@ -159,12 +163,11 @@
 
             <TextBlock Foreground="Yellow" RelativePanel.AlignLeftWithPanel="True"
                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                       Text="{Binding Render.ErrorShortMessage}"
-                       ToolTipService.ToolTip="{Binding Render.ErrorLongMessage}" />
+                       Text="{Binding RenderPane.ErrorShortMessage}"
+                       ToolTipService.ToolTip="{Binding RenderPane.ErrorLongMessage}" />
 
             <ToggleButton x:Name="StatusBarAutoRenderButton" Background="Transparent"
-                          Content="Auto-render" RelativePanel.AlignRightWithPanel="True"
-                          RequestedTheme="Dark" />
+                          Content="Auto-render" RelativePanel.AlignRightWithPanel="True" />
 
             <TextBlock x:Name="StatusBarLineColTextBlock"
                        RelativePanel.AlignVerticalCenterWithPanel="True"
@@ -184,7 +187,7 @@
 
             <SplitView.Pane>
 
-                <RelativePanel RequestedTheme="Dark">
+                <RelativePanel>
                     <RelativePanel.Resources>
                         <Style TargetType="RadioButton">
                             <Setter Property="Height" Value="48" />
@@ -237,7 +240,7 @@
             <SplitView.Content>
 
 
-                <RelativePanel RequestedTheme="Dark">
+                <RelativePanel>
 
                     <RelativePanel x:Name="FilePane" Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
@@ -246,7 +249,8 @@
 
                         <!--  #region Files Title  -->
 
-                        <Rectangle x:Name="FilesTitleArea" Height="48" Fill="{StaticResource TitleAreaBackground}"
+                        <Rectangle x:Name="FilesTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True" />
 
@@ -266,8 +270,9 @@
 
                         <!--  #region RecentFiles Sub Title  -->
 
-                        <Rectangle x:Name="RecentFilesSubTitleArea" Height="48"
-                                   Fill="{StaticResource SubTitleAreaBackground}"
+                        <Rectangle x:Name="RecentFilesSubTitleArea"
+                                   Height="{StaticResource LeftPaneSubtitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="FilesTitleArea" />
 
@@ -290,8 +295,8 @@
 
                         <!--  #region Folder Sub Title  -->
 
-                        <Rectangle x:Name="FolderSubTitleArea" Height="48"
-                                   Fill="{StaticResource SubTitleAreaBackground}"
+                        <Rectangle x:Name="FolderSubTitleArea" Height="{StaticResource LeftPaneSubtitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="RecentFilesListView" />
 
@@ -299,7 +304,7 @@
                                    RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
                                    RelativePanel.LeftOf="FolderFilesOpenButton" Text="Folder files" />
 
-                        <Button x:Name="FolderFilesOpenButton" Click="{x:Bind ViewModel.FilePane.OpenFolder}"
+                        <Button x:Name="FolderFilesOpenButton" Click="{x:Bind ViewModel.FilePane.PickFolder}"
                                 RelativePanel.AlignRightWithPanel="False"
                                 RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
                                 RelativePanel.LeftOf="FolderFilesRefreshButton"
@@ -339,8 +344,8 @@
 
                         <!--  #region Samples Title  -->
 
-                        <Rectangle x:Name="SamplesTitleArea" Height="48"
-                                   Fill="{StaticResource TitleAreaBackground}"
+                        <Rectangle x:Name="SamplesTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                         <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
@@ -359,8 +364,9 @@
 
                         <!--  #region Recent Samples Sub Title  -->
 
-                        <Rectangle x:Name="RecentSamplesSubTitleArea" Height="48"
-                                   Fill="{StaticResource SubTitleAreaBackground}"
+                        <Rectangle x:Name="RecentSamplesSubTitleArea"
+                                   Height="{StaticResource LeftPaneSubtitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="SamplesTitleArea" />
 
@@ -385,8 +391,9 @@
 
                         <!--  #region All Samples Sub Title  -->
 
-                        <Rectangle x:Name="AllSamplesSubTitleArea" Height="48"
-                                   Fill="{StaticResource SubTitleAreaBackground}"
+                        <Rectangle x:Name="AllSamplesSubTitleArea"
+                                   Height="{StaticResource LeftPaneSubtitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="RecentSamplesListView" />
 
@@ -452,8 +459,8 @@
 
                         <!--  #region Learning Title  -->
 
-                        <Rectangle x:Name="LearningTitleArea" Height="48"
-                                   Fill="{StaticResource TitleAreaBackground}"
+                        <Rectangle x:Name="LearningTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                         <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
@@ -479,8 +486,8 @@
 
                         <!--  #region Setting Title  -->
 
-                        <Rectangle x:Name="SettingTitleArea" Height="48"
-                                   Fill="{StaticResource TitleAreaBackground}"
+                        <Rectangle x:Name="SettingTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                   Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                    RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                         <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
@@ -514,28 +521,20 @@
 
                             <!--  #region Edit Title  -->
 
-                            <Rectangle x:Name="EditTitleArea" Height="48" Fill="{StaticResource TitleAreaBackground}"
+                            <Rectangle x:Name="EditTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                       Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                             <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
                                        RelativePanel.AlignVerticalCenterWith="EditTitleArea"
-                                       RelativePanel.LeftOf="OpenRenderPaneButton" Text="EDIT" />
+                                       RelativePanel.LeftOf="ClearEditPaneButton" Text="EDIT" />
 
-                            <Button x:Name="CloseEditPaneButton" Click="GoToState_Click"
+                            <Button x:Name="ClearEditPaneButton" Click="{x:Bind ViewModel.RenderPane.Clear}"
                                     RelativePanel.AlignVerticalCenterWith="EditTitleArea"
                                     Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=NoEditorVisualState}" Visibility="Collapsed">
-                                <SymbolIcon Symbol="Clear" />
-                            </Button>
-
-                            <Button x:Name="OpenRenderPaneButton" Click="GoToState_Click"
-                                    RelativePanel.AlignRightWithPanel="False"
-                                    RelativePanel.AlignVerticalCenterWith="EditTitleArea"
-                                    RelativePanel.LeftOf="CloseEditPaneButton"
-                                    Style="{StaticResource TopRightButton}"
-                                    Tag="{Binding Name, ElementName=EditorAndRenderVisualState}"
-                                    Visibility="Collapsed">
-                                <FontIcon Glyph="&#xEA61;" />
+                                    Tag="{Binding Name, ElementName=NoEditorVisualState}"
+                                    ToolTipService.ToolTip="Reset base XAML">
+                                <SymbolIcon Symbol="Home" />
                             </Button>
 
                             <!--  #endregion  -->
@@ -545,7 +544,7 @@
                                      RelativePanel.AlignBottomWithPanel="True"
                                      RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                      RelativePanel.Below="EditTitleArea"
-                                     Text="{Binding Render.XamlString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding RenderPane.XamlString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         </RelativePanel>
 
@@ -554,7 +553,8 @@
 
                             <!--  #region Render Title  -->
 
-                            <Rectangle x:Name="RenderTitleArea" Height="48" Fill="{StaticResource TitleAreaBackground}"
+                            <Rectangle x:Name="RenderTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                       Fill="{StaticResource LeftPaneTitleAreaBackground}"
                                        RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
 
                             <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
@@ -573,7 +573,8 @@
                             <ContentControl x:Name="Host" Grid.Row="3" HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                                             VerticalContentAlignment="Stretch" Background="Coral"
-                                            Content="{Binding Render.XamlResult}" RelativePanel.AlignBottomWithPanel="True"
+                                            Content="{Binding RenderPane.XamlResult}"
+                                            RelativePanel.AlignBottomWithPanel="True"
                                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
                                             RelativePanel.Below="RenderTitleArea" />
 

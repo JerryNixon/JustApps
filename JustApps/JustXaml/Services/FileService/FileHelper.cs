@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace JustXaml.Services.FileService
+namespace JustXaml.Services.FileHelper
 {
     public class FileHelper
     {

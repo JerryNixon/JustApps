@@ -104,18 +104,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages\LoadMainPage.cs" />
-    <Compile Include="Messages\LoadFile.cs" />
+    <Compile Include="Messages\LoadXamlFile.cs" />
+    <Compile Include="Messages\LoadXamlText.cs" />
     <Compile Include="Messages\Messenger.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Folder.cs" />
-    <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FileService\FileHelper.cs" />
-    <Compile Include="Services\FileService\FileService.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\FileService\StorageStrategies.cs" />
-    <Compile Include="Services\RenderService.cs" />
+    <Compile Include="Services\FolderService.cs" />
+    <Compile Include="ViewModels\RenderPaneVideModel.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\FilesPaneViewModel.cs" />
     <Compile Include="ViewModels\LearningPaneViewModel.cs" />
