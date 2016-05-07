@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Windows.Storage;
 
 namespace JustKiosk.Services
 {
@@ -41,7 +42,7 @@ namespace JustKiosk.Services
                 if (file == null)
                     return default(T);
                 // read content
-                var readValue = await Windows.Storage.FileIO.ReadTextAsync(file);
+                var readValue = await FileIO.ReadTextAsync(file);
                 // convert to obj
                 var _Result = Deserialize<T>(readValue);
                 return _Result;
@@ -65,7 +66,7 @@ namespace JustKiosk.Services
             // convert to string
             var serializedValue = Serialize(value);
             // save string to file
-            await Windows.Storage.FileIO.WriteTextAsync(file, serializedValue);
+            await FileIO.WriteTextAsync(file, serializedValue);
             // result
             return await FileExistsAsync(key, location);
         }
@@ -114,13 +115,13 @@ namespace JustKiosk.Services
                 switch (location)
                 {
                     case StorageStrategies.Local:
-                        retval = await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(key);
+                        retval = await Windows.Storage.ApplicationData.Current.LocalFolder.TryGetItemAsync(key) as StorageFile;
                         break;
                     case StorageStrategies.Roaming:
-                        retval = await Windows.Storage.ApplicationData.Current.RoamingFolder.GetFileAsync(key);
+                        retval = await Windows.Storage.ApplicationData.Current.RoamingFolder.TryGetItemAsync(key) as StorageFile;
                         break;
                     case StorageStrategies.Temporary:
-                        retval = await Windows.Storage.ApplicationData.Current.TemporaryFolder.GetFileAsync(key);
+                        retval = await Windows.Storage.ApplicationData.Current.TemporaryFolder.TryGetItemAsync(key) as StorageFile;
                         break;
                     default:
                         throw new NotSupportedException(location.ToString());
@@ -131,7 +132,6 @@ namespace JustKiosk.Services
                 System.Diagnostics.Debug.WriteLine("GetIfFileExistsAsync:FileNotFoundException");
                 return null;
             }
-
             return retval;
         }
 

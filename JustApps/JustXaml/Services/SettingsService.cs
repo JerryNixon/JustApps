@@ -23,18 +23,6 @@ namespace JustXaml.Services
             _FileHelper = new Services.FileHelper.FileHelper();
         }
 
-        public bool LoadPreviousFolder
-        {
-            get { return _SettingsHelper.Read(nameof(LoadPreviousFolder), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set { _SettingsHelper.Write(nameof(LoadPreviousFolder), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
-        }
-
-        public bool LoadPreviousFile
-        {
-            get { return _SettingsHelper.Read(nameof(LoadPreviousFile), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
-            set { _SettingsHelper.Write(nameof(LoadPreviousFile), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
-        }
-
         public string HockeyAppId = "1793f927ab86444b99c173db1d6f92c9";
 //#if DEBUG
 //        public string VideoAdAppId = "d25517cb-12d4-4699-8bdc-52040c712cab";

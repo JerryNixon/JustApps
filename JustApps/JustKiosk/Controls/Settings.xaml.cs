@@ -1,21 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace JustKiosk.Controls
 {
@@ -32,41 +19,68 @@ namespace JustKiosk.Controls
 
         private async void Settings_Loaded(object sender, RoutedEventArgs e)
         {
-            var list = await _SettingsService.GetBlackListAsync();
-            var observable = new ObservableCollection<string>(list);
-            BlackListEditor.ItemsSource = observable;
-            BlackListEditor.ListChanged += async (s, args) => 
+            var list = await _SettingsService.LoadBlackListAsync();
+            BlackListEditor.ItemsSource = new ObservableCollection<string>(list);
+            BlackListEditor.ListChanged += async (s, args) =>
             {
-                await _SettingsService.SetBlackListAsync(BlackListEditor.ItemsSource.ToList());
+                await _SettingsService.SaveBlackListAsync(BlackListEditor.ItemsSource.ToList());
             };
+            UpdateVisualStates();
         }
 
         public static event EventHandler Navigate;
-        private void Navigate_Click(object sender, RoutedEventArgs e)
-        {
-            Navigate?.Invoke(this, EventArgs.Empty);
-        }
-
         public static event EventHandler ShowHelp;
-        private void ShowHelp_Click(object sender, RoutedEventArgs e)
+        private void RaiseNavigate() => Navigate?.Invoke(this, EventArgs.Empty);
+        private void RaiseShowHelp() => ShowHelp?.Invoke(this, EventArgs.Empty);
+        public void SetPin() => ViewModel.SetPin();
+        private async void PickFolder()
         {
-            ShowHelp?.Invoke(this, EventArgs.Empty);
+            var folder = await ViewModel.PickFolderAsync();
+            UpdateVisualStates();
         }
 
-        private async void Contact_Click(object sender, RoutedEventArgs e)
+        private async void SendSupportEmail()
         {
-            var to = "support@liquid47.com";
-            var subject = "Just for Kiosks";
-            var body = "My feedback is...";
+            var to = Uri.EscapeUriString("support@liquid47.com");
+            var subject = Uri.EscapeUriString("Just for Kiosks");
+            var body = Uri.EscapeUriString("My feedback is...");
             var uri = new Uri($"mailto:{to}?subject={subject}&body={body}");
             await Windows.System.Launcher.LaunchUriAsync(uri);
         }
 
-        public void SetPin()
+        void UpdateVisualStates()
         {
-            (DataContext as ViewModels.AdminViewModel).SetPin();
+            if (ViewModel.IsWebContent)
+            {
+                VisualStateManager.GoToState(this, WebContentState.Name, true);
+                if (!ViewModel.HomeUrl.StartsWith("http"))
+                {
+                    ViewModel.HomeUrl = string.Empty;
+                }
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, LocalContentState.Name, true);
+                if (ViewModel.LocalFolder == null)
+                {
+                    ViewModel.HomeUrl = "Invalid";
+                }
+                else
+                {
+                    ViewModel.HomeUrl = $"default.html";
+                }
+            }
         }
 
+        ViewModels.AdminViewModel ViewModel => DataContext as ViewModels.AdminViewModel;
 
+        private async void IsTrial_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel != null && (sender as ToggleSwitch).IsOn)
+            {
+                await ViewModel.RequestAppPurchaseAsync();
+                (sender as ToggleSwitch).IsOn = !ViewModel.IsTrial;
+            }
+        }
     }
 }

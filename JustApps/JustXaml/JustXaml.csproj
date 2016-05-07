@@ -109,19 +109,28 @@
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\FileService\FileHelper.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\FileHelper\FileHelper.cs" />
     <Compile Include="Services\FileService.cs" />
-    <Compile Include="Services\FileService\StorageStrategies.cs" />
+    <Compile Include="Services\FileHelper\StorageStrategies.cs" />
     <Compile Include="Services\FolderService.cs" />
     <Compile Include="Services\FutureService.cs" />
     <Compile Include="Services\JumpListService.cs" />
     <Compile Include="Services\MruService.cs" />
-    <Compile Include="ViewModels\RenderPaneVideModel.cs" />
+    <Compile Include="ViewModels\FilesPaneViewModel.cs">
+      <DependentUpon>MainPageViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\LearningPaneViewModel.cs">
+      <DependentUpon>MainPageViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="ViewModels\FilesPaneViewModel.cs" />
-    <Compile Include="ViewModels\LearningPaneViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\SamplesPaneViewModel.cs" />
+    <Compile Include="ViewModels\RenderPaneVideModel.cs">
+      <DependentUpon>MainPageViewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\SamplesPaneViewModel.cs">
+      <DependentUpon>MainPageViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -181,53 +190,106 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Help.htm" />
+    <Content Include="Templates\Repeater\VariableSizedWrapGrid.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Include="Templates\Styles\Explicit Style.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Include="Templates\Styles\BasedOn Style.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Include="Templates\Styles\RequestedTheme.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Include="Templates\Styles\Implicit Style.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="Templates\Content\Image.txt">
+    <Content Include="Templates\Content\Image.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Content\TextBlock.txt">
+    <Content Include="Templates\Content\TextBlock.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Content\Path.txt">
+    <Content Include="Templates\Content\Path.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Layout\Pivot.txt">
+    <Content Include="Templates\Layout\Pivot.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Layout\RelativePanel.txt">
+    <Content Include="Templates\Layout\RelativePanel.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Repeater\ListBox.txt">
+    <Content Include="Templates\Repeater\ListBox.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Repeater\ListView.txt">
+    <Content Include="Templates\Repeater\ListView.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Repeater\GridView.txt">
+    <Content Include="Templates\Repeater\GridView.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Repeater\ItemsControl.txt">
+    <Content Include="Templates\Repeater\ItemsControl.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Repeater\FlipView.txt">
+    <Content Include="Templates\Repeater\FlipView.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Layout\Canvas.txt">
+    <Content Include="Templates\Layout\Canvas.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Layout\Grid.txt">
+    <Content Include="Templates\Layout\Grid.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Layout\StackPanel.txt">
+    <Content Include="Templates\Layout\StackPanel.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
-    <Content Include="Templates\Default.txt">
+    <Content Include="Templates\Default.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +313,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="ActiproSoftware.Universal, Version=16.1.0303">
+      <Name>ActiproSoftware.Universal</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

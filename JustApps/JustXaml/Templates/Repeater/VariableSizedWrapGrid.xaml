@@ -1,0 +1,39 @@
+﻿<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Background="White">
+
+    <Panel.Resources>
+        <Style TargetType="Rectangle">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+    </Panel.Resources>
+
+    <GridView>
+
+        <GridView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <VariableSizedWrapGrid ItemHeight="100" ItemWidth="100" />
+            </ItemsPanelTemplate>
+        </GridView.ItemsPanel>
+
+        <GridView.ItemContainerStyle>
+            <Style TargetType="GridViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            </Style>
+        </GridView.ItemContainerStyle>
+
+        <GridView.Items>
+            <GridViewItem VariableSizedWrapGrid.ColumnSpan="1" VariableSizedWrapGrid.RowSpan="1">
+                <Rectangle Fill="Maroon" />
+            </GridViewItem>
+            <GridViewItem VariableSizedWrapGrid.ColumnSpan="1" VariableSizedWrapGrid.RowSpan="1">
+                <Rectangle Fill="SteelBlue" />
+            </GridViewItem>
+            <GridViewItem VariableSizedWrapGrid.ColumnSpan="1" VariableSizedWrapGrid.RowSpan="1">
+                <Rectangle Fill="DarkGreen" />
+            </GridViewItem>
+        </GridView.Items>
+
+    </GridView>
+
+</Grid>

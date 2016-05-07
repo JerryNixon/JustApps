@@ -1,0 +1,16 @@
+﻿<Grid
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Red" />
+        </Style>
+    </Grid.Resources>
+
+	<StackPanel>
+		<TextBlock Text="Hello world" Margin="16" />
+		<TextBlock Text="Hello world" Margin="16" />
+	<StackPanel>
+
+</Grid>

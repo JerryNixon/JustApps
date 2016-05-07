@@ -22,7 +22,7 @@ namespace JustKiosk.Services
             _FileHelper = new FileHelper();
         }
 
-        public async Task<List<string>> GetBlackListAsync()
+        public async Task<List<string>> LoadBlackListAsync()
         {
             var list = await _FileHelper.ReadFileAsync<List<string>>("BlackList", StorageStrategies.Roaming) ?? new List<string>();
             if (!list.Any())
@@ -36,7 +36,7 @@ namespace JustKiosk.Services
             }
             return list;
         }
-        public async Task SetBlackListAsync(List<string> value) => await _FileHelper.WriteFileAsync("BlackList", value, StorageStrategies.Roaming);
+        public async Task SaveBlackListAsync(List<string> value) => await _FileHelper.WriteFileAsync("BlackList", value, StorageStrategies.Roaming);
 
         public bool IntroShown
         {
@@ -72,6 +72,12 @@ namespace JustKiosk.Services
         {
             get { return _SettingsHelper.Read(nameof(PreventWhenFace), false, Template10.Services.SettingsService.SettingsStrategies.Roam); }
             set { _SettingsHelper.Write(nameof(PreventWhenFace), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+        }
+
+        public bool IsWebContent
+        {
+            get { return _SettingsHelper.Read(nameof(IsWebContent), true, Template10.Services.SettingsService.SettingsStrategies.Roam); }
+            set { _SettingsHelper.Write(nameof(IsWebContent), value, Template10.Services.SettingsService.SettingsStrategies.Roam); }
         }
 
         public string CameraSubFolder = "Just4Kiosks";

@@ -11,96 +11,165 @@ namespace JustXaml.Services
 {
     public class MruService
     {
-        FutureService _FutureService;
+        #region Folders
 
-        public MruService()
-        {
-            _FutureService = new FutureService();
-        }
-
-        public async Task<IEnumerable<Models.Folder>> GetFoldersAsync(string metadata = null)
+        public async Task<IEnumerable<Models.Folder>> GetFoldersAsync(Folder.Types? type)
         {
             var list = new List<Models.Folder>();
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            foreach (var item in mru.Entries.Where(x => x.Metadata == (metadata ?? x.Metadata)))
+            var entries = mru.Entries.Where(x => x.Metadata.StartsWith(typeof(Folder).ToString()));
+            if (type != null)
+            {
+                entries = entries.Where(x => new Folder.MetadataInfo(x.Metadata).Type == type);
+            }
+            foreach (var item in entries)
             {
                 var Folder = await mru.GetFolderAsync(item.Token);
-                list.Add(new Models.Folder(Folder));
+                list.Add(new Models.Folder(Folder, item.Metadata));
             }
             return list;
         }
 
-        public void Add(Folder value, string metadata = null, int limit = 10)
+        public void Add(Folder value, int limit = 10)
         {
             if (value == null)
+            {
                 throw new ArgumentNullException(nameof(value));
+            }
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            foreach (var item in mru.Entries.Where(x => x.Metadata == metadata).Skip(limit - 1).ToArray())
+            RemoveExisting(value);
+            PruneListToLimit(limit, value.Type);
+            mru.Add(value.StorageFolder, value.Metadata);
+        }
+
+        private static void RemoveExisting(Folder value)
+        {
+            var mru = StorageApplicationPermissions.MostRecentlyUsedList;
+            foreach (var item in mru.Entries.Where(x => x.Metadata == value.Metadata).ToArray())
             {
                 mru.Remove(item.Token);
             }
-            if (!Exists(value))
-                mru.Add(value.StorageFolder, metadata ?? value.StorageFolder.Path);
-            _FutureService.Add(value);
         }
 
-        public bool Exists(Folder value, string metadata = null)
+        public bool Exists(Folder value)
         {
             if (value == null)
+            {
                 throw new ArgumentNullException(nameof(value));
+            }
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            return mru.Entries.Any(x => x.Metadata == (metadata ?? value.StorageFolder.Path));
+            return mru.Entries.Any(x => x.Metadata == value.Metadata);
         }
 
-        public void Clear()
+        public void Clear(Folder.Types? type)
+        {
+            try
+            {
+                var mru = StorageApplicationPermissions.MostRecentlyUsedList;
+                var entries = mru.Entries.Where(x => x.Metadata.StartsWith(typeof(Folder).ToString()));
+                if (type != null)
+                {
+                    entries = entries.Where(x => new Folder.MetadataInfo(x.Metadata).Type == type);
+                }
+                foreach (var item in entries.ToArray())
+                {
+                    mru.Remove(item.Token);
+                }
+            }
+            catch (Exception)
+            {
+                Debugger.Break();
+                throw;
+            }
+        }
+
+        private static void PruneListToLimit(int limit, Folder.Types? type)
         {
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            mru.Clear();
+            var entries = mru.Entries.Where(x => x.Metadata.StartsWith(typeof(Folder).ToString()));
+            if (type != null)
+            {
+                entries = entries.Where(x => new Folder.MetadataInfo(x.Metadata).Type == type);
+            }
+            foreach (var item in entries.Skip(limit - 1).ToArray())
+            {
+                mru.Remove(item.Token);
+            }
         }
 
-        public async Task<IEnumerable<Models.File>> GetFilesAsync(string metadata = null)
+        #endregion
+
+        #region files
+
+        public async Task<IEnumerable<Models.File>> GetFilesAsync(File.Types? type = null)
         {
             var list = new List<Models.File>();
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            foreach (var item in mru.Entries.Where(x => x.Metadata == (metadata ?? x.Metadata)))
+            var entries = mru.Entries.Where(x => x.Metadata.StartsWith(typeof(File).ToString()));
+            if (type != null)
+                entries = entries.Where(x => new File.MetadataInfo(x.Metadata).Type == type);
+            foreach (var item in entries)
             {
-                try
-                {
-                    var file = await mru.GetFileAsync(item.Token);
-                    list.Add(new Models.File(file));
-                }
-                catch (Exception)
-                {
-                    Debugger.Break();
-                }
+                var file = await mru.GetFileAsync(item.Token);
+                list.Add(new File(file, item.Metadata));
             }
             return list;
         }
 
-        public void Add(File value, string metadata = null, int limit = 10)
+        public void Add(File value, int limit = 4)
         {
             if (value == null)
+            {
                 throw new ArgumentNullException(nameof(value));
+            }
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            foreach (var item in mru.Entries.Where(x => x.Metadata == metadata).Skip(limit - 1).ToArray())
+            RemoveExisting(value);
+            PruneListToLimit(limit, value.Type);
+            mru.Add(value.StorageFile, value.Metadata);
+        }
+
+        private static void RemoveExisting(File value)
+        {
+            var mru = StorageApplicationPermissions.MostRecentlyUsedList;
+            foreach (var item in mru.Entries.Where(x => x.Metadata == value.Metadata).ToArray())
             {
                 mru.Remove(item.Token);
             }
-            if (!Exists(value))
-                mru.Add(value.StorageFile, metadata ?? value.StorageFile.Path);
-            _FutureService.Add(value);
         }
 
         public bool Exists(File value, string metadata = null)
         {
             if (value == null)
+            {
                 throw new ArgumentNullException(nameof(value));
+            }
             var mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            return mru.Entries.Any(x => x.Metadata == (metadata ?? value.StorageFile.Path));
+            return mru.Entries.Any(x => x.Metadata == (value.Metadata));
         }
 
+        public void Clear(File.Types type)
+        {
+            var mru = StorageApplicationPermissions.MostRecentlyUsedList;
+            var entries = mru.Entries.Where(x => x.Metadata.StartsWith(typeof(File).ToString()));
+            entries = entries.Where(x => new File.MetadataInfo(x.Metadata).Type == type);
+            foreach (var item in entries.ToArray())
+            {
+                mru.Remove(item.Token);
+            }
+        }
 
+        private static void PruneListToLimit(int limit, File.Types? type)
+        {
+            var mru = StorageApplicationPermissions.MostRecentlyUsedList;
+            var entries = mru.Entries.Where(x => x.Metadata.StartsWith(typeof(File).ToString()));
+            if (type != null)
+                entries = entries.Where(x => new File.MetadataInfo(x.Metadata).Type == type);
+            foreach (var item in entries.Skip(limit - 1).ToArray())
+            {
+                mru.Remove(item.Token);
+            }
+        }
 
-
+        #endregion
     }
 }

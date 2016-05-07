@@ -14,23 +14,26 @@ namespace JustXaml.Services
         {
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
             if (!Exists(value))
-                futureAccessList.Add(value.StorageFile, value.StorageFile.Path);
+            {
+                futureAccessList.Add(value.StorageFile, value.Metadata);
+            }
         }
 
         public bool Exists(File value)
         {
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
-            return futureAccessList.Entries.Any(x => x.Metadata == value.StorageFile.Path);
+            return futureAccessList.Entries.Any(x => x.Metadata == value.Metadata);
         }
 
         public async Task<IEnumerable<Models.Folder>> GetFoldersAsync()
         {
             var list = new List<Models.Folder>();
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
-            foreach (var item in futureAccessList.Entries)
+            var entries = futureAccessList.Entries.Where(x => x.Metadata.StartsWith(typeof(Folder).ToString()));
+            foreach (var item in entries)
             {
                 var folder = await futureAccessList.GetFolderAsync(item.Token);
-                list.Add(new Models.Folder(folder));
+                list.Add(new Models.Folder(folder, item.Metadata));
             }
             return list;
         }
@@ -40,7 +43,7 @@ namespace JustXaml.Services
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
             if (Exists(value))
             {
-                var item = futureAccessList.Entries.First(x => x.Metadata == value.StorageFile.Path);
+                var item = futureAccessList.Entries.First(x => x.Metadata == value.Metadata);
                 futureAccessList.Remove(item.Token);
             }
         }
@@ -49,13 +52,15 @@ namespace JustXaml.Services
         {
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
             if (!Exists(value))
-                futureAccessList.Add(value.StorageFolder, value.StorageFolder.Path);
+            {
+                futureAccessList.Add(value.StorageFolder, value.Metadata);
+            }
         }
 
         public bool Exists(Folder value)
         {
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
-            return futureAccessList.Entries.Any(x => x.Metadata == value.StorageFolder.Path);
+            return futureAccessList.Entries.Any(x => x.Metadata == value.Metadata);
         }
 
         public void Remove(Folder value)
@@ -63,19 +68,26 @@ namespace JustXaml.Services
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
             if (Exists(value))
             {
-                var item = futureAccessList.Entries.First(x => x.Metadata == value.StorageFolder.Path);
+                var item = futureAccessList.Entries.First(x => x.Metadata == value.Metadata);
                 futureAccessList.Remove(item.Token);
             }
+        }
+
+        internal void Clear()
+        {
+            var futureAccessList = StorageApplicationPermissions.FutureAccessList;
+            futureAccessList.Clear();
         }
 
         public async Task<IEnumerable<Models.File>> GetFilesAsync()
         {
             var list = new List<Models.File>();
             var futureAccessList = StorageApplicationPermissions.FutureAccessList;
-            foreach (var item in futureAccessList.Entries)
+            var entries = futureAccessList.Entries.Where(x => x.Metadata.StartsWith(typeof(File).ToString()));
+            foreach (var item in entries)
             {
                 var file = await futureAccessList.GetFileAsync(item.Token);
-                list.Add(new Models.File(file));
+                list.Add(new Models.File(file, item.Metadata));
             }
             return list;
         }

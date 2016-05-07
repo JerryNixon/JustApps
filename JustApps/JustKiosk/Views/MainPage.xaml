@@ -6,32 +6,22 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
-      xmlns:c="using:Template10.Converters" xmlns:controls="using:Template10.Controls"
+      xmlns:c="using:Template10.Converters"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:ctrl="using:JustKiosk.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustKiosk.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:t="using:JustKiosk.Triggers" xmlns:vm="using:JustKiosk.ViewModels"
-      x:Name="ThisPage" mc:Ignorable="d">
+      xmlns:t="using:JustKiosk.Triggers"
+      xmlns:vm="using:JustKiosk.ViewModels"
+      x:Name="ThisPage"
+      mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Page.Resources>
-        <c:ValueWhenConverter x:Key="VisibilityConverter">
-            <c:ValueWhenConverter.When>
-                <x:Boolean>True</x:Boolean>
-            </c:ValueWhenConverter.When>
-            <c:ValueWhenConverter.Value>
-                <Visibility>Visible</Visibility>
-            </c:ValueWhenConverter.Value>
-            <c:ValueWhenConverter.Otherwise>
-                <Visibility>Collapsed</Visibility>
-            </c:ValueWhenConverter.Otherwise>
-        </c:ValueWhenConverter>
-    </Page.Resources>
-
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid x:Name="grid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
@@ -65,11 +55,12 @@
 
         <SplitView x:Name="MySplitView"
                    IsPaneOpen="{x:Bind ViewModel.AdminViewModel.IsAdmin, Mode=TwoWay}"
-                   PaneBackground="White" PanePlacement="Right">
+                   PaneBackground="White"
+                   PanePlacement="Right">
 
             <SplitView.Pane>
                 <Border BorderBrush="DimGray" BorderThickness="2,0,0,0">
-                    <Controls:Settings DataContext="{Binding AdminViewModel}" />
+                    <ctrl:Settings DataContext="{Binding AdminViewModel}" />
                 </Border>
             </SplitView.Pane>
 
@@ -85,27 +76,44 @@
                         </Style>
                     </RelativePanel.Resources>
 
-                    <WebView x:Name="MyWebView" RelativePanel.AlignBottomWithPanel="True"
-                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                    <WebView x:Name="MyWebView"
+                             RelativePanel.AlignBottomWithPanel="True"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True">
                     </WebView>
 
-                    <Button x:Name="HomeButton" Click="Home_Click" RelativePanel.AlignBottomWithPanel="True">
+                    <controls:RingSegment x:Name="TimerRing"
+                                          Margin="32"
+                                          EndAngle="359.99"
+                                          Fill="Silver"
+                                          InnerRadius="20"
+                                          Radius="24"
+                                          RelativePanel.AlignBottomWithPanel="True"
+                                          StartAngle="0" />
+
+                    <Button x:Name="HomeButton"
+                            Click="Home_Click"
+                            RelativePanel.AlignBottomWithPanel="True">
                         <SymbolIcon Symbol="Home" />
                     </Button>
 
-                    <Button Click="Back_Click" Visibility="{Binding AdminViewModel.ShowNavButtons, Converter={StaticResource VisibilityConverter}}">
+                    <Button Click="Back_Click" Visibility="{Binding AdminViewModel.ShowNavButtons, Converter={StaticResource VisibleWhenTrueConverter}}">
                         <SymbolIcon Symbol="Back" />
                     </Button>
 
-                    <Button Content="..." RelativePanel.AlignBottomWithPanel="True"
+                    <Button Content="..."
+                            RelativePanel.AlignBottomWithPanel="True"
                             RelativePanel.AlignRightWithPanel="True">
                         <Button.Flyout>
                             <Flyout x:Name="AdminFlyout" Placement="Top">
                                 <StackPanel>
-                                    <PasswordBox Margin="4,0,4,0" Background="LightSteelBlue" Header="Please enter pin"
-                                                 IsHitTestVisible="False" Password="{Binding AdminViewModel.TypedPin}" />
-                                    <Controls:NumberPad OnSubmit="{x:Bind ViewModel.AdminViewModel.Authenticate}" Pin="{Binding AdminViewModel.TypedPin, Mode=TwoWay}" />
+                                    <PasswordBox Margin="4,0,4,0"
+                                                 Background="LightSteelBlue"
+                                                 Header="Please enter pin"
+                                                 IsHitTestVisible="False"
+                                                 Password="{Binding AdminViewModel.TypedPin}" />
+                                    <ctrl:NumberPad OnSubmit="{x:Bind ViewModel.AdminViewModel.Authenticate}" Pin="{Binding AdminViewModel.TypedPin, Mode=TwoWay}" />
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>
@@ -129,7 +137,9 @@
             </Interactivity:Interaction.Behaviors>
 
             <Viewbox IsHitTestVisible="False">
-                <Image x:Name="OverlayImage" Margin="140" Stretch="Uniform" />
+                <Image x:Name="OverlayImage"
+                       Margin="140"
+                       Stretch="Uniform" />
             </Viewbox>
 
         </Grid>

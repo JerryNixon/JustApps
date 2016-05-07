@@ -3,13 +3,17 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:SyntaxEditor="using:ActiproSoftware.UI.Xaml.Controls.SyntaxEditor"
       xmlns:controls="using:Template10.Controls"
       xmlns:converters="using:Template10.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:JustXaml.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:models="using:JustXaml.Models" xmlns:vm="using:JustXaml.ViewModels"
-      x:Name="ThisPage" RequestedTheme="Dark" mc:Ignorable="d">
+      xmlns:models="using:JustXaml.Models"
+      xmlns:vm="using:JustXaml.ViewModels"
+      x:Name="ThisPage"
+      RequestedTheme="Dark"
+      mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
@@ -26,9 +30,12 @@
         <x:Double x:Key="LeftPaneSubtitleAreaHeight">32</x:Double>
         <SolidColorBrush x:Key="LeftPaneSubtitleAreaBackground" Color="#FF424242" />
 
-        <CollectionViewSource x:Name="CVS" IsSourceGrouped="True" ItemsPath="Items" />
+        <CollectionViewSource x:Name="CVS"
+                              IsSourceGrouped="True"
+                              ItemsPath="Items" />
 
-        <Style x:Name="TopRightButton" BasedOn="{StaticResource TextBlockButtonStyle}"
+        <Style x:Name="TopRightButton"
+               BasedOn="{StaticResource TextBlockButtonStyle}"
                TargetType="Button">
             <Setter Property="Margin" Value="0,12,12,12" />
             <Setter Property="Padding" Value="0" />
@@ -124,8 +131,11 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <RelativePanel x:Name="MenuBar" Background="#FFF0F0F0" RelativePanel.AlignLeftWithPanel="True"
-                       RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+        <RelativePanel x:Name="MenuBar"
+                       Background="#FFF0F0F0"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True"
+                       RelativePanel.AlignTopWithPanel="True">
             <RelativePanel.Resources>
                 <Style BasedOn="{StaticResource TextBlockButtonStyle}" TargetType="Button">
                     <Setter Property="Foreground" Value="Black" />
@@ -147,9 +157,11 @@
 
         </RelativePanel>
 
-        <RelativePanel x:Name="StatusBar" Background="#FF68217A"
+        <RelativePanel x:Name="StatusBar"
+                       Background="#FF68217A"
                        RelativePanel.AlignBottomWithPanel="True"
-                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True">
 
             <RelativePanel.Resources>
                 <Style TargetType="TextBlock">
@@ -159,13 +171,16 @@
                 </Style>
             </RelativePanel.Resources>
 
-            <TextBlock Foreground="Yellow" RelativePanel.AlignLeftWithPanel="True"
+            <TextBlock Foreground="Yellow"
+                       RelativePanel.AlignLeftWithPanel="True"
                        RelativePanel.AlignVerticalCenterWithPanel="True"
                        Text="{Binding RenderPane.ErrorShortMessage}"
                        ToolTipService.ToolTip="{Binding RenderPane.ErrorLongMessage}" />
 
-            <ToggleButton x:Name="StatusBarAutoRenderButton" Background="Transparent"
-                          Content="Auto-render" RelativePanel.AlignRightWithPanel="True" />
+            <ToggleButton x:Name="StatusBarAutoRenderButton"
+                          Background="Transparent"
+                          Content="Auto-render"
+                          RelativePanel.AlignRightWithPanel="True" />
 
             <TextBlock x:Name="StatusBarLineColTextBlock"
                        RelativePanel.AlignVerticalCenterWithPanel="True"
@@ -178,9 +193,13 @@
 
         </RelativePanel>
 
-        <SplitView Background="Black" DisplayMode="CompactInline" OpenPaneLength="48"
-                   PaneBackground="#FF333333" RelativePanel.Above="StatusBar"
-                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+        <SplitView Background="Black"
+                   DisplayMode="CompactInline"
+                   OpenPaneLength="48"
+                   PaneBackground="#FF333333"
+                   RelativePanel.Above="StatusBar"
+                   RelativePanel.AlignLeftWithPanel="True"
+                   RelativePanel.AlignRightWithPanel="True"
                    RelativePanel.Below="MenuBar">
 
             <SplitView.Pane>
@@ -193,38 +212,57 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="RadioButton">
-                                        <ToggleButton Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
-                                                      Background="Transparent" Content="{TemplateBinding Content}"
+                                        <ToggleButton Width="{TemplateBinding Width}"
+                                                      Height="{TemplateBinding Height}"
+                                                      Background="Transparent"
+                                                      Content="{TemplateBinding Content}"
                                                       IsChecked="{Binding IsChecked, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </RelativePanel.Resources>
-                    <RadioButton x:Name="LeftSideFilePaneButton" Checked="GoToState_Click" GroupName="LeftMenu"
+                    <RadioButton x:Name="LeftSideFilePaneButton"
+                                 Checked="GoToState_Click"
+                                 GroupName="LeftMenu"
                                  IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                  Tag="{Binding Name, ElementName=FilePaneVisualState}">
                         <SymbolIcon Symbol="OpenFile" />
                     </RadioButton>
-                    <RadioButton x:Name="LeftSideSamplesPaneButton" Checked="GoToState_Click"
+                    <RadioButton x:Name="LeftSideSamplesPaneButton"
+                                 Checked="GoToState_Click"
                                  GroupName="LeftMenu"
                                  IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                  RelativePanel.Below="LeftSideFilePaneButton"
                                  Tag="{Binding Name, ElementName=SamplesPaneVisualState}">
-                        <Viewbox Width="24" Height="24" Stretch="Uniform">
+                        <Viewbox Width="24"
+                                 Height="24"
+                                 Stretch="Uniform">
                             <PathIcon Data="M2.0020766,10.313703L2.0020766,22.739014 12.952951,29.108055 12.952951,16.582943z M26.029068,10.240884L14.954998,16.575445 14.954998,29.109612 26.029068,22.735962z M7.9547414,5.766717L3.0402941,8.6020098 13.947012,14.847024 18.915749,12.004758z M13.948007,2.309021L9.9642581,4.6073656 20.933895,10.850318 24.872543,8.5972929z M13.946053,0L28.032,8.1069946 28.032,23.891968 13.9441,32 0,23.888977 0,8.0460205z" />
                         </Viewbox>
                     </RadioButton>
-                    <RadioButton x:Name="LeftSideLearningPaneButton" Checked="GoToState_Click"
+                    <RadioButton x:Name="LeftSideLearningPaneButton"
+                                 Checked="GoToState_Click"
                                  GroupName="LeftMenu"
                                  IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                  RelativePanel.Below="LeftSideSamplesPaneButton"
                                  Tag="{Binding Name, ElementName=LearningPaneVisualState}">
-                        <Viewbox Width="24" Height="24" Stretch="Uniform">
+                        <Viewbox Width="24"
+                                 Height="24"
+                                 Stretch="Uniform">
                             <PathIcon Data="M27.099976,22.399994C26.5,22.399994 26,22.600006 25.599976,23 25.200012,23.399994 25,23.899994 25,24.399994 25,24.899994 25.200012,25.399994 25.599976,25.799988 26,26.200012 26.5,26.399994 27.099976,26.399994 27.700012,26.399994 28.099976,26.200012 28.5,25.799988 28.899963,25.399994 29.099976,25 29.099976,24.399994 29.099976,23.899994 28.899963,23.399994 28.5,23 28.200012,22.600006 27.700012,22.399994 27.099976,22.399994z M27.200012,16.700012C26.599976,16.700012 26.099976,16.899994 25.700012,17.200012 25.299988,17.600006 25.099976,18.100006 25.099976,18.600006 25.099976,19.100006 25.299988,19.600006 25.700012,20 26.099976,20.399994 26.599976,20.600006 27.099976,20.600006L27.200012,20.600006C27.700012,20.600006 28.200012,20.399994 28.599976,20 29,19.600006 29.200012,19.200012 29.200012,18.600006 29.200012,18.100006 29,17.600006 28.599976,17.200012 28.200012,16.899994 27.799988,16.700012 27.200012,16.700012z M5.8999634,10.5C3.7000122,10.5,2.5999756,11.5,2.5999756,13.600006L2.5999756,26.600006C2.5999756,28.700012,3.7000122,29.700012,5.8999634,29.700012L19.700012,29.700012C21.700012,29.700012,22.799988,28.899994,23,27.200012L23,20.600006 23,13.600006C23,11.5,21.899963,10.5,19.700012,10.5z M19.599976,0C19.799988,0 20,0.1000061 20.200012,0.20001221 20.399963,0.3999939 20.5,0.6000061 20.5,0.8999939 20.5,1.1000061 20.5,1.3999939 20.299988,1.6000061L14.299988,8.3999939 28.700012,8.3999939 28.799988,8.3999939 32,8.3999939 32,11.5 32,22 32,26.600006 32,28.899994 32,32 28.700012,32 3.2999878,32 0,32 0,8.2999878 3.2000122,8.2999878 3.2999878,8.2999878 11.599976,8.2999878 4.8999634,2.1000061C4.7000122,1.8999939 4.5999756,1.7000122 4.5999756,1.3999939 4.5999756,1.1000061 4.7000122,0.8999939 4.8999634,0.70001221 5.0999756,0.5 5.2999878,0.3999939 5.5999756,0.3999939 5.8999634,0.3999939 6.0999756,0.5 6.2999878,0.70001221L12.899963,7 18.799988,0.3999939C19,0.1000061,19.200012,0,19.599976,0z" />
                         </Viewbox>
                     </RadioButton>
-                    <RadioButton x:Name="LeftSideSettingsPaneButton" Checked="GoToState_Click"
+                    <Button x:Name="LeftSideSupportEmailButton"
+                            Width="48"
+                            Height="48"
+                            Click="{x:Bind ViewModel.EmailSupport}"
+                            RelativePanel.Above="LeftSideSettingsPaneButton"
+                            Tag="{Binding Name, ElementName=SettingsPaneVisualState}">
+                        <SymbolIcon Symbol="Mail" />
+                    </Button>
+                    <RadioButton x:Name="LeftSideSettingsPaneButton"
+                                 Checked="GoToState_Click"
                                  GroupName="LeftMenu"
                                  IsHitTestVisible="{Binding IsChecked, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                  RelativePanel.AlignBottomWithPanel="True"
@@ -237,27 +275,33 @@
 
             <SplitView.Content>
 
-
                 <RelativePanel>
 
-                    <RelativePanel x:Name="FilePane" Width="{StaticResource LeftPaneWidth}"
+                    <RelativePanel x:Name="FilePane"
+                                   Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
                                    x:DeferLoadStrategy="Lazy">
 
                         <!--  #region Files Title  -->
 
-                        <Rectangle x:Name="FilesTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                        <Rectangle x:Name="FilesTitleArea"
+                                   Height="{StaticResource LeftPaneTitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneTitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="FilesTitleArea"
-                                   RelativePanel.LeftOf="FilePaneCloseButton" Text="FILES" />
+                                   RelativePanel.LeftOf="FilePaneCloseButton"
+                                   Text="FILES" />
 
-                        <Button x:Name="FilePaneCloseButton" Click="GoToState_Click"
+                        <Button x:Name="FilePaneCloseButton"
+                                Click="GoToState_Click"
                                 RelativePanel.AlignVerticalCenterWith="FilesTitleArea"
                                 Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
@@ -272,42 +316,56 @@
                         <Rectangle x:Name="RecentFilesSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="FilesTitleArea"
                                    Visibility="{Binding FilePane.RecentFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="RecentFilesSubTitleArea"
-                                   RelativePanel.LeftOf="ClearRecentFilesButton" Text="Recent files"
+                                   RelativePanel.LeftOf="ClearRecentFilesButton"
+                                   Text="Recent files"
                                    Visibility="{Binding FilePane.RecentFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
-                        <Button x:Name="ClearRecentFilesButton" Click="{x:Bind ViewModel.FilePane.ClearRecent}"
+                        <Button x:Name="ClearRecentFilesButton"
+                                Click="{x:Bind ViewModel.FilePane.ClearRecent}"
                                 RelativePanel.AlignVerticalCenterWith="RecentFilesSubTitleArea"
-                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list"
+                                Style="{StaticResource TopRightButton}"
+                                ToolTipService.ToolTip="Clear list"
                                 Visibility="{Binding FilePane.RecentFiles.Count, Converter={StaticResource CollapsedWhenZeroConverter}}">
                             <SymbolIcon Symbol="Delete" />
                         </Button>
 
                         <!--  #endregion  -->
 
-                        <ListView x:Name="RecentFilesListView" DisplayMemberPath="Title" IsItemClickEnabled="True"
+                        <ListView x:Name="RecentFilesListView"
+                                  DisplayMemberPath="Title"
+                                  IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.FilePane.RecentFilesItemClicked}"
                                   ItemsSource="{Binding FilePane.RecentFiles}"
-                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="RecentFilesSubTitleArea" SelectionMode="None" />
+                                  RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="RecentFilesSubTitleArea"
+                                  SelectionMode="None" />
 
                         <!--  #region Folder Sub Title  -->
 
-                        <Rectangle x:Name="FolderSubTitleArea" Height="{StaticResource LeftPaneSubtitleAreaHeight}"
+                        <Rectangle x:Name="FolderSubTitleArea"
+                                   Height="{StaticResource LeftPaneSubtitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="RecentFilesListView" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
-                                   RelativePanel.LeftOf="FolderFilesOpenButton" Text="Folder files" />
+                                   RelativePanel.LeftOf="FolderFilesOpenButton"
+                                   Text="Folder files" />
 
-                        <Button x:Name="FolderFilesOpenButton" Click="{x:Bind ViewModel.FilePane.PickFolder}"
+                        <Button x:Name="FolderFilesOpenButton"
+                                Click="{x:Bind ViewModel.FilePane.PickFolder}"
                                 RelativePanel.AlignRightWithPanel="False"
                                 RelativePanel.AlignVerticalCenterWith="FolderSubTitleArea"
                                 RelativePanel.LeftOf="FolderFilesRefreshButton"
@@ -329,35 +387,49 @@
 
                         <!--  #endregion  -->
 
-                        <ListView x:Name="FolderFilesListView" DisplayMemberPath="Title" IsItemClickEnabled="True"
+                        <ListView x:Name="FolderFilesListView"
+                                  DisplayMemberPath="Title"
+                                  IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.FilePane.FolderFilesItemClicked}"
                                   ItemsSource="{Binding FilePane.FolderFiles}"
-                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="FolderSubTitleArea" SelectionMode="None" />
+                                  RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="FolderSubTitleArea"
+                                  SelectionMode="None" />
 
                     </RelativePanel>
 
-                    <RelativePanel x:Name="SamplesPane" Width="{StaticResource LeftPaneWidth}"
+                    <RelativePanel x:Name="SamplesPane"
+                                   Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
-                                   RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="FilePane" x:DeferLoadStrategy="Lazy">
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.RightOf="FilePane"
+                                   x:DeferLoadStrategy="Lazy">
 
                         <RelativePanel.Resources>
-                            <CollectionViewSource x:Name="AllSamplesCollectionViewSource" IsSourceGrouped="True" ItemsPath="Files"
+                            <CollectionViewSource x:Name="AllSamplesCollectionViewSource"
+                                                  IsSourceGrouped="True"
+                                                  ItemsPath="Files"
                                                   Source="{Binding SamplePane.UnfilteredSamples}" />
                         </RelativePanel.Resources>
 
                         <!--  #region Samples Title  -->
 
-                        <Rectangle x:Name="SamplesTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                        <Rectangle x:Name="SamplesTitleArea"
+                                   Height="{StaticResource LeftPaneTitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneTitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="SamplesTitleArea"
-                                   RelativePanel.LeftOf="SamplePaneCloseButton" Text="SAMPLES" />
+                                   RelativePanel.LeftOf="SamplePaneCloseButton"
+                                   Text="SAMPLES" />
 
-                        <Button x:Name="SamplePaneCloseButton" Click="GoToState_Click"
+                        <Button x:Name="SamplePaneCloseButton"
+                                Click="GoToState_Click"
                                 RelativePanel.AlignVerticalCenterWith="SamplesTitleArea"
                                 Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
@@ -372,79 +444,99 @@
                         <Rectangle x:Name="RecentSamplesSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="SamplesTitleArea"
                                    Visibility="{Binding SamplePane.RecentSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="RecentSamplesSubTitleArea"
-                                   RelativePanel.LeftOf="ClearRecentSamplesButton" Text="Recent samples"
+                                   RelativePanel.LeftOf="ClearRecentSamplesButton"
+                                   Text="Recent samples"
                                    Visibility="{Binding SamplePane.RecentSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
                         <Button x:Name="ClearRecentSamplesButton"
                                 Click="{x:Bind ViewModel.SamplePane.ClearRecent}"
                                 RelativePanel.AlignVerticalCenterWith="RecentSamplesSubTitleArea"
-                                Style="{StaticResource TopRightButton}" ToolTipService.ToolTip="Clear list"
+                                Style="{StaticResource TopRightButton}"
+                                ToolTipService.ToolTip="Clear list"
                                 Visibility="{Binding SamplePane.RecentSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}">
                             <SymbolIcon Symbol="Delete" />
                         </Button>
 
                         <!--  #endregion  -->
 
-                        <ListView x:Name="RecentSamplesListView" DisplayMemberPath="Title"
+                        <ListView x:Name="RecentSamplesListView"
+                                  DisplayMemberPath="Title"
                                   IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.SamplePane.RecentItemClicked}"
                                   ItemsSource="{Binding SamplePane.RecentSamples}"
-                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="RecentSamplesSubTitleArea" SelectionMode="None" />
+                                  RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="RecentSamplesSubTitleArea"
+                                  SelectionMode="None" />
 
                         <!--  #region All Samples Sub Title  -->
 
                         <Rectangle x:Name="AllSamplesSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneSubtitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
                                    RelativePanel.Below="RecentSamplesListView" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="AllSamplesSubTitleArea"
-                                   RelativePanel.LeftOf="AllSampleSemanticZoomButton" Text="All samples" />
+                                   RelativePanel.LeftOf="AllSampleSemanticZoomButton"
+                                   Text="All samples" />
 
-                        <Button x:Name="AllSampleSemanticZoomButton" Click="AllSampleSemanticZoomButton_Click"
+                        <Button x:Name="AllSampleSemanticZoomButton"
+                                Click="AllSampleSemanticZoomButton_Click"
                                 RelativePanel.AlignRightWithPanel="True"
                                 RelativePanel.AlignVerticalCenterWith="AllSamplesSubTitleArea"
                                 Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
                                 ToolTipService.ToolTip="View levels"
-                                Visibility="{Binding SamplePane.UnfilteredListVisibility}">
+                                Visibility="{Binding SamplePane.FilteredSamples.Count, Converter={StaticResource VisibleWhenZeroConverter}}">
                             <SymbolIcon Symbol="ViewAll" />
                         </Button>
 
                         <!--  #endregion  -->
 
-                        <TextBox x:Name="SearchTextBox" Margin="8,4" PlaceholderText="Filter"
-                                 RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                        <TextBox x:Name="SearchTextBox"
+                                 Margin="8,4"
+                                 PlaceholderText="Filter"
+                                 RelativePanel.AlignLeftWithPanel="True"
+                                 RelativePanel.AlignRightWithPanel="True"
                                  RelativePanel.Below="AllSamplesSubTitleArea"
                                  Text="{Binding SamplePane.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <ListView x:Name="FilteredSamplesListView" DisplayMemberPath="Title"
+                        <ListView x:Name="FilteredSamplesListView"
+                                  DisplayMemberPath="Title"
                                   IsItemClickEnabled="True"
                                   ItemClick="{x:Bind ViewModel.SamplePane.FilteredItemClicked}"
                                   ItemsSource="{Binding SamplePane.FilteredSamples}"
-                                  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
-                                  RelativePanel.Below="SearchTextBox" SelectionMode="None"
-                                  Visibility="{Binding SamplePane.FilteredListVisibility}" />
+                                  RelativePanel.AlignLeftWithPanel="True"
+                                  RelativePanel.AlignRightWithPanel="True"
+                                  RelativePanel.Below="SearchTextBox"
+                                  SelectionMode="None"
+                                  Visibility="{Binding SamplePane.FilteredSamples.Count, Converter={StaticResource CollapsedWhenZeroConverter}}" />
 
-                        <SemanticZoom x:Name="AllSamplesSemanticZoom" RelativePanel.AlignLeftWithPanel="True"
+                        <SemanticZoom x:Name="AllSamplesSemanticZoom"
+                                      RelativePanel.AlignLeftWithPanel="True"
                                       RelativePanel.AlignRightWithPanel="True"
                                       RelativePanel.Below="FilteredSamplesListView"
-                                      Visibility="{Binding SamplePane.UnfilteredListVisibility}">
+                                      Visibility="{Binding SamplePane.FilteredSamples.Count, Converter={StaticResource VisibleWhenZeroConverter}}">
                             <SemanticZoom.ZoomedOutView>
-                                <ListView x:Name="AllSamplesZoomedOutListView" DisplayMemberPath="Group.Title"
+                                <ListView x:Name="AllSamplesZoomedOutListView"
+                                          DisplayMemberPath="Group.Title"
                                           SelectionMode="None" />
                             </SemanticZoom.ZoomedOutView>
                             <SemanticZoom.ZoomedInView>
-                                <ListView x:Name="AllSamplesZoomedInListView" DisplayMemberPath="Title"
+                                <ListView x:Name="AllSamplesZoomedInListView"
+                                          DisplayMemberPath="Title"
                                           IsItemClickEnabled="True"
                                           ItemClick="{x:Bind ViewModel.SamplePane.UnfilteredItemClicked}"
                                           ItemsSource="{Binding Source={StaticResource AllSamplesCollectionViewSource}}"
@@ -463,22 +555,30 @@
                         </SemanticZoom>
                     </RelativePanel>
 
-                    <RelativePanel x:Name="LearningPane" Width="{StaticResource LeftPaneWidth}"
+                    <RelativePanel x:Name="LearningPane"
+                                   Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
-                                   RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="SamplesPane" x:DeferLoadStrategy="Lazy">
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.RightOf="SamplesPane"
+                                   x:DeferLoadStrategy="Lazy">
 
                         <!--  #region Learning Title  -->
 
-                        <Rectangle x:Name="LearningTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                        <Rectangle x:Name="LearningTitleArea"
+                                   Height="{StaticResource LeftPaneTitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneTitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="LearningTitleArea"
-                                   RelativePanel.LeftOf="LearningPaneCloseButton" Text="RESOURCES" />
+                                   RelativePanel.LeftOf="LearningPaneCloseButton"
+                                   Text="RESOURCES" />
 
-                        <Button x:Name="LearningPaneCloseButton" Click="GoToState_Click"
+                        <Button x:Name="LearningPaneCloseButton"
+                                Click="GoToState_Click"
                                 RelativePanel.AlignVerticalCenterWith="LearningTitleArea"
                                 Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
@@ -490,22 +590,29 @@
 
                     </RelativePanel>
 
-                    <RelativePanel x:Name="SettingsPane" Width="{StaticResource LeftPaneWidth}"
+                    <RelativePanel x:Name="SettingsPane"
+                                   Width="{StaticResource LeftPaneWidth}"
                                    Background="{StaticResource LeftPaneBackground}"
-                                   RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                                   RelativePanel.AlignBottomWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.RightOf="LearningPane">
 
                         <!--  #region Setting Title  -->
 
-                        <Rectangle x:Name="SettingTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                        <Rectangle x:Name="SettingTitleArea"
+                                   Height="{StaticResource LeftPaneTitleAreaHeight}"
                                    Fill="{StaticResource LeftPaneTitleAreaBackground}"
-                                   RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True" />
 
-                        <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                        <TextBlock Margin="12,0"
+                                   RelativePanel.AlignLeftWithPanel="True"
                                    RelativePanel.AlignVerticalCenterWith="SettingTitleArea"
-                                   RelativePanel.LeftOf="SettingPaneCloseButton" Text="SETTINGS" />
+                                   RelativePanel.LeftOf="SettingPaneCloseButton"
+                                   Text="SETTINGS" />
 
-                        <Button x:Name="SettingPaneCloseButton" Click="GoToState_Click"
+                        <Button x:Name="SettingPaneCloseButton"
+                                Click="GoToState_Click"
                                 RelativePanel.AlignVerticalCenterWith="SettingTitleArea"
                                 Style="{StaticResource TopRightButton}"
                                 Tag="{Binding Name, ElementName=NoPaneVisualState}"
@@ -515,14 +622,14 @@
 
                         <!--  #endregion  -->
 
-                        <ToggleSwitch Margin="12,8" Header="Reload last file on launch"
-                                      RelativePanel.Below="SettingTitleArea" />
-
                     </RelativePanel>
 
-                    <Grid RelativePanel.AlignBottomWithPanel="True"
-                          RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True"
+                    <Grid Background="Gainsboro"
+                          RelativePanel.AlignBottomWithPanel="True"
+                          RelativePanel.AlignRightWithPanel="True"
+                          RelativePanel.AlignTopWithPanel="True"
                           RelativePanel.RightOf="SettingsPane">
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition x:Name="EditColumn" Width="*" />
                             <ColumnDefinition x:Name="RenderColumn" Width="*" />
@@ -532,16 +639,20 @@
 
                             <!--  #region Edit Title  -->
 
-                            <Rectangle x:Name="EditPaneTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                            <Rectangle x:Name="EditPaneTitleArea"
+                                       Height="{StaticResource LeftPaneTitleAreaHeight}"
                                        Fill="{StaticResource LeftPaneTitleAreaBackground}"
-                                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                                       RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True" />
 
-                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                            <TextBlock Margin="12,0"
+                                       RelativePanel.AlignLeftWithPanel="True"
                                        RelativePanel.AlignVerticalCenterWith="EditPaneTitleArea"
                                        RelativePanel.LeftOf="EditPaneShowRenderButton"
                                        Text="{Binding Title, FallbackValue=EDIT}" />
 
-                            <Button x:Name="EditPaneEmailButton" Click="{x:Bind ViewModel.RenderPane.Email}"
+                            <Button x:Name="EditPaneEmailButton"
+                                    Click="{x:Bind ViewModel.EmailCode}"
                                     RelativePanel.AlignRightWithPanel="False"
                                     RelativePanel.AlignVerticalCenterWith="EditPaneTitleArea"
                                     RelativePanel.LeftOf="EditPaneClearButton"
@@ -551,7 +662,8 @@
                                 <SymbolIcon Symbol="Mail" />
                             </Button>
 
-                            <Button x:Name="EditPaneClearButton" Click="{x:Bind ViewModel.RenderPane.Clear}"
+                            <Button x:Name="EditPaneClearButton"
+                                    Click="{x:Bind ViewModel.RenderPane.Clear}"
                                     RelativePanel.AlignVerticalCenterWith="EditPaneTitleArea"
                                     Style="{StaticResource TopRightButton}"
                                     Tag="{Binding Name, ElementName=NoEditorVisualState}"
@@ -561,8 +673,10 @@
 
                             <Button x:Name="EditPaneShowRenderButton"
                                     Width="{StaticResource LeftPaneTitleAreaHeight}"
-                                    Height="{StaticResource LeftPaneTitleAreaHeight}" Margin="0,0,16,0"
-                                    Background="Transparent" Click="GoToState_Click"
+                                    Height="{StaticResource LeftPaneTitleAreaHeight}"
+                                    Margin="0,0,16,0"
+                                    Background="Transparent"
+                                    Click="GoToState_Click"
                                     RelativePanel.AlignBottomWith="EditPaneTitleArea"
                                     RelativePanel.AlignRightWithPanel="False"
                                     RelativePanel.AlignTopWith="EditPaneTitleArea"
@@ -574,29 +688,40 @@
 
                             <!--  #endregion  -->
 
-                            <TextBox x:Name="EditTextBox" AcceptsReturn="True" InputScope="NativeScript"
-                                     IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
+                            <TextBox x:Name="EditTextBox"
+                                     AcceptsReturn="True"
+                                     InputScope="NativeScript"
+                                     IsSpellCheckEnabled="False"
+                                     IsTextPredictionEnabled="False"
                                      RelativePanel.AlignBottomWithPanel="True"
-                                     RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                     RelativePanel.AlignLeftWithPanel="True"
+                                     RelativePanel.AlignRightWithPanel="True"
                                      RelativePanel.Below="EditPaneTitleArea"
                                      Text="{Binding RenderPane.XamlString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         </RelativePanel>
 
-                        <RelativePanel x:Name="RenderPane" Grid.Column="1" MinWidth="200"
+                        <RelativePanel x:Name="RenderPane"
+                                       Grid.Column="1"
+                                       MinWidth="200"
                                        Background="#FF003157">
 
                             <!--  #region Render Title  -->
 
-                            <Rectangle x:Name="RenderTitleArea" Height="{StaticResource LeftPaneTitleAreaHeight}"
+                            <Rectangle x:Name="RenderTitleArea"
+                                       Height="{StaticResource LeftPaneTitleAreaHeight}"
                                        Fill="{StaticResource LeftPaneTitleAreaBackground}"
-                                       RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+                                       RelativePanel.AlignLeftWithPanel="True"
+                                       RelativePanel.AlignRightWithPanel="True" />
 
-                            <TextBlock Margin="12,0" RelativePanel.AlignLeftWithPanel="True"
+                            <TextBlock Margin="12,0"
+                                       RelativePanel.AlignLeftWithPanel="True"
                                        RelativePanel.AlignVerticalCenterWith="RenderTitleArea"
-                                       RelativePanel.LeftOf="RenderPaneCloseButton" Text="PREVIEW" />
+                                       RelativePanel.LeftOf="RenderPaneCloseButton"
+                                       Text="PREVIEW" />
 
-                            <Button x:Name="RenderPaneCloseButton" Click="GoToState_Click"
+                            <Button x:Name="RenderPaneCloseButton"
+                                    Click="GoToState_Click"
                                     RelativePanel.AlignVerticalCenterWith="RenderTitleArea"
                                     Style="{StaticResource TopRightButton}"
                                     Tag="{Binding Name, ElementName=EditorOnlyVisualState}">
@@ -605,12 +730,17 @@
 
                             <!--  #endregion  -->
 
-                            <ContentControl x:Name="Host" Grid.Row="3" HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                                            VerticalContentAlignment="Stretch" Background="Coral"
+                            <ContentControl x:Name="Host"
+                                            Grid.Row="3"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch"
+                                            Background="Coral"
                                             Content="{Binding RenderPane.XamlResult}"
                                             RelativePanel.AlignBottomWithPanel="True"
-                                            RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True"
+                                            RelativePanel.AlignLeftWithPanel="True"
+                                            RelativePanel.AlignRightWithPanel="True"
                                             RelativePanel.Below="RenderTitleArea" />
 
                         </RelativePanel>
@@ -623,71 +753,21 @@
 
         </SplitView>
 
+        <Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Background="White">
+
+            <Panel.Resources>
+                <Style TargetType="Rectangle">
+                    <Setter Property="Margin" Value="4" />
+                </Style>
+            </Panel.Resources>
+
+
+
+        </Grid>
+
     </RelativePanel>
-
-    <!--
-
-    <SplitView x:Name="RootSplitView" DisplayMode="Inline" IsPaneOpen="True"
-               OpenPaneLength="150" PaneBackground="#0096FF" PanePlacement="Left">
-
-        <SplitView.Pane>
-            <ListView FontSize="16" Foreground="White"
-                      ItemsSource="{Binding Source={StaticResource CVS}}"
-                      SelectionChanged="Template_Selected" SelectionMode="Single">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Foreground" Value="White" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding Sub Title}" />
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-            </ListView>
-
-        </SplitView.Pane>
-
-        <SplitView.Content>
-
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition Height="32" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <CommandBar Grid.Row="0">
-                    <AppBarButton x:Name="ClearButton" Click="{x:Bind Clear}" Icon="Clear"
-                                  Label="Clear" />
-                    <AppBarToggleButton x:Name="PauseButton" Icon="Pause" Label="Pause" />
-                </CommandBar>
-
-                <TextBox x:Name="RawXaml" Grid.Row="1" AcceptsReturn="True"
-                         InputScope="NativeScript" IsSpellCheckEnabled="False"
-                         IsTextPredictionEnabled="False"
-                         Text="{Binding RawXamlText, Mode=TwoWay, ElementName=ThisPage, UpdateSourceTrigger=PropertyChanged}" />
-                <Rectangle Grid.Row="2" Fill="DimGray" />
-                <TextBlock x:Name="Output" Grid.Row="2" Margin="12,0"
-                           VerticalAlignment="Center" Foreground="Pink" MaxLines="1"
-                           Text="{x:Bind ErrorText, Mode=OneWay}" />
-                <ContentControl x:Name="Host" Grid.Row="3" HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Stretch" Background="Coral"
-                                Content="{x:Bind XamlContent, Mode=OneWay}" />
-
-            </Grid>
-
-        </SplitView.Content>
-
-    </SplitView>
-    -->
 
 </Page>
 

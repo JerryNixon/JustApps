@@ -1,0 +1,19 @@
+﻿<Grid 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Margin="16">
+
+        <StackPanel RequestedTheme="Light">
+            <TextBlock Text="Hello world" />
+            <Button Content="Push" />
+        </StackPanel>
+
+        <StackPanel RequestedTheme="Dark">
+            <TextBlock Text="Hello world" />
+            <Button Content="Push" />
+        </StackPanel>
+
+    </StackPanel>
+
+</Grid>

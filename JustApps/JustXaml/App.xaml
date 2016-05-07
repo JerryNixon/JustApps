@@ -35,9 +35,9 @@
                         </c:ValueWhenConverter.Otherwise>
                     </c:ValueWhenConverter>
 
-                    <!--<c:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+                    <c:ValueWhenConverter x:Key="VisibleWhenZeroConverter">
                         <c:ValueWhenConverter.When>
-                            <x:Boolean>True</x:Boolean>
+                            <x:Int32>0</x:Int32>
                         </c:ValueWhenConverter.When>
                         <c:ValueWhenConverter.Value>
                             <Visibility>Visible</Visibility>
@@ -45,7 +45,7 @@
                         <c:ValueWhenConverter.Otherwise>
                             <Visibility>Collapsed</Visibility>
                         </c:ValueWhenConverter.Otherwise>
-                    </c:ValueWhenConverter>-->
+                    </c:ValueWhenConverter>
 
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

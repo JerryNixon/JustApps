@@ -13,38 +13,75 @@ namespace JustXaml.Models
     [DebuggerDisplay("{Title} {StorageFolder.Path}")]
     public class File
     {
+        private StorageFile file;
+        private string metadata;
+
         public File()
         {
             // empty for design-time
         }
 
-        public File(IStorageFile file) : this()
+        public enum Types { File, Sample }
+        public Types Type { get; set; }
+
+        public File(IStorageFile file, Types type) : this()
         {
-            StorageFile = file;
-            Title = file?.Name;
+            try
+            {
+                Type = type;
+                StorageFile = file;
+                Title = System.IO.Path.GetFileNameWithoutExtension(file?.Name);
+            }
+            catch (Exception e)
+            {
+                Debugger.Break();
+                throw;
+            }
         }
+
+        public File(StorageFile file, string metadata) : this(file, new MetadataInfo(metadata).Type)
+        {
+            // empty, handled in chain
+        }
+
+        #region Metadata
+
+        public string Metadata => new MetadataInfo(Type, StorageFile.Path).ToString();
+
+        public class MetadataInfo
+        {
+            public MetadataInfo(Types type, string path)
+            {
+                Type = type;
+                Path = new Uri(path);
+            }
+            public MetadataInfo(string metadata)
+            {
+                try
+                {
+                    var array = metadata.Split('|');
+                    var type = array[1];
+                    Type = (Types)Enum.Parse(typeof(Types), type);
+                    var path = array[2];
+                    Path = new Uri(path);
+                }
+                catch
+                {
+                    Debugger.Break();
+                    throw;
+                }
+            }
+            public Types Type { get; set; }
+            public Uri Path { get; set; }
+            public override string ToString()
+            {
+                return $"{typeof(File)}|{Type}|{Path}";
+            }
+        }
+
+        #endregion
 
         public string Title { get; set; }
         public IStorageFile StorageFile { get; set; }
-
-        public async Task<string> ReadTextAsync()
-        {
-            var service = Services.FileService.Instance;
-            return await service.ReadTextAsync(this);
-        }
-
-        public static async Task<File> GetAsync(Uri uri)
-        {
-            if (uri.ToString().StartsWith("ms-"))
-            {
-                var file = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
-                return new File(file);
-            }
-            else
-            {
-                var file = await Windows.Storage.StorageFile.GetFileFromPathAsync(uri.ToString());
-                return new File(file);
-            }
-        }
     }
 }

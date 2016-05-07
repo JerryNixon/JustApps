@@ -9,14 +9,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:JustKiosk.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:JustKiosk.ViewModels" x:Name="ThisPage" d:DesignHeight="1200"
-             d:DesignWidth="400" mc:Ignorable="d">
+             xmlns:vm="using:JustKiosk.ViewModels"
+             x:Name="ThisPage"
+             d:DesignHeight="1200"
+             d:DesignWidth="400"
+             mc:Ignorable="d">
 
     <d:UserControl.DataContext>
+        <!--  will be overwritten by MainPage  -->
         <vm:AdminViewModel />
     </d:UserControl.DataContext>
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="WebContentState">
+                    <VisualState.Setters>
+                        <Setter Target="FolderPickerRelativePanel.(UIElement.Visibility)" Value="Collapsed" />
+                        <Setter Target="HomeUrlRelativePanel.(UIElement.Visibility)" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LocalContentState">
+                    <VisualState.Setters>
+                        <Setter Target="FolderPickerRelativePanel.(UIElement.Visibility)" Value="Visible" />
+                        <Setter Target="HomeUrlRelativePanel.(UIElement.Visibility)" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -40,8 +60,11 @@
                     <Button.Flyout>
                         <Flyout Placement="Bottom">
                             <StackPanel>
-                                <TextBox Margin="4,0,4,0" Background="LightSteelBlue" Header="Please enter pin"
-                                         IsHitTestVisible="False" Text="{Binding TypedPin}" />
+                                <TextBox Margin="4,0,4,0"
+                                         Background="LightSteelBlue"
+                                         Header="Please enter pin"
+                                         IsHitTestVisible="False"
+                                         Text="{Binding TypedPin}" />
                                 <local:NumberPad OnSubmit="{x:Bind SetPin}" Pin="{Binding TypedPin, Mode=TwoWay}" />
                             </StackPanel>
                         </Flyout>
@@ -52,62 +75,133 @@
                     </StackPanel>
                 </Button>
 
-                <RelativePanel Margin="0,16,0,0">
+                <ToggleSwitch x:Name="LocationToggleSwitch"
+                              Margin="0,16,0,0"
+                              Header="Content location"
+                              IsOn="{Binding IsWebContent, Mode=TwoWay}"
+                              OffContent="Local content"
+                              OnContent="Web content"
+                              Toggled="{x:Bind UpdateVisualStates}" />
 
-                    <TextBox Margin="0,0,4,0" Header="Home Url" PlaceholderText="http://mycompany.com/kiosk"
-                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="GoButton"
+                <RelativePanel x:Name="FolderPickerRelativePanel" Margin="0,0,0,0">
+
+                    <Button x:Name="folderPickerButton"
+                            Margin="0,16,8,0"
+                            Click="{x:Bind PickFolder}"
+                            Content="Pick Folder" />
+
+                    <Button x:Name="folderPickerGoButton"
+                            Height="32"
+                            Margin="0"
+                            Click="{x:Bind RaiseNavigate}"
+                            Content="Go"
+                            RelativePanel.AlignBottomWith="folderPickerButton"
+                            RelativePanel.RightOf="folderPickerButton" />
+
+                    <TextBlock x:Name="LocalFolderTextBlock"
+                               Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                               RelativePanel.Below="folderPickerButton">
+                        <Run Text="file:///~/" /><Run Text="{Binding LocalFolder.title}" /><Run Text="/default.html" />
+                    </TextBlock>
+
+                </RelativePanel>
+
+
+                <RelativePanel x:Name="HomeUrlRelativePanel" Margin="0,0,0,0">
+
+                    <TextBox x:Name="HomeUrlTextBox"
+                             Height="62"
+                             Margin="0,0,4,0"
+                             Header="Home Url"
+                             IsReadOnly="{x:Bind LocationToggleSwitch.IsOn, Mode=OneWay, Converter={StaticResource ReverseBooleanConverter}}"
+                             PlaceholderText="http://mycompany.com/kiosk"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.LeftOf="GoButton"
                              Text="{Binding HomeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <Button x:Name="GoButton" Height="32" Margin="0"
-                            Click="Navigate_Click" Content="Go" RelativePanel.AlignBottomWithPanel="True"
+                    <Button x:Name="GoButton"
+                            Height="32"
+                            Margin="0"
+                            Click="{x:Bind RaiseNavigate}"
+                            Content="Go"
+                            RelativePanel.AlignBottomWithPanel="True"
                             RelativePanel.AlignRightWithPanel="True" />
 
                 </RelativePanel>
 
-                <ToggleSwitch Margin="0,16,0,0" Header="Show back button"
-                              IsOn="{Binding ShowNavButtons, Mode=TwoWay}" OffContent="Not showing"
+                <ToggleSwitch Margin="0,16,0,0"
+                              Header="Show back button"
+                              IsOn="{Binding ShowNavButtons, Mode=TwoWay}"
+                              OffContent="Not showing"
                               OnContent="Showing" />
 
-                <Slider Margin="0,16,0,0" Maximum="60" Minimum="1"
-                        StepFrequency="1" Value="{Binding RefreshMinutes, Mode=TwoWay}">
+                <Slider Margin="0,16,0,0"
+                        Maximum="60"
+                        Minimum="1"
+                        StepFrequency="1"
+                        Value="{Binding RefreshMinutes, Mode=TwoWay}">
                     <Slider.Header>
                         <TextBlock>
-                            <Run Text="Go home after " /><Run Text="{Binding RefreshMinutes}" /><Run Text=" (min)." />
+                            <Run Text="Auto-refresh to home after " /><Run Text="{Binding RefreshMinutes}" /><Run Text=" (min)." />
                         </TextBlock>
                     </Slider.Header>
                 </Slider>
 
-                <ToggleSwitch Margin="0,0,0,0" Header="When face is detected"
-                              IsOn="{Binding PreventWhenFace, Mode=TwoWay}" OffContent="Allow auto-refresh"
-                              OnContent="Prevent auto-refresh" />
+                <ToggleSwitch Margin="0,4,0,0"
+                              Header="When face is detected"
+                              IsOn="{Binding PreventWhenFace, Mode=TwoWay}"
+                              OffContent="Allow auto-refresh to home"
+                              OnContent="Prevent auto-refresh to home" />
+
+                <ToggleSwitch Margin="0,16,0,0"
+                              Header="When face is detected"
+                              IsOn="{Binding IsTrial, Converter={StaticResource ReverseBooleanConverter}}"
+                              OffContent="Allow advertisement"
+                              OnContent="Prevent advertisement"
+                              Toggled="IsTrial_Toggled"
+                              Visibility="{Binding IsTrial, Converter={StaticResource VisibleWhenTrueConverter}}" />
 
                 <local:CameraPreview />
 
-                <local:ListEdit x:Name="BlackListEditor" Title="Black List" Margin="0,16,0,0" />
+                <local:ListEdit x:Name="BlackListEditor"
+                                Title="Black List"
+                                Margin="0,16,0,0" />
 
             </StackPanel>
         </ScrollViewer>
 
         <Rectangle Grid.Row="1" Fill="Gainsboro" />
 
-        <StackPanel Grid.Row="1" MaxWidth="225" Margin="16"
+        <StackPanel Grid.Row="1"
+                    MaxWidth="225"
+                    Margin="16"
                     HorizontalAlignment="Left">
-            <TextBlock Margin="0,8,0,0" Opacity=".5" Text="Kiosk Id" />
-            <TextBlock FontSize="12" MaxLines="1" Opacity=".5"
+            <TextBlock Margin="0,8,0,0"
+                       Opacity=".5"
+                       Text="Kiosk Id" />
+            <TextBlock FontSize="12"
+                       MaxLines="1"
+                       Opacity=".5"
                        Text="{Binding KioskId}" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Margin="16" HorizontalAlignment="Right"
+        <StackPanel Grid.Row="1"
+                    Margin="16"
+                    HorizontalAlignment="Right"
                     Orientation="Horizontal">
 
-            <Button Width="62" Height="62" Margin="8,0"
-                    Click="Contact_Click">
+            <Button Width="62"
+                    Height="62"
+                    Margin="8,0"
+                    Click="{x:Bind SendSupportEmail}">
                 <StackPanel>
                     <SymbolIcon Symbol="Mail" />
                 </StackPanel>
             </Button>
 
-            <Button Width="62" Height="62" Click="ShowHelp_Click">
+            <Button Width="62"
+                    Height="62"
+                    Click="{x:Bind RaiseShowHelp}">
                 <StackPanel>
                     <SymbolIcon Symbol="Help" />
                 </StackPanel>

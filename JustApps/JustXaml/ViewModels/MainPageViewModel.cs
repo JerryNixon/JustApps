@@ -19,6 +19,8 @@ namespace JustXaml.ViewModels
         Services.MruService _MruService;
         Services.FutureService _FutureService;
         Services.SettingsService _SettingsService;
+        Services.EmailService _EmailService;
+        Services.JumpListService _JumpListService;
 
         public MainPageViewModel()
         {
@@ -39,7 +41,8 @@ namespace JustXaml.ViewModels
                 _FileService = Services.FileService.Instance;
                 _MruService = new Services.MruService();
                 _SettingsService = Services.SettingsService.Instance;
-                _MruService.Clear();
+                _EmailService = new Services.EmailService();
+                _JumpListService = new Services.JumpListService();
             }
         }
 
@@ -50,35 +53,32 @@ namespace JustXaml.ViewModels
             await LearningPane.OnNavigatedToAsync(parameter, state);
             await SamplePane.OnNavigatedToAsync(parameter, state);
 
+            _FutureService.Clear();
+            _MruService.Clear(null);
+            await _JumpListService.ClearAsync();
+
             Messages.Messenger.Instance.GetEvent<Messages.LoadXamlFile>().Subscribe(LoadXamlFile);
 
-            if (_SettingsService.LoadPreviousFolder)
+            var folders = await _MruService.GetFoldersAsync(null);
+            if (folders.Any())
             {
-                var previous = await FilePane.GetLastFolderAsync();
-                if (previous != null)
-                {
-                    FilePane.CurrentFolder = previous;
-                }
+                FilePane.CurrentFolder = folders.LastOrDefault();
             }
-
-            if (_SettingsService.LoadPreviousFile)
+            var files = await _MruService.GetFilesAsync();
+            if (files.Any())
             {
-                var previous = await FilePane.GetLastFileAsync();
-                if (previous == null)
-                {
-                    await RenderPane.ClearAsync();
-                }
-                else
-                {
-                    LoadXamlFile(previous);
-                }
+                LoadXamlFile(files.LastOrDefault());
+            }
+            else
+            {
+                RenderPane.Clear();
             }
         }
 
         async void LoadXamlFile(Models.File file)
         {
             Title = file.Title;
-            await RenderPane.RenderAsync(file);
+            await RenderPane.FillXamlResultAsync(file);
         }
 
         string _Title = default(string);
@@ -88,6 +88,20 @@ namespace JustXaml.ViewModels
         public FilesPaneViewModel FilePane { get; } = new FilesPaneViewModel();
         public LearningPaneViewModel LearningPane { get; } = new LearningPaneViewModel();
         public SamplesPaneViewModel SamplePane { get; } = new SamplesPaneViewModel();
+
+        public async void EmailCode()
+        {
+            var attachment = await _EmailService.CreateAttachment(RenderPane.XamlString);
+            var body = $"Hi,{Environment.NewLine}My code question...{Environment.NewLine}{Environment.NewLine}{RenderPane.XamlString}";
+            await _EmailService.SendAsync("jnixon@microsoft.com", "Just Code XAML question", body, attachment);
+        }
+
+        public async void EmailSupport()
+        {
+            var attachment = await _EmailService.CreateAttachment(RenderPane.XamlString);
+            var body = $"Hi,{Environment.NewLine}My support question...";
+            await _EmailService.SendAsync("jnixon@microsoft.com", "Just Code XAML question", body);
+        }
     }
 }
 

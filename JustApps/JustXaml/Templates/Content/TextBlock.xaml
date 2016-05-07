@@ -1,0 +1,12 @@
+﻿<Grid
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="White">
+
+    <TextBlock FontSize="56" Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center">
+        <Run Text="X" Foreground="Maroon" /><Run Text="AM" Foreground="SteelBlue" /><Run Text="L" Foreground="DarkGreen" />
+        <LineBreak />
+        <Run Text="coding" FontSize="32" />
+    </TextBlock>
+
+</Grid>
