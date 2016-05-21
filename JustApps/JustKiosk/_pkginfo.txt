@@ -1,1 +1,1 @@
-C:\git.repos\JustApps\JustApps\JustKiosk\AppPackages\JustKiosk_1.1.4.0\JustKiosk_1.1.4.0_x86_x64_arm.appxbundle
+C:\git.repos\JustApps\JustApps\JustKiosk\AppPackages\JustKiosk_1.1.5.0\JustKiosk_1.1.5.0_x86_x64_arm.appxbundle
