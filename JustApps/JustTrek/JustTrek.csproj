@@ -97,6 +97,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WrapPanel.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsService.cs" />
@@ -106,17 +107,12 @@
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Views\FacebookPage.xaml.cs">
-      <DependentUpon>FacebookPage.xaml</DependentUpon>
+    <Compile Include="Views\FeedPage.xaml.cs">
+      <DependentUpon>FeedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Shell.xaml.cs">
-      <DependentUpon>Shell.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Kinds.cs" />
     <Compile Include="Views\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TwitterPage.xaml.cs">
-      <DependentUpon>TwitterPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +123,8 @@
   <ItemGroup>
     <Content Include="Help.htm" />
     <Content Include="Images\Facebook.png" />
+    <Content Include="Images\Flickr.png" />
+    <Content Include="Images\Rss.png" />
     <Content Include="Images\Spinner.gif" />
     <Content Include="Images\Twitter.png" />
     <Content Include="Properties\Default.rd.xml" />
@@ -154,19 +152,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\FacebookPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Shell.xaml">
+    <Page Include="Views\FeedPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Splash.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TwitterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

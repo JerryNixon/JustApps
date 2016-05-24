@@ -6,6 +6,7 @@ using Template10.Services.NavigationService;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace JustTrek.Views
 {
@@ -28,6 +29,15 @@ namespace JustTrek.Views
         public void SetNavigationService(INavigationService navigationService)
         {
             MyHamburgerMenu.NavigationService = navigationService;
+        }
+
+        private void HandleTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            if ((sender as ToggleButton).IsChecked.Value)
+            {
+                MyHamburgerMenu.IsOpen = true;
+            }
+            e.Handled = true;
         }
     }
 }

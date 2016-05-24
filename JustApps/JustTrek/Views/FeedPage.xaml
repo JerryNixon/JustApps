@@ -1,0 +1,242 @@
+﻿<Page x:Class="JustTrek.Views.FeedPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:AppStudio.Uwp.Controls"
+      xmlns:ctrls="using:JustTrek.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:JustTrek.Views"
+      xmlns:m="using:JustTrek.Models"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:models="using:JustTrek.Models"
+      x:Name="ThisPage"
+      mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="local:FeedPage">
+            <Setter Property="FacebookItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <RelativePanel Padding="16">
+                            <Image x:Name="DefaultImage"
+                                   RelativePanel.AlignBottomWith="Image"
+                                   RelativePanel.AlignLeftWith="Image"
+                                   RelativePanel.AlignRightWith="Image"
+                                   RelativePanel.AlignTopWith="Image"
+                                   Source="https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png"
+                                   Stretch="Uniform">
+                            </Image>
+                            <Image x:Name="Image"
+                                   MinHeight="250"
+                                   RelativePanel.Above="Title"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   Source="{Binding Image, FallbackValue='https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png'}"
+                                   Stretch="UniformToFill"
+                                   Visibility="Collapsed">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="ImageOpened">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </Image>
+                            <TextBlock x:Name="Title"
+                                       MaxLines="2"
+                                       RelativePanel.Above="Date"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Title, FallbackValue='The quick brown fox jumps over the lazy dog'}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock x:Name="Date"
+                                       FontSize="12"
+                                       Opacity="0.5"
+                                       RelativePanel.AlignBottomWithPanel="True"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Date, FallbackValue='12/12/2012 12:12 PM'}" />
+                        </RelativePanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="TwitterItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <RelativePanel Padding="16">
+                            <Image x:Name="DefaultImage"
+                                   Width="48"
+                                   Height="48"
+                                   Source="https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png"
+                                   Stretch="Uniform">
+                            </Image>
+                            <Image x:Name="Image"
+                                   Width="48"
+                                   Height="48"
+                                   Margin="0,0,12,0"
+                                   Source="{Binding Image, FallbackValue='https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png'}"
+                                   Stretch="UniformToFill"
+                                   Visibility="Collapsed">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="ImageOpened">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </Image>
+                            <TextBlock x:Name="Title"
+                                       Margin="0,0,8,0"
+                                       MaxLines="2"
+                                       RelativePanel.AlignRightWithPanel="True"
+                                       RelativePanel.RightOf="Image"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Title, FallbackValue='The quick brown fox jumps over the lazy dog'}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock x:Name="Date"
+                                       FontSize="12"
+                                       Opacity="0.5"
+                                       RelativePanel.AlignLeftWith="Title"
+                                       RelativePanel.Below="Title"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Date, FallbackValue='12/12/2012 12:12 PM'}" />
+                        </RelativePanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FlickrItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <RelativePanel Background="DimGray" Padding="16">
+                            <Image x:Name="DefaultImage"
+                                   RelativePanel.AlignBottomWith="Image"
+                                   RelativePanel.AlignLeftWith="Image"
+                                   RelativePanel.AlignRightWith="Image"
+                                   RelativePanel.AlignTopWith="Image"
+                                   Source="https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png"
+                                   Stretch="UniformToFill">
+                            </Image>
+                            <Image x:Name="Image"
+                                   MinHeight="250"
+                                   RelativePanel.Above="Title"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   Source="{Binding Image, FallbackValue='https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png'}"
+                                   Stretch="Uniform"
+                                   Visibility="Collapsed">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="ImageOpened">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                        <Core:ChangePropertyAction PropertyName="Visibility"
+                                                                   TargetObject="{Binding ElementName=DefaultImage}"
+                                                                   Value="Collapsed" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </Image>
+                            <TextBlock x:Name="Title"
+                                       MaxLines="2"
+                                       RelativePanel.Above="Date"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Title, FallbackValue='The quick brown fox jumps over the lazy dog'}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock x:Name="Date"
+                                       FontSize="12"
+                                       Opacity="0.5"
+                                       RelativePanel.AlignBottomWithPanel="True"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Date, FallbackValue='12/12/2012 12:12 PM'}" />
+                        </RelativePanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RssItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <RelativePanel Padding="16">
+                            <Image x:Name="DefaultImage"
+                                   RelativePanel.AlignBottomWith="Image"
+                                   RelativePanel.AlignLeftWith="Image"
+                                   RelativePanel.AlignRightWith="Image"
+                                   RelativePanel.AlignTopWith="Image"
+                                   Source="https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png"
+                                   Stretch="Uniform">
+                            </Image>
+                            <Image x:Name="Image"
+                                   MinHeight="250"
+                                   RelativePanel.Above="Title"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignTopWithPanel="True"
+                                   Source="{Binding Image, FallbackValue='https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png'}"
+                                   Stretch="UniformToFill"
+                                   Visibility="Collapsed">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="ImageOpened">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </Image>
+                            <TextBlock x:Name="Title"
+                                       MaxLines="2"
+                                       RelativePanel.Above="Date"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Title, FallbackValue='The quick brown fox jumps over the lazy dog'}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock x:Name="Date"
+                                       FontSize="12"
+                                       Opacity="0.5"
+                                       RelativePanel.Above="Details"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Date, FallbackValue='12/12/2012 12:12 PM'}" />
+                            <TextBlock x:Name="Details"
+                                       FontSize="12"
+                                       MaxLines="5"
+                                       Opacity="0.5"
+                                       RelativePanel.AlignBottomWithPanel="True"
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Text="{Binding Details, FallbackValue='The quick brown fox jumps over the lazy dog'}" />
+                        </RelativePanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ListView">
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <ItemsControl ItemsSource="{x:Bind Groups}">
+
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ItemsStackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="models:Group">
+                <ListView ItemTemplate="{Binding Template}" ItemsSource="{Binding Items}">
+                    <ListView.Header>
+                        <RelativePanel Width="{Binding ColumnWidth, ElementName=ThisPage}">
+                            <Image x:Name="Image" Source="{Binding Image}" />
+                            <TextBlock x:Name="Title"
+                                       FontSize="24"
+                                       RelativePanel.RightOf="Image"
+                                       Text="{Binding Title}" />
+                        </RelativePanel>
+                    </ListView.Header>
+                    <!--<ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ctrls:WrapPanel Orientation="Vertical" Height="500" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>-->
+                </ListView>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+
+    </ItemsControl>
+
+</Page>

@@ -279,13 +279,13 @@
 
                     <RelativePanel x:Name="FilePane"
                                    Width="{StaticResource LeftPaneWidth}"
+                                   x:DeferLoadStrategy="Lazy"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignLeftWithPanel="True"
-                                   RelativePanel.AlignTopWithPanel="True"
-                                   x:DeferLoadStrategy="Lazy">
+                                   RelativePanel.AlignTopWithPanel="True">
 
-                        <!--  #region Files Title  -->
+                        <!--#region Files Title-->
 
                         <Rectangle x:Name="FilesTitleArea"
                                    Height="{StaticResource LeftPaneTitleAreaHeight}"
@@ -309,9 +309,9 @@
                             <SymbolIcon Symbol="Clear" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
-                        <!--  #region RecentFiles Sub Title  -->
+                        <!--#region RecentFiles Sub Title-->
 
                         <Rectangle x:Name="RecentFilesSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
@@ -337,7 +337,7 @@
                             <SymbolIcon Symbol="Delete" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
                         <ListView x:Name="RecentFilesListView"
                                   DisplayMemberPath="Title"
@@ -349,7 +349,7 @@
                                   RelativePanel.Below="RecentFilesSubTitleArea"
                                   SelectionMode="None" />
 
-                        <!--  #region Folder Sub Title  -->
+                        <!--#region Folder Sub Title-->
 
                         <Rectangle x:Name="FolderSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
@@ -385,7 +385,7 @@
                             <SymbolIcon Symbol="Refresh" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
                         <ListView x:Name="FolderFilesListView"
                                   DisplayMemberPath="Title"
@@ -401,11 +401,11 @@
 
                     <RelativePanel x:Name="SamplesPane"
                                    Width="{StaticResource LeftPaneWidth}"
+                                   x:DeferLoadStrategy="Lazy"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="FilePane"
-                                   x:DeferLoadStrategy="Lazy">
+                                   RelativePanel.RightOf="FilePane">
 
                         <RelativePanel.Resources>
                             <CollectionViewSource x:Name="AllSamplesCollectionViewSource"
@@ -414,7 +414,7 @@
                                                   Source="{Binding SamplePane.UnfilteredSamples}" />
                         </RelativePanel.Resources>
 
-                        <!--  #region Samples Title  -->
+                        <!--#region Samples Title-->
 
                         <Rectangle x:Name="SamplesTitleArea"
                                    Height="{StaticResource LeftPaneTitleAreaHeight}"
@@ -437,9 +437,9 @@
                             <SymbolIcon Symbol="Clear" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
-                        <!--  #region Recent Samples Sub Title  -->
+                        <!--#region Recent Samples Sub Title-->
 
                         <Rectangle x:Name="RecentSamplesSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
@@ -465,7 +465,7 @@
                             <SymbolIcon Symbol="Delete" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
                         <ListView x:Name="RecentSamplesListView"
                                   DisplayMemberPath="Title"
@@ -477,7 +477,7 @@
                                   RelativePanel.Below="RecentSamplesSubTitleArea"
                                   SelectionMode="None" />
 
-                        <!--  #region All Samples Sub Title  -->
+                        <!--#region All Samples Sub Title-->
 
                         <Rectangle x:Name="AllSamplesSubTitleArea"
                                    Height="{StaticResource LeftPaneSubtitleAreaHeight}"
@@ -503,7 +503,7 @@
                             <SymbolIcon Symbol="ViewAll" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
                         <TextBox x:Name="SearchTextBox"
                                  Margin="8,4"
@@ -557,13 +557,13 @@
 
                     <RelativePanel x:Name="LearningPane"
                                    Width="{StaticResource LeftPaneWidth}"
+                                   x:DeferLoadStrategy="Lazy"
                                    Background="{StaticResource LeftPaneBackground}"
                                    RelativePanel.AlignBottomWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"
-                                   RelativePanel.RightOf="SamplesPane"
-                                   x:DeferLoadStrategy="Lazy">
+                                   RelativePanel.RightOf="SamplesPane">
 
-                        <!--  #region Learning Title  -->
+                        <!--#region Learning Title-->
 
                         <Rectangle x:Name="LearningTitleArea"
                                    Height="{StaticResource LeftPaneTitleAreaHeight}"
@@ -586,7 +586,7 @@
                             <SymbolIcon Symbol="Clear" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
                     </RelativePanel>
 
@@ -597,7 +597,7 @@
                                    RelativePanel.AlignTopWithPanel="True"
                                    RelativePanel.RightOf="LearningPane">
 
-                        <!--  #region Setting Title  -->
+                        <!--#region Setting Title-->
 
                         <Rectangle x:Name="SettingTitleArea"
                                    Height="{StaticResource LeftPaneTitleAreaHeight}"
@@ -620,7 +620,7 @@
                             <SymbolIcon Symbol="Clear" />
                         </Button>
 
-                        <!--  #endregion  -->
+                        <!--#endregion-->
 
                     </RelativePanel>
 
@@ -637,7 +637,7 @@
 
                         <RelativePanel x:Name="EditPane" MinWidth="200">
 
-                            <!--  #region Edit Title  -->
+                            <!--#region Edit Title-->
 
                             <Rectangle x:Name="EditPaneTitleArea"
                                        Height="{StaticResource LeftPaneTitleAreaHeight}"
@@ -686,7 +686,7 @@
                                 <SymbolIcon Symbol="OpenPane" />
                             </Button>
 
-                            <!--  #endregion  -->
+                            <!--#endregion-->
 
                             <TextBox x:Name="EditTextBox"
                                      AcceptsReturn="True"
@@ -706,7 +706,7 @@
                                        MinWidth="200"
                                        Background="#FF003157">
 
-                            <!--  #region Render Title  -->
+                            <!--#region Render Title-->
 
                             <Rectangle x:Name="RenderTitleArea"
                                        Height="{StaticResource LeftPaneTitleAreaHeight}"
@@ -728,7 +728,7 @@
                                 <SymbolIcon Symbol="Clear" />
                             </Button>
 
-                            <!--  #endregion  -->
+                            <!--#endregion-->
 
                             <ContentControl x:Name="Host"
                                             Grid.Row="3"

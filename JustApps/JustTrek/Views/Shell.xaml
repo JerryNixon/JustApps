@@ -22,13 +22,33 @@
             <Setter Property="Margin" Value="4,0,0,0" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
+        <Style x:Name="SectionToggleButton" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
     </Page.Resources>
 
     <Controls:HamburgerMenu x:Name="MyHamburgerMenu">
 
         <Controls:HamburgerMenu.PrimaryButtons>
 
-            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:FacebookPage">
+            <Controls:HamburgerButtonInfo ButtonType="Literal">
+                <ToggleButton x:Name="FacebookToggleButton"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Left"
+                              Padding="0"
+                              RequestedTheme="Dark"
+                              Style="{StaticResource SectionToggleButton}"
+                              Tapped="HandleTapped">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="ms-appx:///Images/Facebook.png" Style="{StaticResource ButtonIcon}" />
+                        <TextBlock Style="{StaticResource ButtonText}" Text="Facebook Accounts" />
+                    </StackPanel>
+                </ToggleButton>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:FacebookPage"
+                                          Visibility="{Binding IsChecked, ElementName=FacebookToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
                 <Controls:HamburgerButtonInfo.PageParameter>
                     <models:Parameter Title="Star Trek on Facebook" Param="StarTrek" />
                 </Controls:HamburgerButtonInfo.PageParameter>
@@ -38,7 +58,10 @@
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 
-            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:FacebookPage">
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:FacebookPage"
+                                          Visibility="{Binding IsChecked, ElementName=FacebookToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+
                 <Controls:HamburgerButtonInfo.PageParameter>
                     <models:Parameter Title="Star Trek Movie on Facebook" Param="StarTrekMovie" />
                 </Controls:HamburgerButtonInfo.PageParameter>
@@ -48,7 +71,25 @@
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 
-            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:TwitterPage">
+            <Controls:HamburgerButtonInfo ButtonType="Literal">
+                <ToggleButton x:Name="TwitterToggleButton"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Left"
+                              Padding="0"
+                              RequestedTheme="Dark"
+                              Style="{StaticResource SectionToggleButton}"
+                              Tapped="HandleTapped">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="ms-appx:///Images/Twitter.png" Style="{StaticResource ButtonIcon}" />
+                        <TextBlock Style="{StaticResource ButtonText}" Text="Twitter Accounts" />
+                    </StackPanel>
+                </ToggleButton>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:TwitterPage"
+                                          Visibility="{Binding IsChecked, ElementName=TwitterToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+
                 <Controls:HamburgerButtonInfo.PageParameter>
                     <models:Parameter Title="Star Trek on Twitter" Param="StarTrek" />
                 </Controls:HamburgerButtonInfo.PageParameter>
@@ -58,13 +99,96 @@
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 
-            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:TwitterPage">
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:TwitterPage"
+                                          Visibility="{Binding IsChecked, ElementName=TwitterToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+
                 <Controls:HamburgerButtonInfo.PageParameter>
                     <models:Parameter Title="Star Trek Movie on Twitter" Param="StarTrekMovie" />
                 </Controls:HamburgerButtonInfo.PageParameter>
                 <StackPanel Orientation="Horizontal">
                     <Image Source="ms-appx:///Images/Twitter.png" Style="{StaticResource ButtonIcon}" />
                     <TextBlock Style="{StaticResource ButtonText}" Text="Star Trek Movie" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ButtonType="Literal">
+                <ToggleButton x:Name="FlickrToggleButton"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Left"
+                              Padding="0"
+                              RequestedTheme="Dark"
+                              Style="{StaticResource SectionToggleButton}"
+                              Tapped="HandleTapped">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="ms-appx:///Images/Flickr.png" Style="{StaticResource ButtonIcon}" />
+                        <TextBlock Style="{StaticResource ButtonText}" Text="Flickr Accounts" />
+                    </StackPanel>
+                </ToggleButton>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:FlickrPage"
+                                          Visibility="{Binding IsChecked, ElementName=FlickrToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+
+                <Controls:HamburgerButtonInfo.PageParameter>
+                    <models:Parameter Title="Star Trek on Flickr" Param="StarTrek" />
+                </Controls:HamburgerButtonInfo.PageParameter>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="ms-appx:///Images/Flickr.png" Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Style="{StaticResource ButtonText}" Text="Star Trek" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:FlickrPage"
+                                          Visibility="{Binding IsChecked, ElementName=FlickrToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+
+                <Controls:HamburgerButtonInfo.PageParameter>
+                    <models:Parameter Title="Star Trek Movie on Flickr" Param="StarTrekMovie" />
+                </Controls:HamburgerButtonInfo.PageParameter>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="ms-appx:///Images/Flickr.png" Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Style="{StaticResource ButtonText}" Text="Star Trek Movie" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ButtonType="Literal">
+                <ToggleButton x:Name="RssToggleButton"
+                              HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Left"
+                              Padding="0"
+                              RequestedTheme="Dark"
+                              Style="{StaticResource SectionToggleButton}"
+                              Tapped="HandleTapped">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="ms-appx:///Images/Rss.png" Style="{StaticResource ButtonIcon}" />
+                        <TextBlock Style="{StaticResource ButtonText}" Text="Rss Accounts" />
+                    </StackPanel>
+                </ToggleButton>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:RssPage"
+                                          Visibility="{Binding IsChecked, ElementName=RssToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+                <Controls:HamburgerButtonInfo.PageParameter>
+                    <models:Parameter Title="TrekToday.com" Param="http://www.trektoday.com/feed" />
+                </Controls:HamburgerButtonInfo.PageParameter>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="ms-appx:///Images/Rss.png" Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Style="{StaticResource ButtonText}" Text="TrekToday.com" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
+            <Controls:HamburgerButtonInfo ClearHistory="True"
+                                          PageType="views:RssPage"
+                                          Visibility="{Binding IsChecked, ElementName=RssToggleButton, Converter={StaticResource VisibleWhenTrueConverter}}">
+                <Controls:HamburgerButtonInfo.PageParameter>
+                    <models:Parameter Title="TrekToday.com" Param="http://www.trektoday.com/feed" />
+                </Controls:HamburgerButtonInfo.PageParameter>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="ms-appx:///Images/Rss.png" Style="{StaticResource ButtonIcon}" />
+                    <TextBlock Style="{StaticResource ButtonText}" Text="TrekToday.com" />
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 

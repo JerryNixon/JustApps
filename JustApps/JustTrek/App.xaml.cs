@@ -18,26 +18,14 @@ namespace JustTrek
         public App()
         {
             InitializeComponent();
-            SplashFactory = (e) => new Views.Splash(e);
         }
 
-        public override async Task OnInitializeAsync(IActivatedEventArgs args)
+        public override UIElement CreateRootElement(IActivatedEventArgs e) => new ModalDialog
         {
-            if (Window.Current.Content as ModalDialog == null)
-            {
-                // create a new frame 
-                var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
-
-                // create modal root
-                Window.Current.Content = new ModalDialog
-                {
-                    DisableBackButtonWhenModal = true,
-                    Content = new Views.Shell(nav),
-                    ModalContent = new Views.Busy(),
-                };
-            }
-            await Task.CompletedTask;
-        }
+            DisableBackButtonWhenModal = true,
+            Content = new Views.FeedPage(),
+            ModalContent = new Views.Busy(),
+        };
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {

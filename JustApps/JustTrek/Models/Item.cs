@@ -9,6 +9,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using AppStudio.DataProviders.Twitter;
+using AppStudio.DataProviders.Flickr;
+using AppStudio.DataProviders.Rss;
 
 namespace JustTrek.Models
 {
@@ -30,6 +32,24 @@ namespace JustTrek.Models
             Image = x.UserProfileImageUrl;
             Details = string.Empty;
             Link = new Uri(x.Url);
+        }
+
+        public Item(FlickrSchema x)
+        {
+            Date = x.Published.ToString("D");
+            Title = x.Title;
+            Image = x.ImageUrl;
+            Details = x.Summary;
+            Link = new Uri(x.FeedUrl);
+        }
+
+        public Item(RssSchema x)
+        {
+            Date = x.PublishDate.ToString("D");
+            Title = x.Title;
+            Image = x.ImageUrl;
+            Details = x.Summary;
+            Link = new Uri(x.FeedUrl);
         }
 
         public string Date { get; }
