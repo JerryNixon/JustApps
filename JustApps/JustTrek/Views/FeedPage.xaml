@@ -273,7 +273,7 @@
                 </GroupStyle.HeaderTemplate>
                 <GroupStyle.Panel>
                     <ItemsPanelTemplate>
-                        <ctrls:PinterestPanel ColumnCount="{Binding ColumnCount, ElementName=ThisPage}" />
+                        <ctrls:PinterestPanel />
                     </ItemsPanelTemplate>
                 </GroupStyle.Panel>
             </GroupStyle>

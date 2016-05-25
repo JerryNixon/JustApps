@@ -11,78 +11,63 @@ namespace JustTrek.Controls
 {
     public class PinterestPanel : Panel
     {
-        public int ColumnCount
+        public double ColumnMinWidth
         {
-            get { return (int)GetValue(ColumnCountProperty); }
-            set { SetValue(ColumnCountProperty, value); }
+            get { return (double)GetValue(ColumnMinWidthProperty); }
+            set { SetValue(ColumnMinWidthProperty, value); }
         }
-        public static readonly DependencyProperty ColumnCountProperty =
-            DependencyProperty.Register("ColumnCount", typeof(int), typeof(PinterestPanel), new PropertyMetadata(3));
+        public static readonly DependencyProperty ColumnMinWidthProperty =
+            DependencyProperty.Register(nameof(ColumnMinWidth), typeof(double), typeof(PinterestPanel), new PropertyMetadata(300d));
 
-        protected override Size MeasureOverride(Size availableSize)
+        protected override Size MeasureOverride(Size size)
         {
-            double columnWidth = availableSize.Width / ColumnCount;
-
-            var columnHeights = new double[ColumnCount];
-
-            for (int i = 0; i < Children.Count; i++)
+            var info = DetermineColumn(size);
+            foreach (var child in Children)
             {
-                var columnIndex = GetColumnIndex(columnHeights);
-
-                var child = Children[i];
-                child.Measure(new Size(columnWidth, availableSize.Height));
-                var elementSize = child.DesiredSize;
-                columnHeights[columnIndex] += elementSize.Height;
+                var targetIndex = info.ShortestIndex();
+                var potentialSize = new Size(info.Width, size.Height);
+                child.Measure(potentialSize);
+                var desiredSize = child.DesiredSize;
+                info.Columns[targetIndex] += desiredSize.Height;
             }
-
-            double desiredHeight = columnHeights.Max();
-
-            return new Size(availableSize.Width, desiredHeight);
+            return new Size(size.Width, info.Columns.Max());
         }
 
-        private int GetColumnIndex(double[] columnHeights)
+        protected override Size ArrangeOverride(Size size)
         {
-            int columnIndex = 0;
-            double height = columnHeights[0];
-            for (int j = 1; j < ColumnCount; j++)
+            var info = DetermineColumn(size);
+            foreach (var child in Children)
             {
-                if (columnHeights[j] < height)
-                {
-                    columnIndex = j;
-                    height = columnHeights[j];
-                }
-            }
-            return columnIndex;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            double columnWidth = finalSize.Width / ColumnCount;
-            var columnHeights = new double[ColumnCount];
-
-            for (int i = 0; i < Children.Count; i++)
-            {
-                var columnIndex = GetColumnIndex(columnHeights);
-
-                var child = Children[i];
+                var targetIndex = info.ShortestIndex();
                 var elementSize = child.DesiredSize;
-
-                double elementWidth = elementSize.Width;
-                double elementHeight = elementSize.Height;
-                if (elementWidth > columnWidth)
-                {
-                    double differencePercentage = columnWidth / elementWidth;
-                    elementHeight = elementHeight * differencePercentage;
-                    elementWidth = columnWidth;
-                }
-
-                Rect bounds = new Rect(columnWidth * columnIndex, columnHeights[columnIndex], elementWidth, elementHeight);
+                var bounds = new Rect(info.Width * targetIndex, info.Columns[targetIndex], info.Width, elementSize.Height);
                 child.Arrange(bounds);
-
-                columnHeights[columnIndex] += elementSize.Height;
+                info.Columns[targetIndex] += elementSize.Height;
             }
+            return new Size(size.Width, info.Columns.Max());
+        }
 
-            return base.ArrangeOverride(finalSize);
+        public class ColumnInfo
+        {
+            public double[] Columns { get; set; }
+            public double Width { get; set; }
+            public int ShortestIndex() => Array.IndexOf(Columns, Columns.Min());
+        }
+
+        private ColumnInfo DetermineColumn(Size size)
+        {
+            var count = (int)(size.Width / ColumnMinWidth);
+            var info = new ColumnInfo
+            {
+                Width = ColumnMinWidth,
+                Columns = new double[count],
+            };
+            var mod = size.Width % ColumnMinWidth;
+            if (mod != 0)
+            {
+                info.Width += ColumnMinWidth * mod;
+            }
+            return info;
         }
     }
 
