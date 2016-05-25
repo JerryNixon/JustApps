@@ -11,6 +11,15 @@ using Windows.UI.Xaml.Navigation;
 
 namespace JustTrek.Views
 {
+    public class MySelector : DataTemplateSelector
+    {
+        protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+        {
+            var group = item as Models.Group;
+            return group.Template;
+        }
+    }
+
     public sealed partial class FeedPage : Page
     {
         Services.DataService _DataService;
@@ -18,17 +27,29 @@ namespace JustTrek.Views
         {
             InitializeComponent();
             Loaded += FeedPage_Loaded;
+            Update(Window.Current.Bounds.Width);
+            SizeChanged += (s, e) =>
+            {
+                Update(e.NewSize.Width);
+            };
+        }
+
+        void Update(double width)
+        {
+            PageWidth = width;
+            ColumnCount = (int)(width / ColumnWidth);
         }
 
         private void FeedPage_Loaded(object sender, RoutedEventArgs e)
         {
+            // AllGroupsZoomedOutListView.ItemsSource = CVS.View.CollectionGroups;
             _DataService = new Services.DataService();
 
             AddAsync(Kinds.Rss, new Parameter { Title = "StarTrek.com", Param = "http://www.startrek.com/latest_news_feed" });
             AddAsync(Kinds.Rss, new Parameter { Title = "TrekToday.com", Param = "http://www.trektoday.com/feed" });
             AddAsync(Kinds.Rss, new Parameter { Title = "TrekMovie.com", Param = "http://trekmovie.com/feed" });
             AddAsync(Kinds.Rss, new Parameter { Title = "TrekNews.net", Param = "http://www.treknews.net/feed/" });
-            
+
 
             AddAsync(Kinds.Facebook, new Parameter { Title = "Star Trek", Param = "StarTrek" });
             AddAsync(Kinds.Facebook, new Parameter { Title = "Star Trek Movie", Param = "StarTrekMovie" });
@@ -89,6 +110,8 @@ namespace JustTrek.Views
             }
         }
 
+        public void ItemClick() { }
+
         public ObservableCollection<Models.Group> Groups { get; } = new ObservableCollection<Models.Group>();
 
         public DataTemplate FacebookItemTemplate
@@ -130,5 +153,21 @@ namespace JustTrek.Views
         }
         public static readonly DependencyProperty ColumnWidthProperty =
             DependencyProperty.Register("ColumnWidth", typeof(double), typeof(FeedPage), new PropertyMetadata(300d));
+
+        public double ColumnCount
+        {
+            get { return (double)GetValue(ColumnCountProperty); }
+            set { SetValue(ColumnCountProperty, value); }
+        }
+        public static readonly DependencyProperty ColumnCountProperty =
+            DependencyProperty.Register("ColumnCount", typeof(double), typeof(FeedPage), new PropertyMetadata(300d));
+
+        public double PageWidth
+        {
+            get { return (double)GetValue(PageWidthProperty); }
+            set { SetValue(PageWidthProperty, value); }
+        }
+        public static readonly DependencyProperty PageWidthProperty =
+            DependencyProperty.Register("PageWidth", typeof(double), typeof(FeedPage), new PropertyMetadata(300d));
     }
 }

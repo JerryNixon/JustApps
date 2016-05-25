@@ -14,7 +14,7 @@
       mc:Ignorable="d">
 
     <Page.Resources>
-        <Style TargetType="local:FeedPage">
+        <!--<Style TargetType="local:FeedPage">
             <Setter Property="FacebookItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -187,7 +187,7 @@
                                        Text="{Binding Date, FallbackValue='12/12/2012 12:12 PM'}" />
                             <TextBlock x:Name="Details"
                                        FontSize="12"
-                                       MaxLines="5"
+                                       MaxLines="10"
                                        Opacity="0.5"
                                        RelativePanel.AlignBottomWithPanel="True"
                                        Style="{StaticResource BodyTextBlockStyle}"
@@ -205,37 +205,79 @@
                     </Style>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
+        <CollectionViewSource x:Name="CVS"
+                              IsSourceGrouped="True"
+                              ItemsPath="Items"
+                              Source="{x:Bind Groups}" />
     </Page.Resources>
 
-    <ItemsControl ItemsSource="{x:Bind Groups}">
+    <!--<SemanticZoom>
+        <SemanticZoom.ZoomedOutView>
+            <ListView x:Name="AllGroupsZoomedOutListView"
+                      DisplayMemberPath="Group.Title"
+                      SelectionMode="None" />
+        </SemanticZoom.ZoomedOutView>
+        <SemanticZoom.ZoomedInView>-->
+    <!--<GridView ItemsSource="{Binding Source={StaticResource CVS}}">-->
+    <!--<GridView ItemsSource="{x:Bind Groups}">
+        <GridView.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Width="300">
+                    <Image Source="{Binding Image}" />
+                    <TextBlock Text="{Binding Title}" />
+                </StackPanel>
+            </DataTemplate>
+        </GridView.ItemTemplate>-->
+    <!--<GridView.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Image}" />
+                            <TextBlock FontSize="24" Text="{Binding Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+                <GroupStyle.Panel>
+                    <ItemsPanelTemplate>
+                        <ctrls:PinterestPanel Width="{Binding PageWidth, ElementName=ThisPage}" />
+                    </ItemsPanelTemplate>
+                </GroupStyle.Panel>
+            </GroupStyle>
+        </GridView.GroupStyle>-->
+    <!--</GridView>-->
+    <!--</SemanticZoom.ZoomedInView>
+    </SemanticZoom>-->
 
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <ItemsStackPanel Orientation="Horizontal" />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+    <ItemsControl ItemsSource="{Binding Source={StaticResource CVS}}">
 
         <ItemsControl.ItemTemplate>
-            <DataTemplate x:DataType="models:Group">
-                <ListView ItemTemplate="{Binding Template}" ItemsSource="{Binding Items}">
-                    <ListView.Header>
-                        <RelativePanel Width="{Binding ColumnWidth, ElementName=ThisPage}">
-                            <Image x:Name="Image" Source="{Binding Image}" />
-                            <TextBlock x:Name="Title"
-                                       FontSize="24"
-                                       RelativePanel.RightOf="Image"
-                                       Text="{Binding Title}" />
-                        </RelativePanel>
-                    </ListView.Header>
-                    <!--<ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ctrls:WrapPanel Orientation="Vertical" Height="500" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>-->
-                </ListView>
+            <DataTemplate>
+                <StackPanel Width="300">
+                    <Border BorderBrush="DimGray"
+                            BorderThickness="1"
+                            Padding="4">
+                        <TextBlock Text="{Binding Title}" TextWrapping="Wrap" />
+                    </Border>
+                </StackPanel>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
+
+        <ItemsControl.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+                <GroupStyle.Panel>
+                    <ItemsPanelTemplate>
+                        <ctrls:PinterestPanel ColumnCount="{Binding ColumnCount, ElementName=ThisPage}" />
+                    </ItemsPanelTemplate>
+                </GroupStyle.Panel>
+            </GroupStyle>
+        </ItemsControl.GroupStyle>
 
     </ItemsControl>
 
