@@ -16,6 +16,11 @@ namespace JustTrek.Models
 {
     public class Item
     {
+        public Item()
+        {
+            // for design data
+        }
+
         public Item(FacebookSchema x)
         {
             Date = x.PublishDate.ToString("D");
@@ -46,16 +51,16 @@ namespace JustTrek.Models
         public Item(RssSchema x)
         {
             Date = x.PublishDate.ToString("D");
-            Title = x.Title;
+            Title = x.Title.Trim();
             Image = x.ImageUrl;
             Details = x.Summary;
             Link = new Uri(x.FeedUrl);
         }
 
-        public string Date { get; }
-        public string Title { get; }
-        public string Image { get; }
-        public string Details { get; }
-        public Uri Link { get; }
+        public string Date { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+        public string Details { get; set; }
+        public Uri Link { get; set; }
     }
 }

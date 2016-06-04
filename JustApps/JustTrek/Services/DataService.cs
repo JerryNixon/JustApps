@@ -9,14 +9,21 @@ using AppStudio.DataProviders.Rss;
 using AppStudio.DataProviders.Twitter;
 using JustTrek.Models;
 using Template10.Common;
+using Template10.Utils;
 using Windows.UI.Xaml.Controls;
 
 namespace JustTrek.Services
 {
     public partial class DataService
     {
+        public readonly static DataService Instance;
+        static DataService()
+        {
+            Instance = new DataService();
+        }
+
         SettingsService _SettingSvc;
-        public DataService()
+        private DataService()
         {
             _SettingSvc = new SettingsService();
         }
@@ -38,6 +45,46 @@ namespace JustTrek.Services
                 return await provider.LoadDataAsync(config, max);
             });
             return items.Select(x => new Item(x));
+        }
+
+        public async Task FillAsync(Group group, Parameter parameter)
+        {
+            switch (group.Kind)
+            {
+                case Kinds.Facebook:
+                    FillItems(group, await GetFaceBookItemsAsync(parameter.Param, parameter.Max));
+                    break;
+                case Kinds.TwitterUser:
+                    FillItems(group, await GetTwitterItemsAsync(parameter.Param, TwitterQueryType.User, parameter.Max));
+                    break;
+                case Kinds.TwitterSearch:
+                    FillItems(group, await GetTwitterItemsAsync(parameter.Param, TwitterQueryType.Search, parameter.Max));
+                    break;
+                case Kinds.FlickrId:
+                    FillItems(group, await GetFlickrItemsAsync(parameter.Param, FlickrQueryType.Id, parameter.Max));
+                    break;
+                case Kinds.FlickrTags:
+                    FillItems(group, await GetFlickrItemsAsync(parameter.Param, FlickrQueryType.Tags, parameter.Max));
+                    break;
+                case Kinds.Rss:
+                    FillItems(group, await GetRssItemsAsync(new Uri(parameter.Param), parameter.Max));
+                    break;
+                default:
+                    throw new NotSupportedException(group.Kind.ToString());
+            }
+
+        }
+
+        private void FillItems(Group group, IEnumerable<Item> items)
+        {
+            if (items != null && items.Any())
+            {
+                group.Items.AddRange(items, true);
+            }
+            else
+            {
+                // TODO: handle error
+            }
         }
 
         internal async Task<IEnumerable<Item>> GetRssItemsAsync(Uri url, int max = 20)
@@ -92,7 +139,6 @@ namespace JustTrek.Services
 
         async Task<T> ExecuteAsync<T>(Func<Task<T>> action, [CallerMemberName]string name = null)
         {
-            Views.Busy.SetBusy(true, "Loading...");
             try
             {
                 return await action();
@@ -106,10 +152,6 @@ namespace JustTrek.Services
                     PrimaryButtonText = "Okay",
                 };
                 await dialog.ShowAsync();
-            }
-            finally
-            {
-                Views.Busy.SetBusy(false);
             }
             return default(T);
         }

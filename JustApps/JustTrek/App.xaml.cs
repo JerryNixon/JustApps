@@ -20,12 +20,7 @@ namespace JustTrek
             InitializeComponent();
         }
 
-        public override UIElement CreateRootElement(IActivatedEventArgs e) => new ModalDialog
-        {
-            DisableBackButtonWhenModal = true,
-            Content = new Views.FeedPage(),
-            ModalContent = new Views.Busy(),
-        };
+        public override UIElement CreateRootElement(IActivatedEventArgs e) => new Views.FeedPage();
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {

@@ -10,5 +10,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace JustTrek.Models
 {
-    enum Kinds { Facebook, TwitterUser, TwitterSearch, FlickrId, FlickrTags, Rss }
+    public enum Statuses { Loading, Loaded }
+    public enum Kinds { Facebook, TwitterUser, TwitterSearch, FlickrId, FlickrTags, Rss }
 }

@@ -102,9 +102,7 @@
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Views\Busy.xaml.cs">
-      <DependentUpon>Busy.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewModels\FeedPageViewModel.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Item.cs" />
@@ -112,9 +110,7 @@
       <DependentUpon>FeedPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Kinds.cs" />
-    <Compile Include="Views\Splash.xaml.cs">
-      <DependentUpon>Splash.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\MySelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -149,22 +145,12 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\Busy.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\FeedPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Splash.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

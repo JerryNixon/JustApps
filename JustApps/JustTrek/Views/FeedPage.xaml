@@ -10,11 +10,12 @@
       xmlns:m="using:JustTrek.Models"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:JustTrek.Models"
+      xmlns:vm="using:JustTrek.ViewModels"
       x:Name="ThisPage"
       mc:Ignorable="d">
 
-    <Page.Resources>
-        <!--<Style TargetType="local:FeedPage">
+    <!--<Page.Resources>
+        <Style TargetType="local:FeedPage">
             <Setter Property="FacebookItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -205,80 +206,251 @@
                     </Style>
                 </Setter.Value>
             </Setter>
-        </Style>-->
-        <CollectionViewSource x:Name="CVS"
-                              IsSourceGrouped="True"
-                              ItemsPath="Items"
-                              Source="{x:Bind Groups}" />
-    </Page.Resources>
+        </Style>
+    </Page.Resources>-->
 
-    <!--<SemanticZoom>
-        <SemanticZoom.ZoomedOutView>
-            <ListView x:Name="AllGroupsZoomedOutListView"
-                      DisplayMemberPath="Group.Title"
-                      SelectionMode="None" />
-        </SemanticZoom.ZoomedOutView>
-        <SemanticZoom.ZoomedInView>-->
-    <!--<GridView ItemsSource="{Binding Source={StaticResource CVS}}">-->
-    <!--<GridView ItemsSource="{x:Bind Groups}">
-        <GridView.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Width="300">
-                    <Image Source="{Binding Image}" />
-                    <TextBlock Text="{Binding Title}" />
-                </StackPanel>
-            </DataTemplate>
-        </GridView.ItemTemplate>-->
-    <!--<GridView.GroupStyle>
-            <GroupStyle>
-                <GroupStyle.HeaderTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Image}" />
-                            <TextBlock FontSize="24" Text="{Binding Title}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </GroupStyle.HeaderTemplate>
-                <GroupStyle.Panel>
+    <Page.DataContext>
+        <vm:FeedPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  HorizontalScrollMode="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  VerticalScrollMode="Auto">
+        <ScrollViewer.TopHeader>
+            <ItemsControl HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          ItemsSource="{Binding Groups}">
+                <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ctrls:PinterestPanel Width="{Binding PageWidth, ElementName=ThisPage}" />
+                        <StackPanel Orientation="Horizontal" />
                     </ItemsPanelTemplate>
-                </GroupStyle.Panel>
-            </GroupStyle>
-        </GridView.GroupStyle>-->
-    <!--</GridView>-->
-    <!--</SemanticZoom.ZoomedInView>
-    </SemanticZoom>-->
-
-    <ItemsControl ItemsSource="{Binding Source={StaticResource CVS}}">
-
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <StackPanel Width="300">
-                    <Border BorderBrush="DimGray"
-                            BorderThickness="1"
-                            Padding="4">
-                        <TextBlock Text="{Binding Title}" TextWrapping="Wrap" />
-                    </Border>
-                </StackPanel>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-
-        <ItemsControl.GroupStyle>
-            <GroupStyle>
-                <GroupStyle.HeaderTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Title}" />
+                        <Button Width="300"
+                                HorizontalContentAlignment="Left"
+                                Background="White">
+                            <Button.Flyout>
+                                <Flyout Placement="Bottom">
+                                    <StackPanel>
+                                        <Button Command="{Binding RefreshCommand}">Refresh</Button>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                            <RelativePanel>
+                                <Image x:Name="Image"
+                                       Width="32"
+                                       Height="32"
+                                       Margin="8,8,8,0"
+                                       Source="{Binding Image}" />
+                                <TextBlock x:Name="Title"
+                                           Margin="0,0,8,0"
+                                           FontSize="24"
+                                           RelativePanel.AlignBottomWith="Image"
+                                           RelativePanel.AlignRightWithPanel="True"
+                                           RelativePanel.RightOf="Image"
+                                           Text="{Binding Title}"
+                                           TextWrapping="NoWrap" />
+                                <TextBlock RelativePanel.AlignLeftWith="Title"
+                                           RelativePanel.Below="Title"
+                                           Text="{Binding Link}" />
+                            </RelativePanel>
+                        </Button>
                     </DataTemplate>
-                </GroupStyle.HeaderTemplate>
-                <GroupStyle.Panel>
-                    <ItemsPanelTemplate>
-                        <ctrls:PinterestPanel />
-                    </ItemsPanelTemplate>
-                </GroupStyle.Panel>
-            </GroupStyle>
-        </ItemsControl.GroupStyle>
-
-    </ItemsControl>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer.TopHeader>
+        <ItemsControl HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      ItemsSource="{Binding Groups}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplateSelector>
+                <local:MySelector>
+                    <local:MySelector.TwitterTemplate>
+                        <DataTemplate>
+                            <ItemsControl Width="300" ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="8,8,16,8" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RelativePanel Margin="0,0,0,16" Tapped="Item_Tapped">
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Core:EventTriggerBehavior EventName="PointerEntered">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Gainsboro" />
+                                                </Core:EventTriggerBehavior>
+                                                <Core:EventTriggerBehavior EventName="PointerExited">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Transparent" />
+                                                </Core:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                            <Image x:Name="Image"
+                                                   Width="64"
+                                                   IsHitTestVisible="False"
+                                                   Source="{Binding Image}"
+                                                   Stretch="UniformToFill" />
+                                            <TextBlock x:Name="Date"
+                                                       Margin="8,0,0,0"
+                                                       FontSize="14"
+                                                       IsHitTestVisible="False"
+                                                       Opacity=".75"
+                                                       RelativePanel.RightOf="Image"
+                                                       Text="{Binding Date}" />
+                                            <TextBlock x:Name="Title"
+                                                       Margin="8,0"
+                                                       FontSize="16"
+                                                       IsHitTestVisible="False"
+                                                       RelativePanel.Below="Date"
+                                                       RelativePanel.RightOf="Image"
+                                                       Text="{Binding Title}"
+                                                       TextWrapping="WrapWholeWords" />
+                                        </RelativePanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </local:MySelector.TwitterTemplate>
+                    <local:MySelector.RssTemplate>
+                        <DataTemplate>
+                            <ItemsControl Width="300" ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="0,8,0,8" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RelativePanel Margin="0,0,0,16"
+                                                       Background="Transparent"
+                                                       Tapped="Item_Tapped">
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Core:EventTriggerBehavior EventName="PointerEntered">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Gainsboro" />
+                                                </Core:EventTriggerBehavior>
+                                                <Core:EventTriggerBehavior EventName="PointerExited">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Transparent" />
+                                                </Core:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                            <Image x:Name="Image"
+                                                   HorizontalAlignment="Center"
+                                                   IsHitTestVisible="False"
+                                                   Source="{Binding Image}"
+                                                   Stretch="UniformToFill" />
+                                            <TextBlock x:Name="Date"
+                                                       Margin="8,8,8,0"
+                                                       FontSize="12"
+                                                       Opacity=".75"
+                                                       RelativePanel.Below="Image"
+                                                       Text="{Binding Date}" />
+                                            <TextBlock x:Name="Title"
+                                                       Margin="8,0,8,0"
+                                                       FontSize="20"
+                                                       IsHitTestVisible="False"
+                                                       RelativePanel.Below="Date"
+                                                       Text="{Binding Title}"
+                                                       TextWrapping="WrapWholeWords" />
+                                            <TextBlock x:Name="Details"
+                                                       Margin="8,0,8,8"
+                                                       IsHitTestVisible="False"
+                                                       MaxLines="3"
+                                                       RelativePanel.Below="Title"
+                                                       Text="{Binding Details}"
+                                                       TextTrimming="WordEllipsis"
+                                                       TextWrapping="WrapWholeWords" />
+                                        </RelativePanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </local:MySelector.RssTemplate>
+                    <local:MySelector.FlickrTemplate>
+                        <DataTemplate>
+                            <ItemsControl Width="300" ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="0,8,0,8" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RelativePanel Margin="0,0,0,16" Tapped="Item_Tapped">
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Core:EventTriggerBehavior EventName="PointerEntered">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Gainsboro" />
+                                                </Core:EventTriggerBehavior>
+                                                <Core:EventTriggerBehavior EventName="PointerExited">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Transparent" />
+                                                </Core:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                            <Image x:Name="Image"
+                                                   IsHitTestVisible="False"
+                                                   Source="{Binding Image}"
+                                                   Stretch="UniformToFill" />
+                                            <TextBlock x:Name="Title"
+                                                       Margin="8"
+                                                       FontSize="20"
+                                                       IsHitTestVisible="False"
+                                                       RelativePanel.Below="Image"
+                                                       Text="{Binding Title}"
+                                                       TextWrapping="WrapWholeWords" />
+                                        </RelativePanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </local:MySelector.FlickrTemplate>
+                    <local:MySelector.FacebookTemplate>
+                        <DataTemplate>
+                            <ItemsControl Width="300" ItemsSource="{Binding Items}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="0,8,0,8" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <RelativePanel Margin="0,0,0,16" Tapped="Item_Tapped">
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Core:EventTriggerBehavior EventName="PointerEntered">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Gainsboro" />
+                                                </Core:EventTriggerBehavior>
+                                                <Core:EventTriggerBehavior EventName="PointerExited">
+                                                    <Core:ChangePropertyAction PropertyName="Background" Value="Transparent" />
+                                                </Core:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
+                                            <Image x:Name="Image"
+                                                   IsHitTestVisible="False"
+                                                   Source="{Binding Image}"
+                                                   Stretch="UniformToFill" />
+                                            <TextBlock x:Name="Title"
+                                                       Margin="8"
+                                                       FontSize="20"
+                                                       IsHitTestVisible="False"
+                                                       RelativePanel.Below="Image"
+                                                       Text="{Binding Title}"
+                                                       TextWrapping="WrapWholeWords" />
+                                            <TextBlock x:Name="Details"
+                                                       IsHitTestVisible="False"
+                                                       MaxLines="3"
+                                                       RelativePanel.Below="Title"
+                                                       Text="{Binding Details}"
+                                                       TextTrimming="WordEllipsis"
+                                                       TextWrapping="WrapWholeWords" />
+                                        </RelativePanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </local:MySelector.FacebookTemplate>
+                </local:MySelector>
+            </ItemsControl.ItemTemplateSelector>
+        </ItemsControl>
+    </ScrollViewer>
 
 </Page>
