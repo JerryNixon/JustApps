@@ -25,16 +25,46 @@ namespace JustTrek.ViewModels
             }
             else
             {
-                Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "StarTrek.com", Parameter = new Parameter { Param = "http://www.startrek.com/latest_news_feed" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.Facebook, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrek" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.TwitterUser, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrek" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.Facebook, Title = "Star Trek Movie", Parameter = new Parameter { Param = "StarTrekMovie" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.TwitterUser, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrekMovie" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "TrekToday.com", Parameter = new Parameter { Param = "http://www.trektoday.com/feed" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "TrekMovie.com", Parameter = new Parameter { Param = "http://trekmovie.com/feed" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "TrekNews.net", Parameter = new Parameter { Param = "http://www.treknews.net/feed/" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.FlickrTags, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrek" } }).Fill();
-                Groups.AddAndReturn(new Group { Kind = Kinds.FlickrTags, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrekMovie" } }).Fill();
+                Groups.AddAndReturn(new Group
+                {
+                    Kind = Kinds.Rss,
+                    Title = "StarTrek.com News",
+                    Link = new Uri("http://startrek.com"),
+                    Parameter = new Parameter { Param = "http://www.startrek.com/latest_news_feed" }
+                }).Fill();
+                Groups.AddAndReturn(new Group
+                {
+                    Kind = Kinds.Facebook,
+                    Title = "Star Trek on Facebook Wall",
+                    Link = new Uri("http://facebook.com/StarTrek"),
+                    Parameter = new Parameter { Param = "StarTrek" }
+                }).Fill();
+                Groups.AddAndReturn(new Group
+                {
+                    Kind = Kinds.TwitterUser,
+                    Title = "Star Trek on Twitter Feed",
+                    Link = new Uri("http://twitter.com/StarTrek"),
+                    Parameter = new Parameter { Param = "StarTrek", Max = 50 }
+                }).Fill();
+                Groups.AddAndReturn(new Group
+                {
+                    Kind = Kinds.Facebook,
+                    Title = "Star Trek Movie on Facebook",
+                    Link = new Uri("http://facebook.com/StarTrekMovie"),
+                    Parameter = new Parameter { Param = "StarTrekMovie" }
+                }).Fill();
+                Groups.AddAndReturn(new Group
+                {
+                    Kind = Kinds.TwitterUser,
+                    Title = "Star Trek on Twitter",
+                    Link = new Uri("http://twitter.com/StarTrekMovie"),
+                    Parameter = new Parameter { Param = "StarTrekMovie" }
+                }).Fill();
+                //Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "TrekToday.com", Parameter = new Parameter { Param = "http://www.trektoday.com/feed" } }).Fill();
+                //Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "TrekMovie.com", Parameter = new Parameter { Param = "http://trekmovie.com/feed" } }).Fill();
+                //Groups.AddAndReturn(new Group { Kind = Kinds.Rss, Title = "TrekNews.net", Parameter = new Parameter { Param = "http://www.treknews.net/feed/" } }).Fill();
+                //Groups.AddAndReturn(new Group { Kind = Kinds.FlickrTags, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrek" } }).Fill();
+                //Groups.AddAndReturn(new Group { Kind = Kinds.FlickrTags, Title = "Star Trek", Parameter = new Parameter { Param = "StarTrekMovie" } }).Fill();
             }
         }
 

@@ -60,6 +60,7 @@ namespace JustTrek.Models
                 Title = "The quick brown fox jumps over the lazy dog",
                 Link = new Uri("http://bing.com"),
                 Date = DateTime.Now.ToString(),
+                Kind = kind.Value,
                 Image = "https://raw.githubusercontent.com/Windows-XAML/Template10/master/Assets/T10%20256x256.png",
                 Details = "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog",
             }).ToObservableCollection()

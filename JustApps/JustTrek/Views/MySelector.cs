@@ -14,28 +14,30 @@ namespace JustTrek.Views
 
     public class MySelector : DataTemplateSelector
     {
+        public Group Group { get; set; }
         public DataTemplate FacebookTemplate { get; set; }
         public DataTemplate FlickrTemplate { get; set; }
         public DataTemplate RssTemplate { get; set; }
         public DataTemplate TwitterTemplate { get; set; }
+        public DataTemplate DefaultTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            var group = item as Models.Group;
-            switch (group.Kind)
+            var data = item as Models.Item;
+            switch (data.Kind)
             {
                 case Kinds.Facebook:
-                    return FacebookTemplate;
+                    return FacebookTemplate ?? DefaultTemplate;
                 case Kinds.TwitterUser:
                 case Kinds.TwitterSearch:
-                    return TwitterTemplate;
+                    return TwitterTemplate ?? DefaultTemplate;
                 case Kinds.FlickrId:
                 case Kinds.FlickrTags:
-                    return FlickrTemplate;
+                    return FlickrTemplate ?? DefaultTemplate;
                 case Kinds.Rss:
-                    return RssTemplate;
+                    return RssTemplate ?? DefaultTemplate;
                 default:
-                    return null;
+                    return DefaultTemplate;
             }
         }
     }

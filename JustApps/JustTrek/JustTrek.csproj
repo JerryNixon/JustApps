@@ -124,6 +124,7 @@
     <Content Include="Images\Rss.png" />
     <Content Include="Images\Spinner.gif" />
     <Content Include="Images\Twitter.png" />
+    <Content Include="Images\Wallpaper.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

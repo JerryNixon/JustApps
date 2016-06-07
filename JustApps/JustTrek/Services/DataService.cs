@@ -72,7 +72,7 @@ namespace JustTrek.Services
                 default:
                     throw new NotSupportedException(group.Kind.ToString());
             }
-
+            group.Items.ForEach(x => x.Kind = group.Kind);
         }
 
         private void FillItems(Group group, IEnumerable<Item> items)

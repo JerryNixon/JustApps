@@ -62,5 +62,6 @@ namespace JustTrek.Models
         public string Image { get; set; }
         public string Details { get; set; }
         public Uri Link { get; set; }
+        public Kinds Kind { get; internal set; }
     }
 }
