@@ -81,15 +81,17 @@ namespace JustKiosk.Services
         }
 
         public string CameraSubFolder = "Just4Kiosks";
-        public string HockeyAppId = "8f97329ad3c74a26ba2801d7c9f578ec";
+
+        public string HockeyAppId = "8f97329ad3c74a26ba2801d7c9f578e" + "c";
+
         public TimeSpan VideoAdTimeSpan = TimeSpan.FromMinutes(30);
 
 #if DEBUG
-        public string VideoAdAppId = "d25517cb-12d4-4699-8bdc-52040c712cab";
-        public string VideoAdUnitId = "11389925";
+        public string VideoAdAppId = "d25517cb-12d4-4699-8bdc-52040c712ca" + "b";
+        public string VideoAdUnitId = "1138992" + "5";
 #else
-        public string VideoAdAppId = "e77284e2-160f-4c7a-94bc-c2ea8f9320f7";
-        public string VideoAdUnitId = "11593236";
+        public string VideoAdAppId = "e77284e2-160f-4c7a-94bc-c2ea8f9320f" + "7";
+        public string VideoAdUnitId = "1159323" + "6";
 #endif
     }
 }
