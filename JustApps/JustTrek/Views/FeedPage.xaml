@@ -1,7 +1,8 @@
-﻿<Page
+﻿<Page x:Class="JustTrek.Views.FeedPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Foundation="using:Windows.Foundation"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:AppStudio.Uwp.Controls"
       xmlns:ctrls="using:JustTrek.Controls"
@@ -11,8 +12,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:JustTrek.Models"
       xmlns:vm="using:JustTrek.ViewModels"
-      xmlns:Foundation="using:Windows.Foundation" x:Class="JustTrek.Views.FeedPage"
-      x:Name="ThisPage" Background="Black"
+      x:Name="ThisPage"
+      Background="Black"
       mc:Ignorable="d">
 
     <Page.Resources>
@@ -20,17 +21,25 @@
         <DataTemplate x:Name="HeaderTemplate">
             <RelativePanel>
                 <Image x:Name="Image"
-        			Height="32"
-        			Margin="0,0,16,0"
-        			Source="{Binding Image}" />
-                <TextBlock Foreground="Gold" RelativePanel.RightOf="Image" Text="{Binding Title}" />
+                       Height="32"
+                       Margin="0,0,16,0"
+                       Source="{Binding Image}" />
+                <TextBlock Foreground="Gold"
+                           RelativePanel.RightOf="Image"
+                           Text="{Binding Title}" />
             </RelativePanel>
         </DataTemplate>
 
         <DataTemplate x:Name="SectionTemplate">
-            <GridView IsItemClickEnabled="True"
-        		ItemClick="GridView_ItemClick"
-        		ItemsSource="{Binding Items}">
+            <GridView x:Name="GridView"
+                      IsItemClickEnabled="True"
+                      ItemClick="GridView_ItemClick"
+                      ItemsSource="{Binding Items}">
+                <GridView.Footer>
+                    <TextBlock Foreground="White"
+                               Text="Loading..."
+                               Visibility="{Binding Status, Converter={StaticResource VisibleWhenLoadingConverter}}" />
+                </GridView.Footer>
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -41,59 +50,64 @@
                     <local:MySelector>
                         <local:MySelector.TwitterTemplate>
                             <DataTemplate>
-                                <RelativePanel Margin="0,0,0,16" Width="225" MinHeight="100">
+                                <RelativePanel Width="225"
+                                               MinHeight="100"
+                                               Margin="0,0,0,16">
                                     <Image x:Name="Image"
-        								Width="64" Height="64"
-        								IsHitTestVisible="False"
-        								Source="{Binding Image}"
-        								Stretch="UniformToFill" />
+                                           Width="64"
+                                           Height="64"
+                                           IsHitTestVisible="False"
+                                           Source="{Binding Image}"
+                                           Stretch="UniformToFill" />
                                     <TextBlock x:Name="Date"
-        								Margin="8,0,0,0"
-        								FontSize="14" Foreground="White"
-        								IsHitTestVisible="False"
-        								Opacity=".75"
-        								RelativePanel.RightOf="Image"
-        								Text="{Binding Date}" />
+                                               Margin="8,0,0,0"
+                                               FontSize="14"
+                                               Foreground="White"
+                                               IsHitTestVisible="False"
+                                               Opacity=".75"
+                                               RelativePanel.RightOf="Image"
+                                               Text="{Binding Date}" />
                                     <TextBlock x:Name="Title"
-        								Margin="8,0"
-        								FontSize="12" Foreground="White"
-        								IsHitTestVisible="False"
-        								RelativePanel.Below="Date"
-        								RelativePanel.RightOf="Image"
-        								Text="{Binding Title}"
-        								TextWrapping="WrapWholeWords" />
+                                               Margin="8,0"
+                                               FontSize="12"
+                                               Foreground="White"
+                                               IsHitTestVisible="False"
+                                               RelativePanel.Below="Date"
+                                               RelativePanel.RightOf="Image"
+                                               Text="{Binding Title}"
+                                               TextWrapping="WrapWholeWords" />
                                 </RelativePanel>
                             </DataTemplate>
                         </local:MySelector.TwitterTemplate>
                         <local:MySelector.DefaultTemplate>
                             <DataTemplate>
                                 <RelativePanel x:Name="Container"
-        							Width="225"
-        							Height="260">
+                                               Width="225"
+                                               Height="200">
                                     <ToolTipService.ToolTip>
                                         <TextBlock Text="{Binding Details}" TextWrapping="WrapWholeWords" />
                                     </ToolTipService.ToolTip>
                                     <RelativePanel.Background>
                                         <ImageBrush AlignmentX="Center"
-        									AlignmentY="Top"
-        									ImageSource="{Binding Image}"
-        									Stretch="UniformToFill">
-                                            <Interactivity:Interaction.Behaviors>
-                                                <Core:EventTriggerBehavior EventName="ImageFailed">
-                                                    <Core:ChangePropertyAction PropertyName="Background"
-        												TargetObject="{Binding ElementName=Container}">
-                                                        <Core:ChangePropertyAction.Value>
-                                                            <ImageBrush ImageSource="ms-appx:///images/wallpaper.jpg" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center" />
-                                                        </Core:ChangePropertyAction.Value>
-                                                    </Core:ChangePropertyAction>
-                                                </Core:EventTriggerBehavior>
-                                            </Interactivity:Interaction.Behaviors>
-                                        </ImageBrush>
+                                                    AlignmentY="Top"
+                                                    ImageSource="ms-appx:///images/wallpaper.jpg"
+                                                    Stretch="UniformToFill" />
                                     </RelativePanel.Background>
+                                    <Grid RelativePanel.AlignBottomWithPanel="True"
+                                          RelativePanel.AlignLeftWithPanel="True"
+                                          RelativePanel.AlignRightWithPanel="True"
+                                          RelativePanel.AlignTopWithPanel="True">
+                                        <Grid.Background>
+                                            <ImageBrush AlignmentX="Center"
+                                                        AlignmentY="Top"
+                                                        ImageSource="{Binding Image}"
+                                                        Stretch="UniformToFill" />
+                                        </Grid.Background>
+                                    </Grid>
                                     <Rectangle Height="150"
-        								RelativePanel.AlignBottomWithPanel="True"
-        								RelativePanel.AlignLeftWithPanel="True"
-        								RelativePanel.AlignRightWithPanel="True">
+                                               RelativePanel.AlignBottomWithPanel="True"
+                                               RelativePanel.AlignLeftWithPanel="True"
+                                               RelativePanel.AlignRightWithPanel="True">
                                         <Rectangle.Fill>
                                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Offset="0" Color="Transparent" />
@@ -103,20 +117,20 @@
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <TextBlock x:Name="Text"
-        								Margin="8"
-        								FontSize="12"
-        								Foreground="White"
-        								MaxLines="6"
-        								RelativePanel.AlignBottomWithPanel="True"
-        								TextTrimming="WordEllipsis"
-        								TextWrapping="WrapWholeWords">
-        								<Underline>
-        									<Run Foreground="LightGray" Text="{Binding Date}" />
-        								</Underline>
-        								<LineBreak />
-        								<Run FontSize="16" Text="{Binding Title}" />
-        								<LineBreak />
-        								<Run Foreground="Gold" Text="{Binding Details}" />
+                                               Margin="8"
+                                               FontSize="12"
+                                               Foreground="White"
+                                               MaxLines="6"
+                                               RelativePanel.AlignBottomWithPanel="True"
+                                               TextTrimming="WordEllipsis"
+                                               TextWrapping="WrapWholeWords">
+                                        <Underline>
+                                            <Run Foreground="LightGray" Text="{Binding Date}" />
+                                        </Underline>
+                                        <LineBreak />
+                                        <Run FontSize="16" Text="{Binding Title}" />
+                                        <LineBreak />
+                                        <Run Foreground="Gold" Text="{Binding Details}" />
                                     </TextBlock>
                                 </RelativePanel>
                             </DataTemplate>
@@ -124,6 +138,25 @@
                     </local:MySelector>
                 </GridView.ItemTemplateSelector>
             </GridView>
+        </DataTemplate>
+        <DataTemplate x:Key="ZoomedOutGroupDataTemplate">
+            <RelativePanel Width="225" Height="125">
+                <RelativePanel.Background>
+                    <SolidColorBrush Opacity=".25" Color="Black" />
+                </RelativePanel.Background>
+                <Image Width="64"
+                       Height="64"
+                       Margin="16"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True"
+                       Source="{Binding Image}"
+                       Stretch="Uniform" />
+                <RichTextBlock Margin="16" FontSize="18">
+                    <Paragraph>
+                        <Run Text="{Binding Title}" />
+                    </Paragraph>
+                </RichTextBlock>
+            </RelativePanel>
         </DataTemplate>
 
     </Page.Resources>
@@ -133,10 +166,13 @@
     </Page.DataContext>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appx:///Images/Stars.jpg" Stretch="UniformToFill" />
+        </Grid.Background>
 
         <Interactivity:Interaction.Behaviors>
             <Core:EventTriggerBehavior EventName="Loaded">
-                <Core:GoToStateAction StateName="ListVisualState"/>
+                <Core:GoToStateAction StateName="ListVisualState" />
             </Core:EventTriggerBehavior>
         </Interactivity:Interaction.Behaviors>
 
@@ -145,19 +181,19 @@
                 <VisualStateGroup.Transitions>
                     <VisualTransition GeneratedDuration="0:0:0.3">
                         <VisualTransition.GeneratedEasingFunction>
-                            <CircleEase EasingMode="EaseInOut"/>
+                            <CircleEase EasingMode="EaseInOut" />
                         </VisualTransition.GeneratedEasingFunction>
                     </VisualTransition>
                     <VisualTransition GeneratedDuration="0:0:0.3" To="WebVisualState">
                         <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.ZIndex)" Storyboard.TargetName="RootHub">
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootView" Storyboard.TargetProperty="(Canvas.ZIndex)">
                                 <DiscreteObjectKeyFrame KeyTime="0">
                                     <DiscreteObjectKeyFrame.Value>
                                         <x:Int32>-1</x:Int32>
                                     </DiscreteObjectKeyFrame.Value>
                                 </DiscreteObjectKeyFrame>
                             </ObjectAnimationUsingKeyFrames>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Canvas.ZIndex)" Storyboard.TargetName="WebArea">
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="WebArea" Storyboard.TargetProperty="(Canvas.ZIndex)">
                                 <DiscreteObjectKeyFrame KeyTime="0">
                                     <DiscreteObjectKeyFrame.Value>
                                         <x:Int32>1</x:Int32>
@@ -169,28 +205,52 @@
                 </VisualStateGroup.Transitions>
                 <VisualState x:Name="ListVisualState">
                     <VisualState.Setters>
-                        <Setter Target="WebArea.(UIElement.Visibility)" Value="Visible"/>
-                        <Setter Target="RootHub.(Canvas.ZIndex)" Value="1"/>
-                        <Setter Target="WebArea.(Canvas.ZIndex)" Value="-1"/>
+                        <Setter Target="WebArea.(UIElement.Visibility)" Value="Visible" />
+                        <Setter Target="RootView.(Canvas.ZIndex)" Value="1" />
+                        <Setter Target="WebArea.(Canvas.ZIndex)" Value="-1" />
                     </VisualState.Setters>
                     <Storyboard>
-                        <DoubleAnimation To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="RootHub" d:IsOptimized="True" Duration="0"/>
-                        <DoubleAnimation To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="RootHub" d:IsOptimized="True" Duration="0"/>
+                        <DoubleAnimation d:IsOptimized="True"
+                                         Duration="0"
+                                         Storyboard.TargetName="RootView"
+                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)"
+                                         To="1" />
+                        <DoubleAnimation d:IsOptimized="True"
+                                         Duration="0"
+                                         Storyboard.TargetName="RootView"
+                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                                         To="1" />
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="WebVisualState">
                     <VisualState.Setters>
-                        <Setter Target="RootHub.(UIElement.IsHitTestVisible)" Value="False"/>
-                        <Setter Target="WebArea.(Canvas.ZIndex)" Value="1"/>
-                        <Setter Target="RootHub.(Canvas.ZIndex)" Value="-1"/>
+                        <Setter Target="RootView.(UIElement.IsHitTestVisible)" Value="False" />
+                        <Setter Target="WebArea.(Canvas.ZIndex)" Value="1" />
+                        <Setter Target="RootView.(Canvas.ZIndex)" Value="-1" />
                     </VisualState.Setters>
                     <Storyboard>
-                        <DoubleAnimation To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)" Storyboard.TargetName="WebArea" d:IsOptimized="True" Duration="0"/>
-                        <DoubleAnimation To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)" Storyboard.TargetName="WebArea" d:IsOptimized="True" Duration="0"/>
-                        <DoubleAnimation To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="WebArea" d:IsOptimized="True" Duration="0"/>
-                        <DoubleAnimation Duration="0" To="0.5" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="RootHub" d:IsOptimized="True"/>
-                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ThisPage">
-                            <EasingColorKeyFrame KeyTime="0" Value="#FF1D1D1D"/>
+                        <DoubleAnimation d:IsOptimized="True"
+                                         Duration="0"
+                                         Storyboard.TargetName="WebArea"
+                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)"
+                                         To="1" />
+                        <DoubleAnimation d:IsOptimized="True"
+                                         Duration="0"
+                                         Storyboard.TargetName="WebArea"
+                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)"
+                                         To="1" />
+                        <DoubleAnimation d:IsOptimized="True"
+                                         Duration="0"
+                                         Storyboard.TargetName="WebArea"
+                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                         To="1" />
+                        <DoubleAnimation d:IsOptimized="True"
+                                         Duration="0"
+                                         Storyboard.TargetName="RootView"
+                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                         To="0.5" />
+                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ThisPage" Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)">
+                            <EasingColorKeyFrame KeyTime="0" Value="#FF1D1D1D" />
                         </ColorAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
@@ -208,7 +268,7 @@
                                 <Foundation:Point>0.5,0.95</Foundation:Point>
                             </Setter.Value>
                         </Setter>
-                        <Setter Target="RootHub.(UIElement.RenderTransformOrigin)">
+                        <Setter Target="RootView.(UIElement.RenderTransformOrigin)">
                             <Setter.Value>
                                 <Foundation:Point>0.5,0.025</Foundation:Point>
                             </Setter.Value>
@@ -220,38 +280,63 @@
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="620"/>
+                        <AdaptiveTrigger MinWindowWidth="620" />
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1020"/>
+                        <AdaptiveTrigger MinWindowWidth="1020" />
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Hub x:Name="RootHub" Orientation="Vertical" RenderTransformOrigin="0.025,0.5">
-            <Hub.RenderTransform>
-                <CompositeTransform ScaleX="0.15" ScaleY="0.15"/>
-            </Hub.RenderTransform>
-            <HubSection ContentTemplate="{StaticResource SectionTemplate}"
-				DataContext="{Binding Groups[1]}"
-				HeaderTemplate="{StaticResource HeaderTemplate}"
-				IsHeaderInteractive="True" />
-        </Hub>
+        <SemanticZoom x:Name="RootView"
+                      IsZoomOutButtonEnabled="True"
+                      RenderTransformOrigin="0.025,0.5"
+                      RequestedTheme="Dark"
+                      ViewChangeCompleted="RootView_ViewChangeCompleted">
+            <SemanticZoom.RenderTransform>
+                <CompositeTransform ScaleX="0.15" ScaleY="0.15" />
+            </SemanticZoom.RenderTransform>
+            <SemanticZoom.ZoomedOutView>
+                <GridView x:Name="ZoomedOutGridView"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          IsItemClickEnabled="True"
+                          ItemTemplate="{StaticResource ZoomedOutGroupDataTemplate}"
+                          ItemsSource="{Binding Groups}" />
+            </SemanticZoom.ZoomedOutView>
+            <SemanticZoom.ZoomedInView>
+                <Hub x:Name="RootHub" Orientation="Vertical">
+                    <HubSection ContentTemplate="{StaticResource SectionTemplate}"
+                                DataContext="{Binding Groups[1]}"
+                                HeaderTemplate="{StaticResource HeaderTemplate}"
+                                IsHeaderInteractive="True">
+                    </HubSection>
+                </Hub>
+            </SemanticZoom.ZoomedInView>
+        </SemanticZoom>
 
-        <Grid x:Name="WebArea" RenderTransformOrigin="0.95,0.5" Margin="130,0,0,0" Opacity="0">
+        <Grid x:Name="WebArea"
+              Margin="130,0,0,0"
+              Opacity="0"
+              RenderTransformOrigin="0.95,0.5">
             <Grid.RenderTransform>
-                <CompositeTransform ScaleX="0.15" ScaleY="0.15"/>
+                <CompositeTransform ScaleX="0.15" ScaleY="0.15" />
             </Grid.RenderTransform>
             <WebView x:Name="WebView" />
-            <ProgressRing x:Name="WebProgressRing" Height="100" Width="100"   />
+            <ProgressRing x:Name="WebProgressRing"
+                          Width="100"
+                          Height="100"
+                          Foreground="White" />
         </Grid>
-        <Rectangle x:Name="ClickArea" Fill="Transparent" Stroke="Black">
+        <Rectangle x:Name="ClickArea"
+                   Fill="Transparent"
+                   Stroke="Black">
             <Interactivity:Interaction.Behaviors>
                 <Core:EventTriggerBehavior EventName="PointerPressed">
-                    <Core:GoToStateAction StateName="ListVisualState"/>
+                    <Core:GoToStateAction StateName="ListVisualState" />
                 </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </Rectangle>

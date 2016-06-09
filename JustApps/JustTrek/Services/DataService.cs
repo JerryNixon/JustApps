@@ -28,23 +28,16 @@ namespace JustTrek.Services
             _SettingSvc = new SettingsService();
         }
 
-        public async Task<IEnumerable<Item>> GetFaceBookItemsAsync(string query, int max = 20)
+        private void FillItems(Group group, IEnumerable<Item> items)
         {
-            var items = await ExecuteAsync(async () =>
+            if (items != null && items.Any())
             {
-                var config = new FacebookDataConfig
-                {
-                    UserId = query,
-                };
-                var auth = new FacebookOAuthTokens
-                {
-                    AppId = _SettingSvc.facebook_id,
-                    AppSecret = _SettingSvc.facebook_secret,
-                };
-                var provider = new FacebookDataProvider(auth);
-                return await provider.LoadDataAsync(config, max);
-            });
-            return items.Select(x => new Item(x));
+                group.Items.AddRange(items, true);
+            }
+            else
+            {
+                // TODO: handle error
+            }
         }
 
         public async Task FillAsync(Group group, Parameter parameter)
@@ -75,19 +68,26 @@ namespace JustTrek.Services
             group.Items.ForEach(x => x.Kind = group.Kind);
         }
 
-        private void FillItems(Group group, IEnumerable<Item> items)
+        public async Task<IEnumerable<Item>> GetFaceBookItemsAsync(string query, int max)
         {
-            if (items != null && items.Any())
+            var items = await ExecuteAsync(async () =>
             {
-                group.Items.AddRange(items, true);
-            }
-            else
-            {
-                // TODO: handle error
-            }
+                var config = new FacebookDataConfig
+                {
+                    UserId = query,
+                };
+                var auth = new FacebookOAuthTokens
+                {
+                    AppId = _SettingSvc.facebook_id,
+                    AppSecret = _SettingSvc.facebook_secret,
+                };
+                var provider = new FacebookDataProvider(auth);
+                return await provider.LoadDataAsync(config, max);
+            });
+            return items.Select(x => new Item(x));
         }
 
-        internal async Task<IEnumerable<Item>> GetRssItemsAsync(Uri url, int max = 20)
+        internal async Task<IEnumerable<Item>> GetRssItemsAsync(Uri url, int max)
         {
             var items = await ExecuteAsync(async () =>
             {
@@ -101,7 +101,7 @@ namespace JustTrek.Services
             return items.Select(x => new Item(x));
         }
 
-        public async Task<IEnumerable<Item>> GetFlickrItemsAsync(string param, FlickrQueryType type = FlickrQueryType.Tags, int max = 20)
+        public async Task<IEnumerable<Item>> GetFlickrItemsAsync(string param, FlickrQueryType type, int max)
         {
             var items = await ExecuteAsync(async () =>
             {
@@ -116,7 +116,7 @@ namespace JustTrek.Services
             return items.Select(x => new Item(x));
         }
 
-        public async Task<IEnumerable<Item>> GetTwitterItemsAsync(string query, TwitterQueryType type, int max = 20)
+        public async Task<IEnumerable<Item>> GetTwitterItemsAsync(string query, TwitterQueryType type, int max)
         {
             var items = await ExecuteAsync(async () =>
             {

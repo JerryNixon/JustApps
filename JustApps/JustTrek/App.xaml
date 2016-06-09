@@ -7,7 +7,7 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\Custom.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -3600,6 +3600,18 @@
             <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
                 <converters:ValueWhenConverter.When>
                     <x:Boolean>True</x:Boolean>
+                </converters:ValueWhenConverter.When>
+                <converters:ValueWhenConverter.Value>
+                    <Visibility>Visible</Visibility>
+                </converters:ValueWhenConverter.Value>
+                <converters:ValueWhenConverter.Otherwise>
+                    <Visibility>Collapsed</Visibility>
+                </converters:ValueWhenConverter.Otherwise>
+            </converters:ValueWhenConverter>
+
+            <converters:ValueWhenConverter xmlns:models="using:JustTrek.Models" x:Key="VisibleWhenLoadingConverter">
+                <converters:ValueWhenConverter.When>
+                    <models:Statuses>Loading</models:Statuses>
                 </converters:ValueWhenConverter.When>
                 <converters:ValueWhenConverter.Value>
                     <Visibility>Visible</Visibility>

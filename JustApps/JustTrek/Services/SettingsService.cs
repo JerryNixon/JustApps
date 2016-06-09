@@ -8,6 +8,8 @@ namespace JustTrek.Services
 {
     public class SettingsService
     {
+        public string hockeyapp_appid => "bfc385d14fe540b0924d9f126cbbeed7";
+
         public string facebook_id => "1039600622801434";
         public string facebook_secret => "f6c25328ffd7bfca322f20f64f33004a";
 
