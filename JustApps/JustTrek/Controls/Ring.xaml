@@ -1,0 +1,203 @@
+﻿<UserControl x:Class="JustTrek.Controls.Ring"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:JustTrek.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="400"
+             d:DesignWidth="400" Visibility="Collapsed"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Storyboard x:Name="ActiveStoryboard" RepeatBehavior="Forever">
+            <DoubleAnimation d:IsOptimized="True"
+                             BeginTime="0:0:0.0"
+                             Duration="0:0:4"
+                             Storyboard.TargetName="Klingon"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                             To="360">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation d:IsOptimized="True"
+                             BeginTime="0:0:0.5"
+                             Duration="0:0:4.1"
+                             Storyboard.TargetName="Torpedo01"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                             To="360">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation d:IsOptimized="True"
+                             BeginTime="0:0:1"
+                             Duration="0:0:4.2"
+                             Storyboard.TargetName="Torpedo02"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                             To="360">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation d:IsOptimized="True"
+                             BeginTime="0:0:1.5"
+                             Duration="0:0:4.3"
+                             Storyboard.TargetName="Torpedo03"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)"
+                             To="360">
+                <DoubleAnimation.EasingFunction>
+                    <SineEase EasingMode="EaseInOut" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Enterprise" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)">
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:6" Value="360" />
+            </DoubleAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Enterprise" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0:0:1">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:6">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Klingon" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0:0:1">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:6">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>  <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Torpedo01" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0:0:1">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:4.4">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Torpedo02" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0:0:1.2">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:4.9">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Torpedo03" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0:0:1.4">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+                <DiscreteObjectKeyFrame KeyTime="0:0:5.6">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+        <DataTemplate x:Name="Ship01">
+            <Path Width="100"
+                  Height="100"
+                  Data="F1 M 41.0117,222.837C 72.345,221.504 103.678,220.171 130.178,219.337C 156.678,218.504 178.345,218.171 193.317,217.921C 208.289,217.671 216.567,217.504 224.845,217.337L 225.512,219.004C 228.512,219.671 231.512,220.337 232.734,221.504C 233.956,222.671 233.401,224.337 232.845,226.004C 231.956,228.782 231.067,231.56 229.456,234.282C 227.845,237.004 225.512,239.671 223.178,242.337L 187.178,242.671C 186.178,244.226 185.178,245.782 182.512,246.393C 179.845,247.004 175.512,246.671 171.178,246.337L 203.845,273.004L 217.512,272.004L 241.512,249.337L 240.053,247.004L 236.803,246.629L 236.928,245.004L 238.678,244.504L 238.678,241.504L 236.303,241.004L 236.178,238.629L 258.178,237.879C 259.803,237.046 261.428,236.212 263.345,236.233C 265.262,236.254 267.47,237.129 269.678,238.004L 296.303,234.504L 306.97,230.504C 308.123,228.976 309.276,227.448 310.713,226.337C 312.151,225.226 313.873,224.532 315.595,223.837C 315.734,222.81 315.873,221.782 316.942,221.226C 318.012,220.671 320.012,220.587 322.012,220.504C 323.595,219.837 325.178,219.171 326.942,218.879C 328.706,218.587 330.651,218.671 332.331,219.226C 334.012,219.782 335.428,220.81 336.845,221.837L 340.345,223.337L 350.012,230.337C 357.484,232.087 364.956,233.837 369.859,234.851C 374.762,235.865 377.095,236.143 379.428,236.421L 411.845,236.671C 411.762,238.226 411.678,239.782 411.137,241.24C 410.595,242.698 409.595,244.06 408.595,245.421L 376.178,246.587C 372.651,247.032 369.123,247.476 362.762,249.587C 356.401,251.698 347.206,255.476 338.012,259.254C 336.484,260.365 334.956,261.476 333.164,262.046C 331.373,262.615 329.317,262.643 327.637,262.198C 325.956,261.754 324.651,260.837 323.345,259.921L 301.595,252.087C 298.539,252.254 295.484,252.421 291.539,253.49C 287.595,254.56 282.762,256.532 278.748,258.754C 274.734,260.976 271.539,263.448 268.345,265.921C 268.845,266.865 269.345,267.81 269.553,268.74C 269.762,269.671 269.678,270.587 269.206,271.712C 268.734,272.837 267.873,274.171 267.012,275.504L 269.095,278.004L 278.595,279.754L 279.012,305.921L 270.595,308.837L 265.845,314.171C 256.69,315.171 247.535,316.172 236.29,316.395C 225.046,316.617 211.713,316.062 201.824,315.506C 191.935,314.951 185.49,314.395 179.046,313.839L 171.713,306.506C 166.602,305.062 161.49,303.617 155.546,302.339C 149.602,301.062 142.824,299.951 136.046,298.839L 135.713,296.506L 140.379,293.839L 146.713,281.173C 152.268,280.728 157.824,280.284 163.713,279.506C 169.602,278.728 175.824,277.617 182.046,276.506L 121.379,243.506L 92.3794,243.839L 87.0461,239.506L 68.7127,240.173L 55.7127,245.173L 49.3794,237.839C 48.4905,237.506 47.6016,237.173 47.1016,236.284C 46.6016,235.395 46.4905,233.95 46.3794,232.506L 41.0117,222.837 Z "
+                  Fill="Blue"
+                  Stretch="Uniform" />
+        </DataTemplate>
+        <DataTemplate x:Name="Ship02">
+            <Path Width="100"
+                  Height="100"
+                  Data="F1 M 102.833,207.5L 134.833,199.833L 134.5,190.833C 136.056,190.833 137.611,190.833 138.556,189.278C 139.5,187.722 139.833,184.611 140.167,181.5L 157.833,178.833L 158.167,185.167C 170.5,182.278 182.833,179.389 193.111,177.833C 203.389,176.278 211.611,176.056 217.889,176.611C 224.167,177.167 228.5,178.5 232.833,180.944C 237.167,183.389 241.5,186.944 245.833,190.5L 250.833,186.167C 253.611,187.167 256.389,188.167 259.944,190.167C 263.5,192.167 267.833,195.167 270.889,198.889C 273.944,202.611 275.722,207.056 277.5,211.5L 296.5,207.5L 296.833,212.167L 313.5,212.833L 325.5,207.833C 333.056,206.5 340.611,205.167 347.5,204.833C 354.389,204.5 360.611,205.167 366.667,206C 372.722,206.833 378.611,207.833 382.5,209.389C 386.389,210.944 388.278,213.056 390.167,215.167L 394.167,215.167L 394.167,218.5L 388.5,218.167L 388.833,220.833L 397.833,219.5L 397.833,223.5C 391.389,227.278 384.944,231.056 379.667,233.444C 374.389,235.833 370.278,236.833 366.167,237.833L 350.167,235.833L 341.5,237.5L 341.167,241.833L 338.5,240.833L 338.5,237.5C 335.722,237.389 332.944,237.278 330.833,236.611C 328.722,235.944 327.278,234.722 325.833,233.5L 224.167,232.5L 246.167,263.5L 245.5,273.167L 258.5,294.167C 262.389,295.389 266.278,296.611 270.833,297.333C 275.389,298.056 280.611,298.278 285.833,298.5L 286.167,303.5L 331.833,302.167L 332.167,315.5L 320.167,315.5C 319.722,314.611 319.278,313.722 312.111,313.333C 304.944,312.944 291.056,313.056 277.167,313.167L 278.167,316.167C 273.278,316.056 268.389,315.944 264,316.389C 259.611,316.833 255.722,317.833 253.222,318.944C 250.722,320.056 249.611,321.278 248.889,322.611C 248.167,323.944 247.833,325.389 247.5,326.833L 227.5,325.833L 221.167,312.167L 229.167,312.833L 211.833,293.833L 207.167,275.5L 202.833,275.5L 127.5,244.167L 118.5,244.167C 118.722,241.167 118.944,238.167 118.111,234.611C 117.278,231.056 115.389,226.944 113.5,222.833L 103.167,223.5C 102.722,222.833 102.278,222.167 102.222,219.5C 102.167,216.833 102.5,212.167 102.833,207.5 Z "
+                  Fill="Red"
+                  Stretch="Uniform" />
+        </DataTemplate>
+        <DataTemplate x:Name="Star01">
+            <Path Width="100"
+                  Height="100"
+                  Data="F1 M 259.347,250.68L 227.557,213.114L 276.346,219.548L 229.293,205.133L 273.816,184.167L 226.438,197.479L 252.559,155.771L 219.899,192.584L 219.324,143.376L 211.752,192.002L 184.664,150.915L 204.583,195.916L 159.582,175.997L 200.668,203.085L 152.042,210.658L 201.251,211.233L 164.438,243.892L 206.146,217.772L 192.834,265.149L 213.799,220.626L 228.215,267.68L 221.781,218.89L 259.347,250.68 Z "
+                  Fill="Yellow"
+                  Stretch="Uniform" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Viewbox>
+
+        <Grid Width="500"
+              Height="500">
+
+            <Grid x:Name="Klingon" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <CompositeTransform />
+                </Grid.RenderTransform>
+                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Content="{x:Null}"
+                                  ContentTemplate="{StaticResource Ship02}" />
+            </Grid>
+            <Grid x:Name="Torpedo01"
+                  RenderTransformOrigin="0.5,0.5"
+                  Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <CompositeTransform />
+                </Grid.RenderTransform>
+                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Content="{x:Null}"
+                                  ContentTemplate="{StaticResource Star01}" />
+            </Grid>
+            <Grid x:Name="Torpedo02"
+                  RenderTransformOrigin="0.5,0.5"
+                  Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <CompositeTransform />
+                </Grid.RenderTransform>
+                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Content="{x:Null}"
+                                  ContentTemplate="{StaticResource Star01}" />
+            </Grid>
+            <Grid x:Name="Torpedo03"
+                  RenderTransformOrigin="0.5,0.5"
+                  Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <CompositeTransform />
+                </Grid.RenderTransform>
+                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Content="{x:Null}"
+                                  ContentTemplate="{StaticResource Star01}" />
+            </Grid>
+            <Grid x:Name="Enterprise" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <CompositeTransform />
+                </Grid.RenderTransform>
+                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Content="{x:Null}"
+                                  ContentTemplate="{StaticResource Ship01}" />
+            </Grid>
+
+        </Grid>
+    </Viewbox>
+</UserControl>

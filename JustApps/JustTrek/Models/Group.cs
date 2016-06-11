@@ -55,7 +55,7 @@ namespace JustTrek.Models
             Title = title ?? "My Group",
             Kind = kind ?? Kinds.Rss,
             Link = new Uri("http://bing.com"),
-            Items = Enumerable.Range(1, 15).Select(x => new Item
+            Items = Enumerable.Range(1, 5).Select(x => new Item
             {
                 Title = "The quick brown fox jumps over the lazy dog",
                 Link = new Uri("http://bing.com"),

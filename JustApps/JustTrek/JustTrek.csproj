@@ -94,6 +94,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Fonts\STARTREK.TTF" />
+    <Content Include="Fonts\OKUDA.OTF" />
     <None Include="JustTrek_StoreKey.pfx" />
     <None Include="JustTrek_TemporaryKey.pfx" />
     <None Include="project.json" />
@@ -103,6 +105,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PinterestPanel.cs" />
+    <Compile Include="Controls\Ring.xaml.cs">
+      <DependentUpon>Ring.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WrapPanel.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -191,6 +196,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Ring.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Custom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

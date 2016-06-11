@@ -4,6 +4,7 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Foundation="using:Windows.Foundation"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:WindowsStateTriggers="using:WindowsStateTriggers"
       xmlns:controls="using:AppStudio.Uwp.Controls"
       xmlns:ctrls="using:JustTrek.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -18,13 +19,18 @@
 
     <Page.Resources>
 
+        <FontFamily x:Key="StarTrekFontFamily">/Fonts/StarTrek.ttf#Star Trek</FontFamily>
+        <FontFamily x:Key="OkudaFontFamily">/Fonts/Okuda.ttf#Okuda</FontFamily>
+
         <DataTemplate x:Name="HeaderTemplate">
-            <RelativePanel>
+            <RelativePanel Margin="0,0,0,8">
                 <Image x:Name="Image"
                        Height="32"
                        Margin="0,0,16,0"
                        Source="{Binding Image}" />
-                <TextBlock Foreground="Gold"
+                <TextBlock FontFamily="{StaticResource StarTrekFontFamily}"
+                           Foreground="PowderBlue"
+                           RelativePanel.AlignBottomWith="Image"
                            RelativePanel.RightOf="Image"
                            Text="{Binding Title}" />
             </RelativePanel>
@@ -83,7 +89,7 @@
                             <DataTemplate>
                                 <RelativePanel x:Name="Container"
                                                Width="225"
-                                               Height="200">
+                                               Height="350">
                                     <ToolTipService.ToolTip>
                                         <TextBlock Text="{Binding Details}" TextWrapping="WrapWholeWords" />
                                     </ToolTipService.ToolTip>
@@ -91,6 +97,7 @@
                                         <ImageBrush AlignmentX="Center"
                                                     AlignmentY="Top"
                                                     ImageSource="ms-appx:///images/wallpaper.jpg"
+                                                    Opacity=".25"
                                                     Stretch="UniformToFill" />
                                     </RelativePanel.Background>
                                     <Grid RelativePanel.AlignBottomWithPanel="True"
@@ -104,33 +111,35 @@
                                                         Stretch="UniformToFill" />
                                         </Grid.Background>
                                     </Grid>
-                                    <Rectangle Height="150"
+                                    <Rectangle MinHeight="200"
                                                RelativePanel.AlignBottomWithPanel="True"
                                                RelativePanel.AlignLeftWithPanel="True"
-                                               RelativePanel.AlignRightWithPanel="True">
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               RelativePanel.AlignTopWith="Text">
                                         <Rectangle.Fill>
-                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <SolidColorBrush Opacity=".5" Color="Black" />
+                                            <!--<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Offset="0" Color="Transparent" />
                                                 <GradientStop Offset="0.757" Color="Black" />
-                                                <GradientStop Offset="0.26" Color="#007C7C7C" />
-                                            </LinearGradientBrush>
+                                            </LinearGradientBrush>-->
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <TextBlock x:Name="Text"
                                                Margin="8"
                                                FontSize="12"
                                                Foreground="White"
-                                               MaxLines="6"
+                                               MaxLines="10"
                                                RelativePanel.AlignBottomWithPanel="True"
                                                TextTrimming="WordEllipsis"
                                                TextWrapping="WrapWholeWords">
-                                        <Underline>
-                                            <Run Foreground="LightGray" Text="{Binding Date}" />
-                                        </Underline>
+                                        <Run Foreground="White" Text="{Binding Date}" />
                                         <LineBreak />
-                                        <Run FontSize="16" Text="{Binding Title}" />
+                                        <Run FontSize="20" Text="{Binding Title}" />
                                         <LineBreak />
-                                        <Run Foreground="Gold" Text="{Binding Details}" />
+                                        <Run FontFamily="{StaticResource OkudaFontFamily}"
+                                             FontSize="21.333"
+                                             Foreground="Gold"
+                                             Text="{Binding Details}" />
                                     </TextBlock>
                                 </RelativePanel>
                             </DataTemplate>
@@ -208,6 +217,7 @@
                         <Setter Target="WebArea.(UIElement.Visibility)" Value="Visible" />
                         <Setter Target="RootView.(Canvas.ZIndex)" Value="1" />
                         <Setter Target="WebArea.(Canvas.ZIndex)" Value="-1" />
+                        <Setter Target="ThisPage.(Control.FontFamily)" Value="{StaticResource StarTrekFontFamily}" />
                     </VisualState.Setters>
                     <Storyboard>
                         <DoubleAnimation d:IsOptimized="True"
@@ -249,9 +259,11 @@
                                          Storyboard.TargetName="RootView"
                                          Storyboard.TargetProperty="(UIElement.Opacity)"
                                          To="0.5" />
-                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="ThisPage" Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)">
-                            <EasingColorKeyFrame KeyTime="0" Value="#FF1D1D1D" />
-                        </ColorAnimationUsingKeyFrames>
+                        <ColorAnimation d:IsOptimized="True"
+                                        Duration="0"
+                                        Storyboard.TargetName="ThisPage"
+                                        Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
+                                        To="#FF1D1D1D" />
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
@@ -289,6 +301,24 @@
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
+            <VisualStateGroup x:Name="AvailabilityVisualStateGroup">
+                <VisualState x:Name="NetVisualState">
+                    <VisualState.Setters>
+                        <Setter Target="NetRequiredView.(UIElement.Visibility)" Value="Collapsed" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <WindowsStateTriggers:NetworkConnectionStateTrigger />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NoNetVisualState">
+                    <VisualState.StateTriggers>
+                        <WindowsStateTriggers:NetworkConnectionStateTrigger ConnectionState="Disconnected" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NetRequiredView.(UIElement.Visibility)" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
         <SemanticZoom x:Name="RootView"
@@ -310,10 +340,17 @@
             <SemanticZoom.ZoomedInView>
                 <Hub x:Name="RootHub" Orientation="Vertical">
                     <HubSection ContentTemplate="{StaticResource SectionTemplate}"
+                                DataContext="{Binding Groups[0]}"
+                                HeaderTemplate="{StaticResource HeaderTemplate}"
+                                IsHeaderInteractive="True" />
+                    <HubSection ContentTemplate="{StaticResource SectionTemplate}"
                                 DataContext="{Binding Groups[1]}"
                                 HeaderTemplate="{StaticResource HeaderTemplate}"
-                                IsHeaderInteractive="True">
-                    </HubSection>
+                                IsHeaderInteractive="True" />
+                    <HubSection ContentTemplate="{StaticResource SectionTemplate}"
+                                DataContext="{Binding Groups[2]}"
+                                HeaderTemplate="{StaticResource HeaderTemplate}"
+                                IsHeaderInteractive="True" />
                 </Hub>
             </SemanticZoom.ZoomedInView>
         </SemanticZoom>
@@ -326,11 +363,11 @@
                 <CompositeTransform ScaleX="0.15" ScaleY="0.15" />
             </Grid.RenderTransform>
             <WebView x:Name="WebView" />
-            <ProgressRing x:Name="WebProgressRing"
-                          Width="100"
-                          Height="100"
-                          Foreground="White" />
+            <ctrls:Ring x:Name="WebProgressRing"
+                        Width="400"
+                        Height="400" />
         </Grid>
+
         <Rectangle x:Name="ClickArea"
                    Fill="Transparent"
                    Stroke="Black">
@@ -340,6 +377,36 @@
                 </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </Rectangle>
+
+        <RelativePanel x:Name="NetRequiredView"
+                       x:DeferLoadStrategy="Lazy"
+                       Background="#3F000000"
+                       Canvas.ZIndex="100"
+                       Visibility="Collapsed">
+            <Path Width="400"
+                  Height="200"
+                  Data="M100,0 L300,0 C355.228,0 400,44.7715 400,100 C400,155.228 355.228,200 300,200 L100,200 C44.7715,200 0,155.228 0,100 C0,44.7715 44.7715,0 100,0 z"
+                  Fill="DarkGoldenrod"
+                  RelativePanel.AlignHorizontalCenterWithPanel="True"
+                  RelativePanel.AlignVerticalCenterWithPanel="True"
+                  Stretch="Fill"
+                  UseLayoutRounding="False" />
+            <TextBlock Margin="-150,0,-150,0"
+                       Foreground="WhiteSmoke"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       TextAlignment="Center">
+                <Run FontFamily="{StaticResource StarTrekFontFamily}"
+                     FontSize="40"
+                     Foreground="PaleGoldenrod"
+                     Text="Disconnected" />
+                <LineBreak />
+                <Run FontFamily="{StaticResource OkudaFontFamily}"
+                     FontSize="48"
+                     Foreground="PowderBlue"
+                     Text="Internet required" />
+            </TextBlock>
+        </RelativePanel>
 
     </Grid>
 
