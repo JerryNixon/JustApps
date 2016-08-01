@@ -111,13 +111,12 @@
                                                         Stretch="UniformToFill" />
                                         </Grid.Background>
                                     </Grid>
-                                    <Rectangle MinHeight="200"
-                                               RelativePanel.AlignBottomWithPanel="True"
+                                    <Rectangle RelativePanel.AlignBottomWithPanel="True"
                                                RelativePanel.AlignLeftWithPanel="True"
                                                RelativePanel.AlignRightWithPanel="True"
                                                RelativePanel.AlignTopWith="Text">
                                         <Rectangle.Fill>
-                                            <SolidColorBrush Opacity=".5" Color="Black" />
+                                            <SolidColorBrush Opacity=".9" Color="White" />
                                             <!--<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                                 <GradientStop Offset="0" Color="Transparent" />
                                                 <GradientStop Offset="0.757" Color="Black" />
@@ -125,20 +124,22 @@
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <TextBlock x:Name="Text"
+                                               MinHeight="150"
                                                Margin="8"
                                                FontSize="12"
-                                               Foreground="White"
-                                               MaxLines="10"
+                                               MaxLines="7 "
                                                RelativePanel.AlignBottomWithPanel="True"
                                                TextTrimming="WordEllipsis"
                                                TextWrapping="WrapWholeWords">
-                                        <Run Foreground="White" Text="{Binding Date}" />
+                                        <Run Foreground="DarkGray" Text="{Binding Date}" />
                                         <LineBreak />
-                                        <Run FontSize="20" Text="{Binding Title}" />
+                                        <Run FontSize="16"
+                                             FontWeight="Bold"
+                                             Foreground="Black"
+                                             Text="{Binding Title}" />
                                         <LineBreak />
-                                        <Run FontFamily="{StaticResource OkudaFontFamily}"
-                                             FontSize="21.333"
-                                             Foreground="Gold"
+                                        <Run FontSize="16"
+                                             Foreground="DarkGray"
                                              Text="{Binding Details}" />
                                     </TextBlock>
                                 </RelativePanel>

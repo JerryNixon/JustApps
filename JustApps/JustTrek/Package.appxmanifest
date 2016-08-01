@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="35527Liquid47.JustaboutStarTrek" Publisher="CN=3EEE984A-A746-4D1B-82C4-1F9317801DDF" Version="1.1.4.0" />
+  <Identity Name="35527Liquid47.JustaboutStarTrek" Publisher="CN=3EEE984A-A746-4D1B-82C4-1F9317801DDF" Version="1.1.6.0" />
   <mp:PhoneIdentity PhoneProductId="0f3351e1-e8a5-4a6f-a5cd-203f8d300856" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Just about Star Trek</DisplayName>
