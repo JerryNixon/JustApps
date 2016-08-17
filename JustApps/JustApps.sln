@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustKiosk", "JustKiosk\JustKiosk.csproj", "{D4162107-7EDC-423B-B869-5AA89C5ABBBF}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustXaml", "JustXaml\JustXaml.csproj", "{BCBA2B3A-EE38-45BC-841C-44B5E1C34057}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustTrek", "JustTrek\JustTrek.csproj", "{06177661-17A2-4CE6-8CAC-D8067FDA172E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustLines", "JustLines\JustLines.csproj", "{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,24 @@ Global
 		{06177661-17A2-4CE6-8CAC-D8067FDA172E}.Release|x86.ActiveCfg = Release|x86
 		{06177661-17A2-4CE6-8CAC-D8067FDA172E}.Release|x86.Build.0 = Release|x86
 		{06177661-17A2-4CE6-8CAC-D8067FDA172E}.Release|x86.Deploy.0 = Release|x86
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|ARM.ActiveCfg = Debug|ARM
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|ARM.Build.0 = Debug|ARM
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|ARM.Deploy.0 = Debug|ARM
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|x64.ActiveCfg = Debug|x64
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|x64.Build.0 = Debug|x64
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|x64.Deploy.0 = Debug|x64
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|x86.ActiveCfg = Debug|x86
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|x86.Build.0 = Debug|x86
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Debug|x86.Deploy.0 = Debug|x86
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|ARM.ActiveCfg = Release|ARM
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|ARM.Build.0 = Release|ARM
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|ARM.Deploy.0 = Release|ARM
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|x64.ActiveCfg = Release|x64
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|x64.Build.0 = Release|x64
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|x64.Deploy.0 = Release|x64
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|x86.ActiveCfg = Release|x86
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|x86.Build.0 = Release|x86
+		{7D2C3AEB-6CE2-4D30-94F0-30E3F7399E49}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
