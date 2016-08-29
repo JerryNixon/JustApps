@@ -116,10 +116,10 @@
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Views\FeedPage.xaml.cs">
-      <DependentUpon>FeedPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\Kinds.cs" />
+    <Compile Include="Views\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MySelector.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +205,7 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\FeedPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

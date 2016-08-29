@@ -14,7 +14,6 @@ namespace JustTrek.Views
 
     public class MySelector : DataTemplateSelector
     {
-        public Group Group { get; set; }
         public DataTemplate FacebookTemplate { get; set; }
         public DataTemplate FlickrTemplate { get; set; }
         public DataTemplate RssTemplate { get; set; }
@@ -23,7 +22,7 @@ namespace JustTrek.Views
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            var data = item as Models.Item;
+            var data = item as Models.Group;
             switch (data.Kind)
             {
                 case Kinds.Facebook:

@@ -22,16 +22,18 @@ namespace JustTrek
 
             var settings = new Services.SettingsService();
             var appid = settings.hockeyapp_appid;
+
             HockeyClient.Current.Configure(appid, new TelemetryConfiguration
             {
                 EnableDiagnostics = true
             });
         }
 
-        public override UIElement CreateRootElement(IActivatedEventArgs e) => new Views.FeedPage();
+        public override UIElement CreateRootElement(IActivatedEventArgs e) => new Views.MainPage();
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             await Task.CompletedTask;
         }
     }
