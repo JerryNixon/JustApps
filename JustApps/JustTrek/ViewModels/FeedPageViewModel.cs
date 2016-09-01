@@ -34,6 +34,13 @@ namespace JustTrek.ViewModels
             Groups.Clear();
             Groups.AddAndReturn(new Group
             {
+                Kind = Kinds.Rss,
+                Title = "StarTrek.com News",
+                Link = new Uri("http://startrek.com"),
+                Parameter = new Parameter { Param = "http://www.startrek.com/latest_news_feed" }
+            }).Fill();
+            Groups.AddAndReturn(new Group
+            {
                 Kind = Kinds.Facebook,
                 Title = "Star Trek from Facebook",
                 Link = new Uri("http://facebook.com/StarTrek"),
@@ -63,37 +70,44 @@ namespace JustTrek.ViewModels
             Groups.AddAndReturn(new Group
             {
                 Kind = Kinds.Rss,
-                Title = "News from StarTrek.com",
-                Link = new Uri("http://startrek.com"),
-                Parameter = new Parameter { Param = "http://www.startrek.com/latest_news_feed" }
+                Title = "Star Trek Collective",
+                Link = new Uri("http://www.thetrekcollective.com/"),
+                Parameter = new Parameter { Param = "http://www.thetrekcollective.com/feeds/posts/default" }
             }).Fill();
             Groups.AddAndReturn(new Group
             {
                 Kind = Kinds.Rss,
-                Title = "News from TrekToday.com",
+                Title = "TrekToday.com News",
                 Link = new Uri("http://TrekToday.com"),
                 Parameter = new Parameter { Param = "http://www.trektoday.com/feed" }
             }).Fill();
             Groups.AddAndReturn(new Group
             {
                 Kind = Kinds.Rss,
-                Title = "News from TrekCore.com",
+                Title = "TrekCore.com News",
                 Link = new Uri("http://TrekCore.com"),
                 Parameter = new Parameter { Param = "http://TrekCore.com/feed.xml" }
             }).Fill();
             Groups.AddAndReturn(new Group
             {
                 Kind = Kinds.Rss,
-                Title = "News from TrekMovie.com",
+                Title = "TrekMovie.com News",
                 Link = new Uri("http://trekmovie.com"),
                 Parameter = new Parameter { Param = "http://trekmovie.com/feed" }
             }).Fill();
             Groups.AddAndReturn(new Group
             {
                 Kind = Kinds.Rss,
-                Title = "News from TrekNews.net",
+                Title = "TrekNews.net News",
                 Link = new Uri("http://treknews.net"),
                 Parameter = new Parameter { Param = "http://www.treknews.net/feed/" }
+            }).Fill();
+            Groups.AddAndReturn(new Group
+            {
+                Kind = Kinds.Facebook,
+                Title = "Trekyards on Facebook",
+                Link = new Uri("https://www.facebook.com/groups/trekyards/"),
+                Parameter = new Parameter { Param = "trekyards" }
             }).Fill();
             Groups.AddAndReturn(new Group
             {
@@ -109,8 +123,23 @@ namespace JustTrek.ViewModels
                 Link = new Uri("https://www.flickr.com/search/?text=startrekmovie"),
                 Parameter = new Parameter { Param = "StarTrekMovie", Max = 40 }
             }).Fill();
+            Groups.AddAndReturn(new Group
+            {
+                Kind = Kinds.Rss,
+                Title = "Memory Alpha News",
+                Link = new Uri("http://http://memory-alpha.wikia.com/"),
+                Parameter = new Parameter { Param = "http://memory-alpha.wikia.com/wiki/Special:NewPages?feed=rss" }
+            }).Fill();
+        }
+
+        public void Refresh()
+        {
+            SelectedItem.RefreshCommand.Execute(null);
         }
 
         public ObservableCollection<Models.Group> Groups { get; private set; } = new ObservableCollection<Models.Group>();
+
+        Models.Group _SelectedItem = default(Models.Group);
+        public Models.Group SelectedItem { get { return _SelectedItem; } set { Set(ref _SelectedItem, value); } }
     }
 }

@@ -104,11 +104,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PinterestPanel.cs" />
-    <Compile Include="Controls\Ring.xaml.cs">
-      <DependentUpon>Ring.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WrapPanel.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsService.cs" />
@@ -182,7 +177,6 @@
     <Content Include="Images\Facebook.png" />
     <Content Include="Images\Flickr.png" />
     <Content Include="Images\Rss.png" />
-    <Content Include="Images\Spinner.gif" />
     <Content Include="Images\Stars.jpg" />
     <Content Include="Images\Twitter.png" />
     <Content Include="Images\Wallpaper.jpg" />
@@ -196,15 +190,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Ring.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Custom.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

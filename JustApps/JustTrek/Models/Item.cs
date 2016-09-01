@@ -60,7 +60,21 @@ namespace JustTrek.Models
         public string Date { get; set; }
         public string Title { get; set; }
         public string Image { get; set; }
-        public string Details { get; set; }
+
+        private string details;
+        public string Details
+        {
+            get
+            {
+                if (Title.Equals(details))
+                    return string.Empty;
+                else
+                    return details;
+            }
+            set { details = value; }
+        }
+
+
         public Uri Link { get; set; }
         public Kinds Kind { get; internal set; }
     }

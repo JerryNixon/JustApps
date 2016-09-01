@@ -13,16 +13,6 @@
       mc:Ignorable="d">
 
     <Page.Resources>
-        <FontFamily x:Key="StarTrekFontFamily">/Fonts/StarTrek.ttf#Star Trek</FontFamily>
-        <FontFamily x:Key="OkudaFontFamily">/Fonts/Okuda.ttf#Okuda</FontFamily>
-        <Converters:ValueWhenConverter x:Name="FalseWhenNullConverter" When="{x:Null}">
-            <Converters:ValueWhenConverter.Value>
-                <x:Boolean>False</x:Boolean>
-            </Converters:ValueWhenConverter.Value>
-            <Converters:ValueWhenConverter.Otherwise>
-                <x:Boolean>True</x:Boolean>
-            </Converters:ValueWhenConverter.Otherwise>
-        </Converters:ValueWhenConverter>
         <Storyboard x:Name="RedAlertStoryboard"
                     AutoReverse="True"
                     RepeatBehavior="Forever">
@@ -31,15 +21,12 @@
                                            Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Offset)">
                 <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0.99" />
             </DoubleAnimationUsingKeyFrames>
-            <!--<DoubleAnimation Duration="0:0:1"
-                             Storyboard.TargetName="WhiteStop"
-                             Storyboard.TargetProperty="Offset"
-                             To="1" />-->
         </Storyboard>
+        <Storyboard x:Name="Storyboard1" />
     </Page.Resources>
 
     <Page.DataContext>
-        <vm:FeedPageViewModel />
+        <vm:FeedPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <Grid>
@@ -65,14 +52,45 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Pivot Title="Just about Star Trek"
+        <Pivot x:Name="SourceListPivot"
+               Title="Just about Star Trek"
                ItemsSource="{Binding Groups}"
-               RequestedTheme="Dark">
-
+               RequestedTheme="Dark"
+               SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+               ToolTipService.ToolTip="TEST">
 
             <Pivot.Background>
                 <ImageBrush ImageSource="ms-appx:///Images/Stars.jpg" Stretch="UniformToFill" />
             </Pivot.Background>
+
+            <Pivot.RightHeader>
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="8,0,0,0"
+                            Click="{x:Bind ViewModel.Refresh}"
+                            Content="Refresh"
+                            Style="{StaticResource TextBlockButtonStyle}" />
+                    <ComboBox x:Name="SourceListCombobox"
+                              MinWidth="300"
+                              Margin="8,0,0,0"
+                              VerticalAlignment="Center"
+                              ItemsSource="{Binding Groups}"
+                              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="25"
+                                           VerticalAlignment="Center"
+                                           Source="{Binding Image}" />
+                                    <TextBlock Margin="8,0"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Title}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                </StackPanel>
+            </Pivot.RightHeader>
 
             <Pivot.HeaderTemplate>
                 <DataTemplate>
@@ -91,10 +109,33 @@
                                                        ItemsSource="{Binding Items}">
                                 <Controls:AdaptiveGridView.ItemTemplate>
                                     <DataTemplate>
-                                        <RelativePanel x:Name="Container" Height="350">
-                                            <ToolTipService.ToolTip>
+                                        <RelativePanel xmlns:Behaviors="using:Template10.Behaviors"
+                                                       xmlns:Media="using:Microsoft.Xaml.Interactions.Media"
+                                                       x:Name="Container"
+                                                       Height="350">
+                                            <!--<ToolTipService.ToolTip>
                                                 <TextBlock Text="{Binding Details}" TextWrapping="WrapWholeWords" />
-                                            </ToolTipService.ToolTip>
+                                            </ToolTipService.ToolTip>-->
+                                            <Interactivity:Interaction.Behaviors>
+                                                <Core:EventTriggerBehavior EventName="PointerEntered">
+                                                    <!--<Core:ChangePropertyAction PropertyName="Opacity"
+                                                                               TargetObject="{Binding ElementName=TitleRectangle}"
+                                                                               Value=".1" />
+                                                    <Core:ChangePropertyAction PropertyName="Opacity"
+                                                                               TargetObject="{Binding ElementName=TitleTextBlock}"
+                                                                               Value=".1" />-->
+                                                    <Media:ControlStoryboardAction ControlStoryboardOption="Play" Storyboard="{Binding ElementName=FadeOutStoryboard}" />
+                                                </Core:EventTriggerBehavior>
+                                                <Core:EventTriggerBehavior EventName="PointerExited">
+                                                    <!--<Core:ChangePropertyAction PropertyName="Opacity"
+                                                                               TargetObject="{Binding ElementName=TitleRectangle}"
+                                                                               Value="1" />
+                                                    <Core:ChangePropertyAction PropertyName="Opacity"
+                                                                               TargetObject="{Binding ElementName=TitleTextBlock}"
+                                                                               Value="1" />-->
+                                                    <Media:ControlStoryboardAction ControlStoryboardOption="Play" Storyboard="{Binding ElementName=FadeInStoryboard}" />
+                                                </Core:EventTriggerBehavior>
+                                            </Interactivity:Interaction.Behaviors>
                                             <RelativePanel.Background>
                                                 <ImageBrush AlignmentX="Center"
                                                             AlignmentY="Top"
@@ -102,6 +143,28 @@
                                                             Opacity=".25"
                                                             Stretch="UniformToFill" />
                                             </RelativePanel.Background>
+                                            <RelativePanel.Resources>
+                                                <Storyboard x:Name="FadeOutStoryboard">
+                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                     Storyboard.TargetName="TitleRectangle"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To=".1" />
+                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                     Storyboard.TargetName="TitleTextBlock"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To=".1" />
+                                                </Storyboard>
+                                                <Storyboard x:Name="FadeInStoryboard">
+                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                     Storyboard.TargetName="TitleRectangle"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1" />
+                                                    <DoubleAnimation Duration="0:0:0.3"
+                                                                     Storyboard.TargetName="TitleTextBlock"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1" />
+                                                </Storyboard>
+                                            </RelativePanel.Resources>
                                             <Grid RelativePanel.AlignBottomWithPanel="True"
                                                   RelativePanel.AlignLeftWithPanel="True"
                                                   RelativePanel.AlignRightWithPanel="True"
@@ -121,6 +184,10 @@
                                                                 <Core:ChangePropertyAction PropertyName="IsActive"
                                                                                            TargetObject="{Binding ElementName=ImageProgressRing}"
                                                                                            Value="False" />
+                                                                <Core:ChangePropertyAction PropertyName="IsHitTestVisible"
+                                                                                           TargetObject="{Binding ElementName=Container}"
+                                                                                           Value="False" />
+
                                                             </Core:EventTriggerBehavior>
                                                         </Interactivity:Interaction.Behaviors>
                                                     </ImageBrush>
@@ -132,15 +199,19 @@
                                                               VerticalAlignment="Center"
                                                               IsActive="{Binding Image, Converter={StaticResource FalseWhenNullConverter}}" />
                                             </Grid>
-                                            <Rectangle RelativePanel.AlignBottomWithPanel="True"
+                                            <Rectangle x:Name="TitleRectangle"
+                                                       RelativePanel.AlignBottomWithPanel="True"
                                                        RelativePanel.AlignLeftWithPanel="True"
                                                        RelativePanel.AlignRightWithPanel="True"
-                                                       RelativePanel.AlignTopWith="Text">
+                                                       RelativePanel.AlignTopWith="TitleTextBlock">
+                                                <Rectangle.RenderTransform>
+                                                    <CompositeTransform />
+                                                </Rectangle.RenderTransform>
                                                 <Rectangle.Fill>
-                                                    <SolidColorBrush Opacity=".75" Color="Black" />
+                                                    <SolidColorBrush Opacity=".85" Color="Black" />
                                                 </Rectangle.Fill>
                                             </Rectangle>
-                                            <TextBlock x:Name="Text"
+                                            <TextBlock x:Name="TitleTextBlock"
                                                        MinHeight="150"
                                                        Margin="8"
                                                        FontSize="12"
@@ -149,6 +220,9 @@
                                                        RelativePanel.AlignBottomWithPanel="True"
                                                        TextTrimming="WordEllipsis"
                                                        TextWrapping="WrapWholeWords">
+                                                <TextBlock.RenderTransform>
+                                                    <CompositeTransform />
+                                                </TextBlock.RenderTransform>
                                                 <Run Foreground="DarkGray" Text="{Binding Date}" />
                                                 <LineBreak />
                                                 <Run FontSize="16"
@@ -156,7 +230,9 @@
                                                      Text="{Binding Title}" />
                                                 <LineBreak />
                                                 <LineBreak />
-                                                <Run FontSize="16" Text="{Binding Details}" />
+                                                <Run FontSize="16"
+                                                     Foreground="Gainsboro"
+                                                     Text="{Binding Details}" />
                                             </TextBlock>
                                         </RelativePanel>
                                     </DataTemplate>
