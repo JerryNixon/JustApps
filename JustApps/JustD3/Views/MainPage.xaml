@@ -1,0 +1,133 @@
+<Page x:Class="JustD3.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:JustD3.Views"
+      xmlns:m="using:JustD3.Models"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vm="using:JustD3.ViewModels"
+      mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:MainPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <controls:PageHeader x:Name="pageHeader"
+                             Content="Denver Dev Day"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" />
+
+        <SemanticZoom x:Name="MySemanticZoom"
+                      EntranceNavigationTransitionInfo.IsTargetElement="True"
+                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.Below="pageHeader">
+
+            <SemanticZoom.Resources>
+                <CollectionViewSource x:Name="SessionsCVS"
+                                      IsSourceGrouped="True"
+                                      ItemsPath="Items"
+                                      Source="{Binding Sessions}" />
+            </SemanticZoom.Resources>
+
+            <SemanticZoom.ZoomedOutView>
+
+                <ListView x:Name="ZoomedOutListView"
+                          VerticalContentAlignment="Center"
+                          SelectionMode="None">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,16,0,0"
+                                  Background="{Binding Group.Brush}"
+                                  Padding="16">
+                                <TextBlock Foreground="White" Text="{Binding Group.Title}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+
+            </SemanticZoom.ZoomedOutView>
+            <SemanticZoom.ZoomedInView>
+
+                <ListView x:Name="ZoomedInListView"
+                          ItemsSource="{Binding Source={StaticResource SessionsCVS}}"
+                          SelectionMode="None">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.GroupStyle>
+                        <GroupStyle HidesIfEmpty="False">
+                            <GroupStyle.HeaderContainerStyle>
+                                <Style TargetType="ListViewHeaderItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.HeaderContainerStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{Binding Brush}" Padding="16">
+                                        <TextBlock Foreground="White" Text="{Binding Title}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <RelativePanel Margin="0,4">
+                                <TextBlock x:Name="TimeTextBlock"
+                                           Style="{StaticResource BodyTextBlockStyle}"
+                                           Text="{Binding title}" />
+                                <TextBlock x:Name="SpeakerTextBlock"
+                                           Opacity=".5"
+                                           RelativePanel.Below="TimeTextBlock"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Text="{Binding speaker}" />
+                                <TextBlock x:Name="RoomTextBlock"
+                                           Opacity=".5"
+                                           RelativePanel.Below="SpeakerTextBlock"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Text="{Binding room}" />
+                            </RelativePanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+
+            </SemanticZoom.ZoomedInView>
+        </SemanticZoom>
+
+    </RelativePanel>
+
+</Page>
+

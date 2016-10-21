@@ -33,6 +33,9 @@ namespace JustTrek
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TryResizeView(new Windows.Foundation.Size(1366, 768));
+
+
             Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             await Task.CompletedTask;
         }

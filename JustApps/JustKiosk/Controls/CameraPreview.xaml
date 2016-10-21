@@ -4,21 +4,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:JustKiosk.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             x:Name="ThisPage" d:DesignHeight="300" d:DesignWidth="400"
+             x:Name="ThisPage"
+             d:DesignHeight="300"
+             d:DesignWidth="400"
              mc:Ignorable="d">
 
     <Grid>
 
-        <TextBlock x:Name="CameraNotFoundTextBlock" Foreground="DarkOrange"
-                   Text="Camera not detected." Visibility="Collapsed" />
+        <TextBlock x:Name="CameraNotFoundTextBlock"
+                   Foreground="DarkOrange"
+                   Text="Camera not detected."
+                   Visibility="Collapsed" />
 
-        <ComboBox x:Name="CameraComboBox" HorizontalAlignment="Stretch" DisplayMemberPath="Name"
+        <ComboBox x:Name="CameraComboBox"
+                  HorizontalAlignment="Stretch"
+                  DisplayMemberPath="Name"
                   Header="Selected camera"
                   SelectedItem="{Binding SelectedCamera, Mode=TwoWay, ElementName=ThisPage}" />
 
-        <Grid x:Name="MyCaptureGrid" Background="Silver" BorderBrush="Black"
+        <Grid x:Name="MyCaptureGrid"
+              Background="Silver"
+              BorderBrush="Black"
               BorderThickness="1">
-            <CaptureElement x:Name="MyCaptureElement" Loaded="MyCaptureElement_Loaded" Stretch="Uniform" />
+            <CaptureElement x:Name="MyCaptureElement"
+                            Loaded="MyCaptureElement_Loaded"
+                            Stretch="Uniform" />
         </Grid>
 
     </Grid>

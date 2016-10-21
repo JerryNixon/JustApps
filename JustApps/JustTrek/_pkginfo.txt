@@ -1,1 +1,1 @@
-C:\git.repos\JustApps\JustApps\JustTrek\AppPackages\JustTrek_1.1.10.0\JustTrek_1.1.10.0_x86_x64_arm.appxbundle
+C:\git.repos\JustApps\JustApps\JustTrek\AppPackages\JustTrek_1.1.15.0\JustTrek_1.1.15.0_x86_x64_arm.appxbundle
