@@ -9,23 +9,27 @@ using Windows.Storage;
 
 namespace JustD3.Services
 {
-    public class Favorites : Dictionary<DateTime, string> { }
     public class FavoritesService
     {
         private readonly StorageFolder folder = ApplicationData.Current.RoamingFolder;
         private const string name = "favorites.cache";
 
-        public async Task<Favorites> GetFavoritesAsync()
+        public async Task<Models.Favorites> GetFavoritesAsync()
         {
             var json = await folder.ReadTextAsync(name);
-            var obj = json.ToFavoritesList();
-            return obj ?? new Favorites();
+            Models.Favorites obj = null;
+            try
+            {
+                obj = SerializationService.Deserialize<Models.Favorites>(json);
+            }
+            catch { }
+            return obj ?? new Models.Favorites();
         }
 
-        public async Task<Favorites> AddFavoriteAsync(Models.Session session)
+        public async Task<Models.Favorites> AddFavoriteAsync(Models.Session session)
         {
             var favorites = await GetFavoritesAsync();
-            if (favorites.ContainsValue(session.id))
+            if (favorites.ContainsValue(session.Id))
             {
                 return favorites;
             }
@@ -33,14 +37,14 @@ namespace JustD3.Services
             {
                 favorites.Remove(session.Date);
             }
-            favorites.Add(session.Date, session.id);
+            favorites.Add(session.Date, session.Id);
             return await SaveAsync(favorites);
         }
 
-        public async Task<Favorites> RemoveFavoriteAsync(Models.Session session)
+        public async Task<Models.Favorites> RemoveFavoriteAsync(Models.Session session)
         {
             var favorites = await GetFavoritesAsync();
-            if (!favorites.ContainsValue(session.id))
+            if (!favorites.ContainsValue(session.Id))
             {
                 return favorites;
             }
@@ -48,7 +52,7 @@ namespace JustD3.Services
             return await SaveAsync(favorites);
         }
 
-        private async Task<Favorites> SaveAsync(Favorites favorites)
+        private async Task<Models.Favorites> SaveAsync(Models.Favorites favorites)
         {
             var json = string.Empty;
             using (MemoryStream _Stream = new MemoryStream())

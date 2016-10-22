@@ -40,20 +40,20 @@ namespace JustD3.Views
 
             var view = new WebView(WebViewExecutionMode.SameThread)
             {
-                Width = 380,
+                Width = 350,
                 MinHeight = 500,
                 Margin = new Thickness(0),
                 DefaultBackgroundColor = Colors.Transparent,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Stretch
             };
-            view.NavigateToString("<body style='font-family:Segoe UI Light;'>" + session.@abstract);
+            view.NavigateToString("<body style='font-family:Segoe UI Light;'>" + session.Description);
 
             var stack = new StackPanel();
             stack.Children.Add(new TextBlock
             {
                 Width = 380,
-                Text = session.title,
+                Text = session.Title,
                 Margin = new Thickness(0, 16, 0, 0),
                 TextWrapping = TextWrapping.Wrap,
             });

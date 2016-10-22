@@ -123,11 +123,10 @@
                                         <TextBlock x:Name="TitleTextBlock"
                                                    Margin="32,0,0,0"
                                                    Style="{StaticResource BodyTextBlockStyle}"
-                                                   Text="{Binding title}" />
+                                                   Text="{Binding Title}" />
                                         <CheckBox x:Name="FavoriteCheckBox"
                                                   MaxWidth="32"
                                                   Checked="Favorite_Checked"
-                                                  Content="{x:Null}"
                                                   IsChecked="{Binding IsFavorite, Mode=TwoWay}"
                                                   RelativePanel.AlignVerticalCenterWith="TitleTextBlock"
                                                   Unchecked="Favorite_Unchecked">
@@ -140,13 +139,13 @@
                                                    Opacity=".5"
                                                    RelativePanel.Below="TitleTextBlock"
                                                    Style="{StaticResource CaptionTextBlockStyle}"
-                                                   Text="{Binding speaker, FallbackValue=Err}" />
+                                                   Text="{Binding Speaker, FallbackValue=Err}" />
                                         <TextBlock x:Name="RoomTextBlock"
                                                    Margin="32,0,0,0"
                                                    Opacity=".5"
                                                    RelativePanel.Below="SpeakerTextBlock"
                                                    Style="{StaticResource CaptionTextBlockStyle}"
-                                                   Text="{Binding room}" />
+                                                   Text="{Binding Room}" />
                                     </RelativePanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
