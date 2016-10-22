@@ -11,10 +11,10 @@ using Windows.Web.Http;
 
 namespace JustD3.Services
 {
-    public class DataService : IDataService
+    public class DataService 
     {
         private readonly Uri uri = new Uri("https://denverdevday.blob.core.windows.net/denverdevday/denverdevdaydata.json");
-        private readonly StorageFolder folder = ApplicationData.Current.LocalCacheFolder;
+        private readonly StorageFolder folder = ApplicationData.Current.RoamingFolder;
         private const string name = "data.cache";
         public enum Sources { Web, Cache, Auto }
 

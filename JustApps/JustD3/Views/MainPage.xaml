@@ -21,111 +21,146 @@
                              Content="Denver Dev Day"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" />
+                             RelativePanel.AlignTopWithPanel="True">
+            <AppBarButton Click="{x:Bind ViewModel.Refresh}"
+                          Icon="Refresh"
+                          Label="Refresh" />
+            <AppBarButton Click="{x:Bind ViewModel.Website}"
+                          Icon="World"
+                          Label="Site" />
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Label="1366x768" Click="Resize_Click" />
+            </controls:PageHeader.SecondaryCommands>
+        </controls:PageHeader>
 
-        <SemanticZoom x:Name="MySemanticZoom"
-                      EntranceNavigationTransitionInfo.IsTargetElement="True"
-                      RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.Below="pageHeader">
+        <Pivot EntranceNavigationTransitionInfo.IsTargetElement="True"
+               RelativePanel.AlignBottomWithPanel="True"
+               RelativePanel.AlignLeftWithPanel="True"
+               RelativePanel.AlignRightWithPanel="True"
+               RelativePanel.Below="pageHeader">
 
-            <SemanticZoom.Resources>
-                <CollectionViewSource x:Name="SessionsCVS"
-                                      IsSourceGrouped="True"
-                                      ItemsPath="Items"
-                                      Source="{Binding Sessions}" />
-            </SemanticZoom.Resources>
+            <PivotItem Header="Sessions">
 
-            <SemanticZoom.ZoomedOutView>
+                <SemanticZoom x:Name="MySemanticZoom">
 
-                <ListView x:Name="ZoomedOutListView"
-                          VerticalContentAlignment="Center"
-                          SelectionMode="None">
+                    <SemanticZoom.Resources>
+                        <CollectionViewSource x:Name="SessionsCVS"
+                                              IsSourceGrouped="True"
+                                              ItemsPath="Items"
+                                              Source="{Binding Sessions}" />
+                    </SemanticZoom.Resources>
 
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
+                    <SemanticZoom.ZoomedOutView>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,16,0,0"
-                                  Background="{Binding Group.Brush}"
-                                  Padding="16">
-                                <TextBlock Foreground="White" Text="{Binding Group.Title}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                        <ListView x:Name="ZoomedOutListView"
+                                  VerticalContentAlignment="Center"
+                                  SelectionMode="None">
 
-                </ListView>
-
-            </SemanticZoom.ZoomedOutView>
-            <SemanticZoom.ZoomedInView>
-
-                <ListView x:Name="ZoomedInListView"
-                          ItemsSource="{Binding Source={StaticResource SessionsCVS}}"
-                          SelectionMode="None">
-
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-
-                    <ListView.GroupStyle>
-                        <GroupStyle HidesIfEmpty="False">
-                            <GroupStyle.HeaderContainerStyle>
-                                <Style TargetType="ListViewHeaderItem">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate>
-                                                <ContentPresenter Margin="{TemplateBinding Padding}"
-                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
                                 </Style>
-                            </GroupStyle.HeaderContainerStyle>
-                            <GroupStyle.HeaderTemplate>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Background="{Binding Brush}" Padding="16">
-                                        <TextBlock Foreground="White" Text="{Binding Title}" />
+                                    <Grid Margin="0,16,0,0"
+                                          Background="{Binding Group.Brush}"
+                                          Padding="16">
+                                        <TextBlock Foreground="White" Text="{Binding Group.Title}" />
                                     </Grid>
                                 </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ListView.GroupStyle>
+                            </ListView.ItemTemplate>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <RelativePanel Margin="0,4">
-                                <TextBlock x:Name="TimeTextBlock"
-                                           Style="{StaticResource BodyTextBlockStyle}"
-                                           Text="{Binding title}" />
-                                <TextBlock x:Name="SpeakerTextBlock"
-                                           Opacity=".5"
-                                           RelativePanel.Below="TimeTextBlock"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Text="{Binding speaker}" />
-                                <TextBlock x:Name="RoomTextBlock"
-                                           Opacity=".5"
-                                           RelativePanel.Below="SpeakerTextBlock"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
-                                           Text="{Binding room}" />
-                            </RelativePanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                        </ListView>
 
-                </ListView>
+                    </SemanticZoom.ZoomedOutView>
+                    <SemanticZoom.ZoomedInView>
 
-            </SemanticZoom.ZoomedInView>
-        </SemanticZoom>
+                        <ListView x:Name="ZoomedInListView"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="ZoomedInListView_ItemClick"
+                                  ItemsSource="{Binding Source={StaticResource SessionsCVS}}"
+                                  SelectionMode="None">
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+
+                            <ListView.GroupStyle>
+                                <GroupStyle HidesIfEmpty="False">
+                                    <GroupStyle.HeaderContainerStyle>
+                                        <Style TargetType="ListViewHeaderItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.HeaderContainerStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="{Binding Brush}" Padding="16">
+                                                <TextBlock Foreground="White" Text="{Binding Title}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ListView.GroupStyle>
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <RelativePanel Margin="0,4">
+                                        <TextBlock x:Name="TitleTextBlock"
+                                                   Margin="32,0,0,0"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Text="{Binding title}" />
+                                        <CheckBox x:Name="FavoriteCheckBox"
+                                                  MaxWidth="32"
+                                                  Checked="Favorite_Checked"
+                                                  Content="{x:Null}"
+                                                  IsChecked="{Binding IsFavorite, Mode=TwoWay}"
+                                                  RelativePanel.AlignVerticalCenterWith="TitleTextBlock"
+                                                  Unchecked="Favorite_Unchecked">
+                                            <CheckBox.Clip>
+                                                <RectangleGeometry Rect="0,0,32,32" />
+                                            </CheckBox.Clip>
+                                        </CheckBox>
+                                        <TextBlock x:Name="SpeakerTextBlock"
+                                                   Margin="32,0,0,0"
+                                                   Opacity=".5"
+                                                   RelativePanel.Below="TitleTextBlock"
+                                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                                   Text="{Binding speaker, FallbackValue=Err}" />
+                                        <TextBlock x:Name="RoomTextBlock"
+                                                   Margin="32,0,0,0"
+                                                   Opacity=".5"
+                                                   RelativePanel.Below="SpeakerTextBlock"
+                                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                                   Text="{Binding room}" />
+                                    </RelativePanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+
+                    </SemanticZoom.ZoomedInView>
+                </SemanticZoom>
+
+            </PivotItem>
+            <PivotItem Header="Rooms">
+                <Image Source="ms-appx:///Images/Rooms.png" />
+            </PivotItem>
+        </Pivot>
 
     </RelativePanel>
 

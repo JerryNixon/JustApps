@@ -13,7 +13,6 @@ namespace JustD3.Services
 {
     public static class Extensions
     {
-        static ISerializationService serializationService = SerializationService.Json;
         public static Models.RootObject ToRootObject(this string json, DateTime? date = null)
         {
             try
@@ -28,6 +27,23 @@ namespace JustD3.Services
                         obj.date = date.Value;
                     }
                     return obj;
+                }
+            }
+            catch (Exception x)
+            {
+                return null;
+            }
+        }
+
+        public static Favorites ToFavoritesList(this string json)
+        {
+            try
+            {
+                var _Bytes = Encoding.Unicode.GetBytes(json);
+                using (MemoryStream _Stream = new MemoryStream(_Bytes))
+                {
+                    var _Serializer = new DataContractJsonSerializer(typeof(Favorites));
+                    return (Favorites)_Serializer.ReadObject(_Stream);
                 }
             }
             catch (Exception x)

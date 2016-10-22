@@ -6,7 +6,7 @@
       "lastName": "Hoelting",
       "fullName": "Ben Hoelting",
       "company": "Aspenware",
-      "blog": "https://www.linkedin.com/in/ben-hoelting-aa09b75",
+      "blog": "http://www.benhblog.com/",
       "twitter": "http://twitter.com/@benhnet",
       "bio": "<p>Ben is a software guy with &ldquo;people skills&rdquo;. He loves software and technology but also enjoys sports, movies and spending time with his wife and three children. In truth, he&rsquo;s just a big kid. He loves designing systems that solve real world problems. There is nothing more satisfying than seeing something you helped develop being used by the end users. Ben joined the IT industry in 1996 as an intern and has worked with .NET since its inception back in 2001.&nbsp; This has given him the experience of a senior level full stack .NET developer.&nbsp; He is an experienced speaker and presents at the Visual Studio Live conferences all around the country. He loves sharing his experiences with developing software.&nbsp; Ben is a Microsoft MVP in Visual Studio Development Technologies and a Microsoft Certified Technology Specialist (MCTS) for Web and Windows .NET 4.0. His blog is at http://www.benhblog.com and his twitter stream is at http://twitter.com/benhnet.&nbsp; Finally, Ben is very involved in the local .NET community and is the leader of the South Colorado .NET User Group.</p>",
       "imgUrl": "https://az118040.vo.msecnd.net/assets/45d9639859ed40a0a2978ac90becde71/speaker/ed7fd83dbc0a49e18a4b9a5525bed77b/Hoelting-C.jpg"
@@ -127,8 +127,8 @@
       "lastName": "Nixon",
       "fullName": "Jerry Nixon",
       "company": "Microsoft",
-      "blog": "",
-      "twitter": "",
+      "blog": "http://jerrynixon.com/",
+      "twitter": "http://twitter.com/http://twitter.com/jerrynixon",
       "bio": "<p>A Developer Evangelist for Microsoft from Colorado, Jerry teaches and speaks on Windows, Phone, and Desktop development. His career launched with Microsoft SQL Server 6.5, delivering data-centric solutions while &ldquo;database developer&rdquo; was a novel term. He received a civilian Naval Commendation for security work, preceding his work for the startup that would become Microsoft CRM. For two decades, Jerry built Microsoft-centric, mobile solutions. Today, he speaks on XAML, UWP, mobility and Kinect at events, communities, universities, and online. The bulk of Jerry&rsquo;s free time is spent teaching his three daughters Star Trek character backstories and episode plots.</p>",
       "imgUrl": "https://how6fq.bn1302.livefilestore.com/y3mU2GOq5qQAonUpHZqxMS7IDD1VlY5wvamWnq3BjwpPG3BGYMrV2Jt8YRp_U0EC9x775ZSWEfpf32YcKgdjlym7wLRAgQyGS2p65oVKZyrILA2yRvoqb-8EOrww0obbJcI06tNto9_hiY8hHo8NdSzXzbjiJv5edQ-y1E2CdZ2-us/jnixon_microsoft_com_LThumb.jpg?psid=1"
     },
@@ -149,7 +149,7 @@
       "lastName": "Atkinson",
       "fullName": "Laurie  Atkinson",
       "company": "",
-      "blog": "",
+      "blog": "https://blogs.msdn.microsoft.com/laurieatkinson/",
       "twitter": "",
       "bio": "<p>Laurie Atkinson is a senior consultant with Microsoft in the Premier Developer Practice where she conducts workshops and assists teams with .NET architecture, web development, and best practices. Most recently she has been helping customers build solutions using HTML5, AngularJS, and ASP.NET MVC. She holds a master&rsquo;s degree in Computer Science from the University of Colorado and has been developing on the Microsoft platform since the 1990s.</p>",
       "imgUrl": "https://i1.social.s-msft.com/profile/u/avatar.jpg?displayname=laurie%20atkinson&size=extralarge&version=d7e8c5d4-c60c-4c4d-a881-c6d4deae26c3"
@@ -204,10 +204,21 @@
       "lastName": "Koch",
       "fullName": "Rob Koch",
       "company": "S&P Global",
-      "blog": "",
+      "blog": "http://www.benhblog.com/",
       "twitter": "",
       "bio": "<p>Rob Koch has been developing in a variety of languages starting with Pascal and MS Access. These days he now delves in C#, T-SQL, Python, and javascript. He works at <a href=\"https://www.spglobal.com\">S&amp;P Global</a> as a developer/data scientist.</p>",
       "imgUrl": "https://media.licdn.com/media/p/7/000/1ec/040/2fe0372.jpg"
+    },
+    {
+      "id": "5cffcf3634bb471e8d47f5eaf8d37040",
+      "firstName": "Shawn ",
+      "lastName": "Kendrot",
+      "fullName": "Shawn  Kendrot",
+      "company": "",
+      "blog": "http://visuallylocated.com/",
+      "twitter": "http://twitter.com/skendrot",
+      "bio": "<p>Shawn Kendrot is a father of two amazing kids. He is a Microsoft MVP in Windows Development and loves XAML. Shawn has been working with XAML since WPF was released and hasn't looked back since. You can follow Shawn on twitter at @skendrot and read his blog at VisuallyLocated.com</p>",
+      "imgUrl": "https://az118040.vo.msecnd.net/assets/45d9639859ed40a0a2978ac90becde71/speaker/624d4ab8a430446383c2a39b5f6e04b3/Shawn%20Kendrot.png"
     },
     {
       "id": "1439a44d72c849eeac40da661084c607",
@@ -236,8 +247,12 @@
     {
       "id": "ed6932be3bc64c4389be62baa130b191",
       "title": "Power BI for the Developer: Embedding BI Visuals in Your Apps",
-      "speaker": "George  Young",
-      "speakerId": "e78845add78747bba960e41d424f03c7",
+      "speakers": [
+        {
+          "id": "e78845add78747bba960e41d424f03c7",
+          "fullName": "George  Young"
+        }
+      ],
       "abstract": "<p>Microsoft's Power BI continues to add new features and functionality. &nbsp;Developers may now incorporate rich, interactive Power BI visuals in their applications with very little effort. &nbsp;In this session, we'll do a quick tour of Power BI, create an interactive graphic Report, and then look at two ways of embedding this in a web app.</p>",
       "time": "2016-10-28T15:00:00Z",
       "room": "Room 4 (Pyramid Peak)",
@@ -246,8 +261,12 @@
     {
       "id": "3fae7046ae7c41f6aefbdc52dcd8089d",
       "title": "An Introduction to ASP.NET Core",
-      "speaker": "Nathan  Renner",
-      "speakerId": "d1ce2d4b16ad458b8afefd470ac40c1f",
+      "speakers": [
+        {
+          "id": "d1ce2d4b16ad458b8afefd470ac40c1f",
+          "fullName": "Nathan  Renner"
+        }
+      ],
       "abstract": "<p>ASP.NET Core has officially been released. What does that mean for MVC developers? This session will focus on the features of ASP.NET Core that directly impact web developers. Key characteristics of the platform will be explored through scenario driven examples.</p>",
       "time": "2016-10-28T15:00:00Z",
       "room": "Room 1 & 2 (Maroon Bells 1 & 2)",
@@ -256,8 +275,20 @@
     {
       "id": "0328aae32af4433599cc44e23a9d7788",
       "title": "Lightning Talks 1 - Azure, DB, WPF",
-      "speaker": "Travis  Haley",
-      "speakerId": "1439a44d72c849eeac40da661084c607",
+      "speakers": [
+        {
+          "id": "1439a44d72c849eeac40da661084c607",
+          "fullName": "Travis  Haley"
+        },
+        {
+          "id": "d2823eed5bd240b086c75b74bd4407f0",
+          "fullName": "Paul  Nielsen"
+        },
+        {
+          "id": "3394be1d1b724e7babaa6f780a17eaa3",
+          "fullName": "Geoffrey  Callaghan"
+        }
+      ],
       "abstract": "<p>- Take Your Services to the Cloud - Azure Service Bus, Travis Haley&nbsp;</p>\r\n<p>A quick talk on how to publish windows services to the Azure cloud and connect to them locally.</p>\r\n<p><br />- Viewing Data Nodes and Connections with SQL Server and TejonDB, Paul Nielsen</p>\r\n<p>Since the 60's databases have been rows and columns unless you're lucky enough to be in a movie with amazing special effects. TejonDB takes SQL Server to Hollywood and turns it into a node and connection style NoSQL Graph database. In this Lightning Talk you'll see several cool interactive node and connection data visualizations.</p>\r\n<p><br />- Building WPF Applications Using CODE Framework, Geoffrey Callaghan</p>\r\n<p>CODE Framework is a free, .NET based development framework offered by EPS Software. In this session, I will give a brief overview of some of the strong points of the framework, such as:<br />1) CODE Framework uses a hybrid MVC/MVVM approach, which allows web developers to build desktop applications without a steep learning curve. <br />2) Applications built using CODE Framework come with multiple themes built right in. <br />3) CODE Framework includes utilities that make communicating with the service layer simple and easy to implement.</p>",
       "time": "2016-10-28T15:00:00Z",
       "room": "Room 3 (Pikes Peak)",
@@ -266,8 +297,12 @@
     {
       "id": "418baed0c9b8457f996ca4b48a091fe6",
       "title": "Practical Performance Tips and Tricks to Make Your HTML/JavaScript Faster",
-      "speaker": "Doris Chen",
-      "speakerId": "1d4bd1f622114bbcb29997ef1dd5ff24",
+      "speakers": [
+        {
+          "id": "1d4bd1f622114bbcb29997ef1dd5ff24",
+          "fullName": "Doris Chen"
+        }
+      ],
       "abstract": "<p>How to tackle real-world web platform performance problems in modern websites and apps? This session starts with a basic understanding of the web platform and then explores to a set of problem/solution pairs built from industry-standard performance guidance. In the talk, we will demonstrate performance tips and tricks that will help you improve the performance of your apps and sites today. &nbsp;We will discuss the following respond to network requests, speed and responsiveness, optimizing media usage, and writing fast JavaScript. These performance tips and tricks apply equally to web sites that run on standards based web browsers, as well as to modern apps.</p>\r\n<p>&nbsp;</p>",
       "time": "2016-10-28T16:15:00Z",
       "room": "Room 1 & 2 (Maroon Bells 1 & 2)",
@@ -276,8 +311,12 @@
     {
       "id": "160b3980047d47c5bafbd19247f02b2f",
       "title": "Introduction to the Microsoft Bot Framework",
-      "speaker": "Joe  Mayo",
-      "speakerId": "281bc0aede4d4477b0fd7f467fac45ed",
+      "speakers": [
+        {
+          "id": "281bc0aede4d4477b0fd7f467fac45ed",
+          "fullName": "Joe  Mayo"
+        }
+      ],
       "abstract": "<p>Developers, like you, are increasingly adding conversational user interfaces (CUI) to their applications and tools for enabling this are getting better. One of these new tools is the Microsoft Bot Framework. Learn how these tools can help you add more intelligent interaction directly into your applications. You'll learn how to write your own bot to communicate with a user as well as managing conversation state. Along the way, you'll see how to debug bot apps and use other Bot Framework tools. Finally, you'll learn how to publish and register your bot. After this presentation, you'll have enough information to get started coding your own bot.</p>",
       "time": "2016-10-28T16:15:00Z",
       "room": "Room 4 (Pyramid Peak)",
@@ -286,8 +325,20 @@
     {
       "id": "88e4b81312fe43529fe27871e3e56f39",
       "title": "Lightning Talks 2 - Community, Azure, Data Sources ",
-      "speaker": "Dave Rael",
-      "speakerId": "eccc7f3ede15424cbdf89877abe98286",
+      "speakers": [
+        {
+          "id": "eccc7f3ede15424cbdf89877abe98286",
+          "fullName": "Dave Rael"
+        },
+        {
+          "id": "cf70d98c001d4deaaea4c0af61eba261",
+          "fullName": "James  Sturtevant"
+        },
+        {
+          "id": "153df63b4b624959b490c1bde2530451",
+          "fullName": "David  Yack"
+        }
+      ],
       "abstract": "<p>- Getting Involved, Dave Kenneth Rael</p>\r\n<p>Find out about why you want to be more involved in your developer community and ways you can go about doing it.&nbsp; The benefits of engagement are numerous and you are better at dealing with humans than you think.&nbsp; Become a more social coder and raise your profile.</p>\r\n<p><br />- Introduction to Service Fabric, James Sturtevant</p>\r\n<p>Orchestration, automation, and monitoring are just some of the challenges when moving to container technology. Service Fabric is a distributed services platform that solves these challenges and more. It is a battle tested system that is used inside Microsoft for its mission critical applications such as Azure SQL, Document DB, and Bing Cortana - processing more than 500 million evaluations per second. In this session we will explore Service Fabric and see how it helps to solve the challenges of distributed computing.</p>\r\n<p><br />- PowerApps, Flow and the Common Data Model, David Yack</p>\r\n<p>In this lightening talk we will look at how to build apps and automation that connects to existing data sources like SharePoint, Office 365, Dynamics 365, Common Data Model and even a Custom APIs.</p>",
       "time": "2016-10-28T16:15:00Z",
       "room": "Room 3 (Pikes Peak)",
@@ -296,8 +347,12 @@
     {
       "id": "617d165e703243c5bd7ff87246180d36",
       "title": "An Introduction to Domain Driven Design",
-      "speaker": "Dave Rael",
-      "speakerId": "eccc7f3ede15424cbdf89877abe98286",
+      "speakers": [
+        {
+          "id": "eccc7f3ede15424cbdf89877abe98286",
+          "fullName": "Dave Rael"
+        }
+      ],
       "abstract": "<p>The most important part of building a system right is building the right system. Understanding the nature of the problem and diving deep into the domain for which the system is constructed is a prerequisite for quality construction. This will be a journey into a sample domain based on real-world experience. Walk through a decomposition of the domain into subdomains around which teams can be organized to create a solution. There will not be a lot of code in this one, just enough to create a skeleton on which a system can be built aligning with the goals of the organization.</p>",
       "time": "2016-10-28T17:30:00Z",
       "room": "Room 3 (Pikes Peak)",
@@ -306,8 +361,12 @@
     {
       "id": "6a96a2e7e34943ae97346d928aa22a19",
       "title": "Professional Ethics for Software Developers",
-      "speaker": "Martin  Buchanan",
-      "speakerId": "afd2610e0b6841a089e0e3a516a3b265",
+      "speakers": [
+        {
+          "id": "afd2610e0b6841a089e0e3a516a3b265",
+          "fullName": "Martin  Buchanan"
+        }
+      ],
       "abstract": "<p>Professional Ethics for Software Developers</p>\r\n<p>Martin L. Buchanan will present case studies, review the ethical obligations of software developers, and discuss any cases raised by the audience. Cases may include:</p>\r\n<p>The Case of the Phony Professor<br />The Cases of Unneeded Custom Software<br />The Case of the Inept Whistleblower<br />The Case of the Disappearing Engineers<br />The Case of Uncle Sam, Software Thief</p>\r\n<p>Copies of the ACM/IEEE Computer Society Software Engineering Code of Ethics and Professional Practice will be provided (see <a href=\"http://www.acm.org/about/se-code\">http://www.acm.org/about/se-code</a>).</p>\r\n<p>Bring your ethics-related concerns, experiences, and questions.</p>",
       "time": "2016-10-28T17:30:00Z",
       "room": "Room 4 (Pyramid Peak)",
@@ -316,28 +375,40 @@
     {
       "id": "076684bfd8b64dacbc84e7b59a0d7be0",
       "title": "Entity Framework Core: The Basics",
-      "speaker": "Parker  Smart",
-      "speakerId": "fa86041399a74f9eaae6c8af2699c674",
+      "speakers": [
+        {
+          "id": "fa86041399a74f9eaae6c8af2699c674",
+          "fullName": "Parker  Smart"
+        }
+      ],
       "abstract": "<p>Set up a project using EF Core and Code First and do the basic CRUD operations. &nbsp;Nothing fancy, but highlight the differences with the old EF and some pitfalls.</p>",
       "time": "2016-10-28T17:30:00Z",
       "room": "Room 1 & 2 (Maroon Bells 1 & 2)",
       "roomId": "628f7d2ad64841d88d8f4f33daf9d3b7"
     },
     {
-      "id": "919e7d3d4e7b418ab301919cd3cab9f2",
-      "title": "Delighting Users with Microsoft's Cognitive Services APIs",
-      "speaker": "Jerry Nixon",
-      "speakerId": "5c55bdbac40c4223b2c020313cdd081b",
-      "abstract": "<p>Machine Learning technology is all the buzz these days, but it is difficult to understand and even more difficult to use effectively in your applications. &nbsp;In this session we'll take a look at Microsoft Cognitive Services API and how we can easily leverage these powerful APIs to transform our everyday software applications, dramatically improve our user experience, and delight our users!</p>",
+      "id": "d3c7d365c80e44a0ab47d5d4097dc546",
+      "title": "VR and the Future",
+      "speakers": [
+        {
+          "id": "44a69af8b518474ea91f55fae4026e3f",
+          "fullName": "Chris Fornof"
+        }
+      ],
+      "abstract": "<p>It's an exciting time in virtual reality! While gaming and entertainment show much promise for the industry, in this session find out why enterprise applications are the future. Along the way, we'll explore a few scenarios on how platform toolchain iPaas integration development could be impacted by these powerful new UX ecosystems. Join us for a glimpse of VR and the future!</p>",
       "time": "2016-10-28T19:15:00Z",
-      "room": "Room 2 (Maroon Bells 2)",
-      "roomId": "2c8961fee6a34769b80bd043cfd3537e"
+      "room": "Room 1 (Maroon Bells 1)",
+      "roomId": "22cbffdfb6714f84850af38719685a40"
     },
     {
       "id": "c1463f9d8398440593fd7c69a2f7b2fa",
       "title": "Building Resilient Mobile Applications",
-      "speaker": "James  Sturtevant",
-      "speakerId": "cf70d98c001d4deaaea4c0af61eba261",
+      "speakers": [
+        {
+          "id": "cf70d98c001d4deaaea4c0af61eba261",
+          "fullName": "James  Sturtevant"
+        }
+      ],
       "abstract": "<p>Most applications require a backend service to do the complex processing.  In this session, we will see how to build resilient communication with a backend service in the mobile world where we are not always connected to our service.  Using a Xamarin application, We will focus on techniques like request prioritization, caching and more.  By the end of the of the talk, you will be familiar with several techniques to ensure your app performs well in all situations and learn about a few libraries that enable resiliency in your applications.</p>",
       "time": "2016-10-28T19:15:00Z",
       "room": "Room 4 (Pyramid Peak)",
@@ -346,19 +417,41 @@
     {
       "id": "9fbf8c621d3949288e6ab8715bf941d1",
       "title": "Behavior Driven Development in .Net",
-      "speaker": "Will  Robertson",
-      "speakerId": "de1a0dced6ee43549c13e27c7076f026",
+      "speakers": [
+        {
+          "id": "de1a0dced6ee43549c13e27c7076f026",
+          "fullName": "Will  Robertson"
+        }
+      ],
       "abstract": "<p>As systems become more complex, both testing and the ability to meaningful describe the intention of a system can become quite difficult. All the stakeholders within a system need to have a common lexicon to which new ideas and existing concepts are proliferated in a standard fashion, creating a single version of the truth where it is harder for interpretation to drive development.<br />Behavioral Driven Development attempts to solve this, by creating a framework in which all stakeholders are able to concisely describe functional pieces of a system. This talk will cover outline of Behavior Driven Development in .Net using open source tools such as SpecFlow and NSpec, how to take advantage of some of these tools, how to work with other testing frameworks and experiences of what can go right and what can go wrong.</p>",
       "time": "2016-10-28T19:15:00Z",
       "room": "Room 3 (Pikes Peak)",
       "roomId": "2b4d3037c2334fe5b3c99d688c07f31b"
     },
     {
-      "id": "d3c7d365c80e44a0ab47d5d4097dc546",
-      "title": "VR and the Future",
-      "speaker": "Chris Fornof",
-      "speakerId": "44a69af8b518474ea91f55fae4026e3f",
-      "abstract": "<p>It's an exciting time in virtual reality! While gaming and entertainment show much promise for the industry, in this session find out why enterprise applications are the future. Along the way, we'll explore a few scenarios on how platform toolchain iPaas integration development could be impacted by these powerful new UX ecosystems. Join us for a glimpse of VR and the future!</p>",
+      "id": "a104b91f087d4bc7afcb99dac4d8c5a1",
+      "title": "An introduction to the Universal Windows Platform and the UWP Community Toolkit",
+      "speakers": [
+        {
+          "id": "5cffcf3634bb471e8d47f5eaf8d37040",
+          "fullName": "Shawn  Kendrot"
+        }
+      ],
+      "abstract": "<p>Familiar with XAML? Have you been doing WPF development for the past 10 years and ready for something new? In this session we'll introduce you to the new Universal Windows Platform. Learn how to make apps for Desktop (yes, actual desktop apps!), mobile, XBox, and IoT. Oh yeah, you can also develop apps for something called the HoloLens. This will be a fast paced session, so get ready.</p>",
+      "time": "2016-10-28T19:15:00Z",
+      "room": "Room 2 (Maroon Bells 2)",
+      "roomId": "2c8961fee6a34769b80bd043cfd3537e"
+    },
+    {
+      "id": "919e7d3d4e7b418ab301919cd3cab9f2",
+      "title": "Delighting Users with Microsoft's Cognitive Services APIs",
+      "speakers": [
+        {
+          "id": "5c55bdbac40c4223b2c020313cdd081b",
+          "fullName": "Jerry Nixon"
+        }
+      ],
+      "abstract": "<p>Machine Learning technology is all the buzz these days, but it is difficult to understand and even more difficult to use effectively in your applications. &nbsp;In this session we'll take a look at Microsoft Cognitive Services API and how we can easily leverage these powerful APIs to transform our everyday software applications, dramatically improve our user experience, and delight our users!</p>",
       "time": "2016-10-28T20:30:00Z",
       "room": "Room 2 (Maroon Bells 2)",
       "roomId": "2c8961fee6a34769b80bd043cfd3537e"
@@ -366,8 +459,12 @@
     {
       "id": "eecfce44884d4ba29f3d23d7a4dd1f28",
       "title": "Production Quality SQL Server Design and Development",
-      "speaker": "Paul  Nielsen",
-      "speakerId": "d2823eed5bd240b086c75b74bd4407f0",
+      "speakers": [
+        {
+          "id": "d2823eed5bd240b086c75b74bd4407f0",
+          "fullName": "Paul  Nielsen"
+        }
+      ],
       "abstract": "<p>Most SQL Server presentations demo a new feature and explain a specific technique, that that&rsquo;s great, but how do you pull it all together and make sure you&rsquo;re developing a SQL database that will perform well in production? This session focuses on the most important key schema design and T-SQL code techniques that will help you develop a more robust database that will scale well while maintaining high data integrity.</p>",
       "time": "2016-10-28T20:30:00Z",
       "room": "Room 3 (Pikes Peak)",
@@ -376,8 +473,12 @@
     {
       "id": "b067b4620cb74303864aacd6d5767b84",
       "title": "Web development with F#",
-      "speaker": "Grigoriy  Belenkiy",
-      "speakerId": "97b6a4eb6af64fcd8c6b7d08b84ba475",
+      "speakers": [
+        {
+          "id": "97b6a4eb6af64fcd8c6b7d08b84ba475",
+          "fullName": "Grigoriy  Belenkiy"
+        }
+      ],
       "abstract": "<p>Think of F# as a general purpose language. Yes, you could do cool web stuff with it!</p>",
       "time": "2016-10-28T20:30:00Z",
       "room": "Room 4 (Pyramid Peak)",
@@ -386,8 +487,12 @@
     {
       "id": "671845cae50b4a77b83bcaff78ae5ab4",
       "title": "Design Patterns and Infrastructure Using ASP.NET Core",
-      "speaker": "Donald  Lutz",
-      "speakerId": "26e95e4037dc4161b3739fa3df2ce415",
+      "speakers": [
+        {
+          "id": "26e95e4037dc4161b3739fa3df2ce415",
+          "fullName": "Donald  Lutz"
+        }
+      ],
       "abstract": "<p>How to use design patterns such as bulkhead and circuit breaker as well health monitoring with consul and middleware using ASP.NET Core microservices.</p>",
       "time": "2016-10-28T20:30:00Z",
       "room": "Room 1 (Maroon Bells 1)",
@@ -396,8 +501,12 @@
     {
       "id": "c577e231913a42b2af636142e7a64caa",
       "title": "Add Scripting to Your Tried and True Program",
-      "speaker": "Rob Koch",
-      "speakerId": "713c454f81c34cd4b2b487c2f2254ade",
+      "speakers": [
+        {
+          "id": "713c454f81c34cd4b2b487c2f2254ade",
+          "fullName": "Rob Koch"
+        }
+      ],
       "abstract": "<p>I will give a quick overview of an existing WinForms app that may been around for 15 years and one day your boss tells you to add a feature to it. This will describe a way to use IronPython to add features to it without needing a serious refactor.</p>",
       "time": "2016-10-28T21:45:00Z",
       "room": "Room 3 (Pikes Peak)",
@@ -406,8 +515,12 @@
     {
       "id": "267c62912787412aa962b7bc0916aa0b",
       "title": "Understanding Dependency Injection with ASP.NET Core",
-      "speaker": "Laurie  Atkinson",
-      "speakerId": "51d198ad5a3e488bb77abee724854257",
+      "speakers": [
+        {
+          "id": "51d198ad5a3e488bb77abee724854257",
+          "fullName": "Laurie  Atkinson"
+        }
+      ],
       "abstract": "<p>Dependency Injection (DI) is a technique used to reduce tight-coupling within your application and build testable code. DI is baked into ASP.NET Core and a basic understanding is required if you plan to move forward with ASP.NET, so now&rsquo;s the time to embrace it. We&rsquo;ll walk through what DI is and then we&rsquo;ll step into the code of an ASP.NET Core application to see where it fits into this new framework.</p>",
       "time": "2016-10-28T21:45:00Z",
       "room": "Room 1 (Maroon Bells 1)",
@@ -415,13 +528,31 @@
     },
     {
       "id": "6f0273c204d64522a258608de89f4187",
-      "title": "TBD",
-      "speaker": "Ben Hoelting",
-      "speakerId": "ee5aae31bd834d5aa9264f3dece7acdc",
-      "abstract": "<p>TBD</p>",
+      "title": "TypeScript: The Future of Front End Web Development",
+      "speakers": [
+        {
+          "id": "ee5aae31bd834d5aa9264f3dece7acdc",
+          "fullName": "Ben Hoelting"
+        }
+      ],
+      "abstract": "<p>TypeScript is the real deal.&nbsp; Many developers have heard of TypeScript but most have never used it in production. Many C# developers hate JavaScript.&nbsp; I believe the reason for their hatred has nothing to do with JavaScript but with the lack of tooling and language features.&nbsp; TypeScript is a language developed by the creators of C# that compiles to JavaScript.&nbsp; This session will dive into TypeScript and discuss some of the language features it provides on top of normal JavaScript.&nbsp; Between the IDE enhancements in VS and the language features of TypeScript, you will see that JavaScript development can be fun! You will learn: A definition of TypeScript, New TypeScript Features in VS, How to use VS and TypeScript to make production quality applications.</p>",
       "time": "2016-10-28T21:45:00Z",
       "room": "Room 4 (Pyramid Peak)",
       "roomId": "7e4b17cd6758411ca826f3fc15207c84"
+    },
+    {
+      "id": "6f181aa458f1464c9eebc79e47c53ede",
+      "title": "UWP and Windows Composition",
+      "speakers": [
+        {
+          "id": "1c43c2ce21154271a576c2a9be70c9b1",
+          "fullName": "Daren May"
+        }
+      ],
+      "abstract": "<p><span>Take your UWP app experience to the next level by using Windows Composition to deliver amazing animations and effects. Daren will introduce the foundational concepts and show some features you can easily drop into your apps.</span></p>",
+      "time": "2016-10-28T21:45:00Z",
+      "room": "Room 2 (Maroon Bells 2)",
+      "roomId": "2c8961fee6a34769b80bd043cfd3537e"
     }
   ],
   "rooms": [
