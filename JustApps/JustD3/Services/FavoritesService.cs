@@ -14,13 +14,20 @@ namespace JustD3.Services
         private readonly StorageFolder folder = ApplicationData.Current.RoamingFolder;
         private const string name = "favorites.cache";
 
+        public void ClearCache() => _cache = null;
+
+        Models.Favorites _cache;
         public async Task<Models.Favorites> GetFavoritesAsync()
         {
+            if (_cache != null)
+            {
+                return _cache;
+            }
             var json = await folder.ReadTextAsync(name);
             Models.Favorites obj = null;
             try
             {
-                obj = SerializationService.Deserialize<Models.Favorites>(json);
+                _cache = obj = SerializationService.Deserialize<Models.Favorites>(json);
             }
             catch { }
             return obj ?? new Models.Favorites();

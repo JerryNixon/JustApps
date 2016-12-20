@@ -1,1 +1,1 @@
-C:\git.repos\JustApps\JustApps\JustD3\AppPackages\JustD3_1.1.2.0\JustD3_1.1.2.0_x86_x64_arm.appxbundle
+C:\git.repos\JustApps\JustApps\JustD3\AppPackages\JustD3_1.1.10.0\JustD3_1.1.10.0_x86_x64_arm.appxbundle

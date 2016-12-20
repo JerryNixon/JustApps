@@ -8,7 +8,7 @@
       xmlns:local="using:JustD3.Views"
       xmlns:m="using:JustD3.Models"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:JustD3.ViewModels"
+      xmlns:vm="using:JustD3.ViewModels" xmlns:triggers="using:WindowsStateTriggers"
       mc:Ignorable="d">
 
     <Page.DataContext>
@@ -17,19 +17,30 @@
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="mobile">
+                    <VisualState.StateTriggers>
+                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SiteButton1.Visibility" Value="Collapsed" />
+                        <Setter Target="SiteButton2.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <controls:PageHeader x:Name="pageHeader"
                              Content="Denver Dev Day"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True">
-            <AppBarButton Click="{x:Bind ViewModel.Refresh}"
-                          Icon="Refresh"
-                          Label="Refresh" />
-            <AppBarButton Click="{x:Bind ViewModel.Website}"
-                          Icon="World"
-                          Label="Site" />
+            <AppBarButton Click="{x:Bind ViewModel.Refresh}" Icon="Refresh" Label="Refresh" />
+            <AppBarButton Click="{x:Bind ViewModel.Website}" Icon="World" x:Name="SiteButton1" Label="Site" />
             <controls:PageHeader.SecondaryCommands>
-                <AppBarButton Label="1366x768" Click="Resize_Click" />
+                <AppBarButton Click="{x:Bind ViewModel.Website}" Label="Web site" x:Name="SiteButton2" Visibility="Collapsed" />
+                <!--<AppBarButton Label="1366x768" Click="Resize_Click" />-->
             </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 
@@ -67,7 +78,7 @@
                                     <Grid Margin="0,16,0,0"
                                           Background="{Binding Group.Brush}"
                                           Padding="16">
-                                        <TextBlock Foreground="White" Text="{Binding Group.Title}" />
+                                        <TextBlock Foreground="White" Text="{Binding Group.Title}" TextWrapping="NoWrap" />
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
@@ -110,7 +121,7 @@
                                     <GroupStyle.HeaderTemplate>
                                         <DataTemplate>
                                             <Grid Background="{Binding Brush}" Padding="16">
-                                                <TextBlock Foreground="White" Text="{Binding Title}" />
+                                                <TextBlock Foreground="White" Text="{Binding Title}" TextWrapping="WrapWholeWords" />
                                             </Grid>
                                         </DataTemplate>
                                     </GroupStyle.HeaderTemplate>

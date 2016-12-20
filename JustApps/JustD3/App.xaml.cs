@@ -1,6 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Template10.Mvvm;
+using Template10.Utils;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -24,6 +28,7 @@ namespace JustD3
             ModalDialog.ModalContent = new TextBlock
             {
                 Text = "Loading...",
+                Foreground = Colors.White.ToSolidColorBrush(),
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center
             };

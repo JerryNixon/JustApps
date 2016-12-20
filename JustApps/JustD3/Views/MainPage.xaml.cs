@@ -41,7 +41,7 @@ namespace JustD3.Views
             var view = new WebView(WebViewExecutionMode.SameThread)
             {
                 Width = 350,
-                MinHeight = 500,
+                MinHeight = 450,
                 Margin = new Thickness(0),
                 DefaultBackgroundColor = Colors.Transparent,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -61,7 +61,7 @@ namespace JustD3.Views
 
             var dialog = new ContentDialog
             {
-                Content = stack,
+                Content = stack, MaxHeight = 660,
                 IsPrimaryButtonEnabled = true,
                 PrimaryButtonText = "Close",
                 VerticalContentAlignment = VerticalAlignment.Stretch,
