@@ -34,8 +34,6 @@ namespace WunderlistSdk
 
         public Models.User User { get; internal set; }
 
-        public bool HasToken => !string.IsNullOrEmpty(Token);
-
         public async Task<bool> AuthenticateAsync()
         {
             // https://developer.wunderlist.com/documentation/concepts/authorization
