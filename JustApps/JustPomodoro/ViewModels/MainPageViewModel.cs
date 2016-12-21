@@ -12,64 +12,38 @@ using Windows.UI.Core;
 using System.Diagnostics;
 using Windows.UI.Popups;
 using Template10.Utils;
+using System.Collections.ObjectModel;
 
 namespace JustPomodoro.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        public MainPageViewModel()
-        {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                Value = "Designtime value";
-            }
-        }
+        WunderlistSdk.Models.Task _SelectedTask;
+        public WunderlistSdk.Models.Task SelectedTask { get { return _SelectedTask; } set { Set(ref _SelectedTask, value); } }
 
-        string _Value = "Gas";
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+        public ObservableCollection<Group<WunderlistSdk.Models.Task>> TaskLists { get; } = new ObservableCollection<Group<WunderlistSdk.Models.Task>>();
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            if (suspensionState.Any())
+            var repo = new WunderlistSdk.WunderlistRepository(App.WunderlistSettings);
+            await repo.AuthenticateAsync();
+            await repo.RefreshDatabaseAsync();
+            var lists = await repo.Database.GetListsAsync();
+            foreach (var list in lists)
             {
-                Value = suspensionState[nameof(Value)]?.ToString();
-            }
-            await Task.CompletedTask;
-        }
-
-        public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
-        {
-            if (suspending)
-            {
-                suspensionState[nameof(Value)] = Value;
-            }
-            await Task.CompletedTask;
-        }
-
-        public override async Task OnNavigatingFromAsync(NavigatingEventArgs args)
-        {
-            var goingToDetails = args.TargetPageType == typeof(Views.DetailPage);
-            if (goingToDetails)
-            {
-                var dialog = new ContentDialog
+                var group = new Group<WunderlistSdk.Models.Task>
                 {
-                    Title = "Confirmation",
-                    Content = "Are you sure?",
-                    PrimaryButtonText = "Continue",
-                    SecondaryButtonText = "Cancel",
+                    Title = list.Title,
+                    Items = await repo.Database.GetTasksAsync(list),
                 };
-                var result = await dialog.ShowAsyncEx();
-                args.Cancel = result == ContentDialogResult.Secondary;
             }
         }
+    }
 
-        public void GotoDetailsPage() => NavigationService.Navigate(typeof(Views.DetailPage), Value);
-
-        public void GotoSettings() => NavigationService.Navigate(typeof(Views.SettingsPage), 0);
-
-        public void GotoPrivacy() => NavigationService.Navigate(typeof(Views.SettingsPage), 1);
-
-        public void GotoAbout() => NavigationService.Navigate(typeof(Views.SettingsPage), 2);
+    public class Group<T>
+    {
+        public string Title { get; set; }
+        public IEnumerable<T> Items { get; set; }
     }
 }
 

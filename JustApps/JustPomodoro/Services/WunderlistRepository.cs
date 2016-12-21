@@ -19,10 +19,5 @@ namespace JustPomodoro.Services
             connection = new SQLiteConnection(path);
             CreateTables();
         }
-
-        private void CreateTables()
-        {
-            connection.CreateTable();
-        }
     }
 }

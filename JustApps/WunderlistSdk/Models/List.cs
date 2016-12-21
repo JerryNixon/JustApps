@@ -1,17 +1,18 @@
-﻿using SQLite;
+﻿using System;
+using SQLite;
 using WunderlistSdk.Json;
-
-namespace WunderlistSdk.Json
-{
-}
 
 namespace WunderlistSdk.Models
 {
 
     [Table(nameof(List))]
-    internal class List
+    public class List
     {
-        public List(Json.List list)
+        public List()
+        {
+            // for SQLite
+        }
+        internal List(Json.List list)
         {
             Id = list.id;
             Title = list.title;
@@ -20,5 +21,11 @@ namespace WunderlistSdk.Models
         [PrimaryKey]
         public int Id { get; set; }
         public string Title { get; set; }
+
+        public async System.Threading.Tasks.Task ShowAsync()
+        {
+            var uri = new Uri($"https://www.wunderlist.com/#/lists/{Id}");
+            await Windows.System.Launcher.LaunchUriAsync(uri);
+        }
     }
 }

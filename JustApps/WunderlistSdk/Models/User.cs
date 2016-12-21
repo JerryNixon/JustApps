@@ -3,9 +3,13 @@
 namespace WunderlistSdk.Models
 {
     [Table(nameof(User))]
-    internal class User
+    public class User
     {
-        public User(Json.User user)
+        public User()
+        {
+            // for SQLite
+        }
+        internal User(Json.User user)
         {
             Id = user.id;
             Name = user.name;

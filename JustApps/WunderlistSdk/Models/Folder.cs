@@ -6,7 +6,11 @@ namespace WunderlistSdk.Models
     [Table(nameof(Folder))]
     public class Folder
     {
-        public Folder(Json.Folder folder)
+        public Folder()
+        {
+            // for SQLite
+        }
+        internal Folder(Json.Folder folder)
         {
             Id = folder.id;
             Title = folder.title;
