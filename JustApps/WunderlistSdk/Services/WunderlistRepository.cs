@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace WunderlistSdk
@@ -30,13 +31,17 @@ namespace WunderlistSdk
             _Database.Helper.CreateTables();
 
             var folders = await _Service.Helper.GetAllFoldersAsync();
-            _Database.Helper.Connection.InsertAll(folders);
+            if (folders.Any())
+                _Database.Helper.Connection.InsertAll(folders);
 
             var lists = await _Service.Helper.GetAllListsAsync();
-            _Database.Helper.Connection.InsertAll(lists);
-
-            var tasks = await _Service.Helper.GetListTasksAsync(lists);
-            _Database.Helper.Connection.InsertAll(tasks);
+            if (lists.Any())
+            {
+                _Database.Helper.Connection.InsertAll(lists);
+                var tasks = await _Service.Helper.GetListTasksAsync(lists);
+                if (tasks.Any())
+                    _Database.Helper.Connection.InsertAll(tasks);
+            }
 
             return true;
         }

@@ -8,19 +8,6 @@ using Template10.Services.SerializationService;
 
 namespace Template10.Services.Http
 {
-    public class RestService
-    {
-        RestHelper _helper;
-
-        public RestService()
-        {
-            _helper = new RestHelper();
-        }
-
-        public async Task<T> GetAsync<T>(Uri uri) => await _helper.GetAsync<T>(uri);
-        public async Task<HttpResponseMessage> PostAsync(Uri uri, object payload) => await _helper.PostAsync(uri, payload);
-    }
-
     public partial class RestHelper
     {
         // https://msdn.microsoft.com/en-us/library/windows/apps/windows.web.http.httpclient.aspx
@@ -66,14 +53,12 @@ namespace Template10.Services.Http
             return await Client.PutAsync(uri, content).AsTask(token.Token, callback);
         }
 
-        public async Task<HttpResponseMessage> PostAsync(Uri uri, object payload, CancellationTokenSource token = null, Progress<HttpProgress> callback = null)
+        public async Task<HttpResponseMessage> PostAsync(Uri uri, HttpStringContent payload, CancellationTokenSource token = null, Progress<HttpProgress> callback = null)
         {
             token = token ?? new CancellationTokenSource();
             callback = callback ?? new Progress<HttpProgress>(e => { Debug.WriteLine($"{nameof(PostAsync)}: {e.BytesSent} bytes of {e.TotalBytesToSend} bytes"); });
 
-            var data = Serializer.Serialize(payload);
-            var content = new HttpStringContent(data, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
-            return await Client.PostAsync(uri, content);
+            return await Client.PostAsync(uri, payload);
         }
 
         public async Task<T> PostAsync<T>(Uri uri, object payload, CancellationTokenSource token = null, Progress<HttpProgress> callback = null)
@@ -81,7 +66,10 @@ namespace Template10.Services.Http
             token = token ?? new CancellationTokenSource();
             callback = callback ?? new Progress<HttpProgress>(e => { Debug.WriteLine($"{nameof(PostAsync)}: {e.BytesSent} bytes of {e.TotalBytesToSend} bytes"); });
 
-            var response = await PostAsync(uri, payload, token, callback);
+            var requestJson = Serializer.Serialize(payload);
+            var requestContent = new HttpStringContent(requestJson,
+                Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
+            var response = await PostAsync(uri, requestContent, token, callback);
             if (!response.IsSuccessStatusCode)
             {
                 return default(T);

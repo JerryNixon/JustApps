@@ -29,7 +29,7 @@ namespace WunderlistSdk
             }
             else
             {
-                return Helper.Connection.Table<Models.List>().Where(x => folder.Lists.Contains(x.Id));
+                return Helper.Connection.Table<Models.List>().Where(x => folder.ListsArray.Contains(x.Id));
             }
         }
 

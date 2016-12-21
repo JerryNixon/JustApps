@@ -1,5 +1,6 @@
 ﻿using Windows.Security.Credentials;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Template10.Services.SecretService
 {
@@ -21,37 +22,53 @@ namespace Template10.Services.SecretService
 
         public string ReadSecret(string container, string key)
         {
-            if (_vault.RetrieveAll().Any(x => x.Resource == container && x.UserName == key))
+            try
             {
-                try
+                if (_vault.RetrieveAll().Any(x => x.Resource == container && x.UserName == key))
                 {
-                    var credential = _vault.Retrieve(container, key);
-                    credential.RetrievePassword();
-                    return credential.Password;
+                    try
+                    {
+                        var credential = _vault.Retrieve(container, key);
+                        credential.RetrievePassword();
+                        return credential.Password;
+                    }
+                    catch (System.Exception)
+                    {
+                        return string.Empty;
+                    }
                 }
-                catch (System.Exception)
+                else
                 {
                     return string.Empty;
                 }
             }
-            else
+            catch (System.Exception ex)
             {
-                return string.Empty;
+                Debugger.Break();
+                throw;
             }
         }
 
         public void WriteSecret(string container, string key, string secret)
         {
-            if (_vault.RetrieveAll().Any(x => x.Resource == container && x.UserName == key))
+            try
             {
-                var credential = _vault.Retrieve(container, key);
-                credential.RetrievePassword();
-                credential.Password = secret;
+                if (_vault.RetrieveAll().Any(x => x.Resource == container && x.UserName == key))
+                {
+                    var credential = _vault.Retrieve(container, key);
+                    credential.RetrievePassword();
+                    credential.Password = secret;
+                }
+                else if (!string.IsNullOrEmpty(secret))
+                {
+                    var credential = new PasswordCredential(container, key, secret);
+                    _vault.Add(credential);
+                }
             }
-            else
+            catch (System.Exception ex)
             {
-                var credential = new PasswordCredential(container, key, secret);
-                _vault.Add(credential);
+                Debugger.Break();
+                throw;
             }
         }
     }

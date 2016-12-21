@@ -27,7 +27,7 @@ namespace WunderlistSdk
             }
             else
             {
-                return (await Helper.GetAllListsAsync()).Where(x => folder.Lists.Contains(x.Id));
+                return (await Helper.GetAllListsAsync()).Where(x => folder.ListsArray.Contains(x.Id));
             }
         }
 

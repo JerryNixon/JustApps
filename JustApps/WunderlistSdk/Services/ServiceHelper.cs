@@ -92,7 +92,9 @@ namespace WunderlistSdk
             var result = new List<Models.Task>();
             foreach (var list in lists)
             {
-                result.AddRange(await GetListTasksAsync(list));
+                var tasks = await GetListTasksAsync(list);
+                if (tasks?.Any() ?? false)
+                    result.AddRange(tasks);
             }
             return result;
         }
@@ -105,8 +107,8 @@ namespace WunderlistSdk
             };
             var requestJson = JsonConvert.SerializeObject(requestObject);
             var requestContent = new HttpStringContent(requestJson, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
-            var requestUri = new Uri("http://a.wunderlist.com/api/v1/tasks");
-            var response = await _RestHelper.PostAsync(requestUri, requestContent);
+            var requestUri = new Uri($"http://a.wunderlist.com/api/v1/tasks?list_id={list.Id}");
+            var response = await _RestHelper.Client.GetAsync(requestUri);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
@@ -129,7 +131,7 @@ namespace WunderlistSdk
         public async Task<IReadOnlyList<Models.List>> GetFolderListsAsync(Models.Folder folder)
         {
             var all = await GetAllListsAsync();
-            var filter = all.Where(x => folder.Lists.Contains(x.Id));
+            var filter = all.Where(x => folder.ListsArray.Contains(x.Id));
             return filter.ToList().AsReadOnly();
         }
 
@@ -197,6 +199,7 @@ namespace WunderlistSdk
             }
             catch (Exception)
             {
+                System.Diagnostics.Debugger.Break();
                 return string.Empty;
             }
 
@@ -239,7 +242,8 @@ namespace WunderlistSdk
 
             var responseJson = await response.Content.ReadAsStringAsync();
             dynamic responseModel = JsonConvert.DeserializeObject(responseJson);
-            return responseModel.access_token;
+            var token = responseModel.access_token;
+            return token;
         }
 
         private void SetupAuthHeaders()

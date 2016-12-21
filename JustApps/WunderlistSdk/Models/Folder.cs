@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SQLite;
 
 namespace WunderlistSdk.Models
@@ -14,12 +15,13 @@ namespace WunderlistSdk.Models
         {
             Id = folder.id;
             Title = folder.title;
-            Lists = folder.list_ids.ToArray();
+            Lists = string.Join(",", folder.list_ids);
         }
 
         [PrimaryKey]
-        public int Id { get; }
-        public string Title { get; }
-        public int[] Lists { get; }
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Lists { get; set; }
+        public string[] ListsArray => Lists.Split(',').ToArray();
     }
 }

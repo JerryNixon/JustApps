@@ -19,7 +19,7 @@ namespace WunderlistSdk.Models
         }
 
         [PrimaryKey]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Title { get; set; }
 
         public async System.Threading.Tasks.Task ShowAsync()
