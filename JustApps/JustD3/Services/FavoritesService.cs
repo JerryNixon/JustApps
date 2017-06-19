@@ -27,7 +27,7 @@ namespace JustD3.Services
             Models.Favorites obj = null;
             try
             {
-                _cache = obj = SerializationService.Deserialize<Models.Favorites>(json);
+                _cache = obj = json.Deserialize<Models.Favorites>();
             }
             catch { }
             return obj ?? new Models.Favorites();

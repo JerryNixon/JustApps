@@ -26,23 +26,22 @@ namespace JustD3.Services
                         {
                             // fetch data
                             var json = await uri.GetStringAsync();
-                            var obj = SerializationService.Deserialize<Models.Json.RootObject>(json);
+                            var obj = json.Deserialize<Models.Json.RootObject>();
 
                             // convert to Sessions
                             var projection = obj.sessions.Select(x => new Models.Session
                             {
                                 Id = x.id,
-                                Room = x.room,
-                                Title = x.title,
-                                Description = x.@abstract,
+                                Room = x.room.Replace("  ", " ").Trim(),
+                                Title = x.title.Replace("  ", " ").Trim(),
+                                Description = x.@abstract.Replace("  ", " ").Trim(),
                                 Date = DateTime.Parse(x.time),
-                                Speaker = string.Join(", ", x.speakers.Select(s => s.fullName)),
+                                Speaker = string.Join(", ", x.speakers.Select(s => s.fullName)).Replace("  ", " ").Trim(),
                             });
                             var sessions = new Models.Sessions(projection);
 
                             // cache
-                            json = SerializationService.Serialize(sessions);
-                            await folder.WriteTextAsync(name, json);
+                            await folder.WriteTextAsync(name, sessions);
 
                             return sessions;
                         }
@@ -54,8 +53,7 @@ namespace JustD3.Services
                     }
                 case Sources.Cache:
                     {
-                        var json = await folder.ReadTextAsync(name);
-                        return SerializationService.Deserialize<Models.Sessions>(json);
+                        return await folder.ReadTextAsync<Models.Sessions>(name);
                     }
                 case Sources.Auto:
                     {

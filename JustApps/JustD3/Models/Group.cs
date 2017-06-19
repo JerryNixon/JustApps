@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Windows.UI.Xaml.Media;
 
 namespace JustD3.Models
 {
+    [DebuggerDisplay("{Title}")]
     public class Group<T>
     {
         public string Title { get; set; }

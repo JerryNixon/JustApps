@@ -6,7 +6,7 @@ using Template10.Mvvm;
 
 namespace JustD3.Models
 {
-    [DebuggerDisplay("{title}")]
+    [DebuggerDisplay("{Summary}")]
     public class Session : BindableBase
     {
         public String Id { get; internal set; }
@@ -15,7 +15,10 @@ namespace JustD3.Models
         public String Room { get; internal set; }
         public String Speaker { get; internal set; }
         public DateTime Date { get; internal set; }
-        public string DateFormatted => $"{Date.ToString("hh:mm tt")} to {Date.AddHours(1).ToString("hh:mm tt")}";
+        public string DateFormatted => FormatDate(Date);
+        public string Summary => $"{Title} by {Speaker} in {Room}";
+
+        public static string FormatDate(DateTime date) => $"{date.ToString("hh:mm tt")} to {date.AddMinutes(75).ToString("hh:mm tt")}";
 
         bool _IsFavorite = default(bool);
         public bool IsFavorite

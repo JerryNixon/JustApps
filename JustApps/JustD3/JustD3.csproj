@@ -157,6 +157,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DebugConverter.cs" />
+    <Compile Include="Models\Favorite.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Json.cs" />
     <Compile Include="Models\Session.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="Services\Extensions.cs" />
     <Compile Include="Models\Favorites.cs" />
     <Compile Include="Services\FavoritesService.cs" />
-    <Compile Include="Services\SerializationService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

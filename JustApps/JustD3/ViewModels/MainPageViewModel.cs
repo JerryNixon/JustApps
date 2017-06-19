@@ -14,6 +14,8 @@ using JustD3.Models;
 using JustD3.Services;
 using Windows.Storage;
 using Template10.Services.NetworkAvailableService;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml;
 
 namespace JustD3.ViewModels
 {
@@ -23,6 +25,7 @@ namespace JustD3.ViewModels
         FavoritesService _FavoritesService = new FavoritesService();
 
         public ObservableCollection<Group<Session>> Sessions { get; } = new ObservableCollection<Group<Session>>();
+        public ObservableCollection<Favorite> Favorites { get; } = new ObservableCollection<Favorite>();
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
@@ -32,6 +35,10 @@ namespace JustD3.ViewModels
                 _FavoritesService.ClearCache();
                 await SyncFavoritesAsync();
             };
+
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
+            timer.Tick += async (s, e) => await SyncFavoritesAsync();
+            timer.Start();
         }
 
         public async void AddFavorite(Session session)
@@ -54,6 +61,7 @@ namespace JustD3.ViewModels
 
         public async void Refresh()
         {
+            _dataCache = null;
             await SetDataAsync(DataService.Sources.Web);
         }
 
@@ -105,8 +113,8 @@ namespace JustD3.ViewModels
             try
             {
                 Sessions.Insert(0, new Group<Session> { Title = "8:30 AM Registration", Brush = brush });
-                Sessions.Insert(4, new Group<Session> { Title = "12:30 PM Lunch", Brush = brush });
-                Sessions.Add(new Group<Session> { Title = "5:00 PM Raffle drawing", Brush = brush });
+                Sessions.Insert(3, new Group<Session> { Title = "11:45 PM Lunch", Brush = brush });
+                Sessions.Add(new Group<Session> { Title = "6:00 PM Closing", Brush = brush });
             }
             catch (Exception)
             {
@@ -132,7 +140,75 @@ namespace JustD3.ViewModels
             {
                 session.IsFavorite = favorites.ContainsValue(session.Id);
             }
+
+            var favs = new List<Favorite>();
+            var brush = Colors.DimGray.ToSolidColorBrush();
+            var times = sessions.OrderBy(x => x.Date).Select(x => x.Date).Distinct();
+            foreach (var time in times)
+            {
+                var match = sessions.Where(x => x.Date == time && x.IsFavorite).FirstOrDefault();
+                if (match == null)
+                {
+                    favs.Add(new Favorite
+                    {
+                        Brush = brush,
+                        Date = time,
+                        Line1 = "No favorite selected",
+                        Line2 = "Choose favorites in Sessions",
+                    });
+                }
+                else
+                {
+                    favs.Add(new Favorite
+                    {
+                        Brush = brush,
+                        Date = time,
+                        Line1 = $"{match.Title} by {match.Speaker}",
+                        Line2 = match.Room,
+                        Session = match,
+                    });
+                }
+            }
+
+            favs.Insert(0, new Favorite
+            {
+                Date = DateTime.Now.Date.AddHours(8.5),
+                Line1 = "Registration",
+                Line2 = "General area",
+                Brush = brush,
+            });
+            favs.Insert(3, new Favorite
+            {
+                Date = DateTime.Now.Date.AddHours(11.75),
+                Line1 = "Lunch",
+                Line2 = "General area",
+                Brush = brush,
+            });
+            favs.Add(new Favorite
+            {
+                Date = DateTime.Now.Date.AddHours(18),
+                Line1 = "Closing",
+                Line2 = "General area",
+                Brush = brush,
+            });
+
+            var closests = favs.Select(x => new
+            {
+                Item = x,
+                Diff = Math.Abs((DateTime.Now.TimeOfDay - x.Date.TimeOfDay).TotalMinutes),
+            });
+            var closest = closests.OrderBy(x => x.Diff).First();
+            closest.Item.Brush = Colors.OrangeRed.ToSolidColorBrush();
+
+            Favorites.AddRange(favs, true);
         }
+
+        private int DateDiff(DateTime Date1, DateTime Date2)
+        {
+            TimeSpan time = Date1 - Date2;
+            return Math.Abs(time.Minutes);
+        }
+
 
         #endregion
     }

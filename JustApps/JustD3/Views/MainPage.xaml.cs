@@ -1,3 +1,5 @@
+using JustD3.Models;
+using JustD3.ViewModels;
 using System;
 using Template10.Common;
 using Windows.Foundation;
@@ -38,9 +40,23 @@ namespace JustD3.Views
         {
             var session = e.ClickedItem as Models.Session;
 
+            if (e.ClickedItem is Favorite favorite && favorite != null)
+            {
+                session = favorite.Session;
+            }
+
+            if (session == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(session.Description))
+            {
+                return;
+            }
+
             var view = new WebView(WebViewExecutionMode.SameThread)
             {
-                Width = 350,
                 MinHeight = 450,
                 Margin = new Thickness(0),
                 DefaultBackgroundColor = Colors.Transparent,
@@ -53,7 +69,7 @@ namespace JustD3.Views
             stack.Children.Add(new TextBlock
             {
                 Width = 380,
-                Text = session.Title,
+                Text = $"{session.Title} by {session.Speaker}",
                 Margin = new Thickness(0, 16, 0, 0),
                 TextWrapping = TextWrapping.Wrap,
             });
@@ -61,7 +77,8 @@ namespace JustD3.Views
 
             var dialog = new ContentDialog
             {
-                Content = stack, MaxHeight = 660,
+                Content = stack,
+                MaxHeight = 660,
                 IsPrimaryButtonEnabled = true,
                 PrimaryButtonText = "Close",
                 VerticalContentAlignment = VerticalAlignment.Stretch,

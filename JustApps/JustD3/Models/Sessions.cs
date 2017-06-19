@@ -9,6 +9,11 @@ namespace JustD3.Models
 {
     public class Sessions : List<Session>
     {
+        public Sessions()
+        {
+
+        }
+
         public Sessions(IEnumerable<Session> collection) : base(collection)
         {
         }
